@@ -1,21 +1,25 @@
 import { useState } from "react";
-import { Button, Text, TouchableOpacity, View } from "react-native";
+import { Button, Text, TouchableOpacity, View, SafeAreaView, Image } from "react-native";
 import { Searchbar } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { FONTS, assets, COLORS } from "../../constants";
+import FocusedStatusBar from "../../shared/FocusedStatusBar";
 
 function ISBN() {
   const [searchQuery, setSearchQuery] = useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
 
   return (
-    <>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          marginTop: 30,
-        }}
-      >
+    <SafeAreaView style={{ flex: 1 }} >
+      <FocusedStatusBar backgroundColor={COLORS.black} />
+      <View className="felx flex-row h-[50px] mt-4">
+      <Image source={assets.hunter} resizeMode="contain" className="w-[50%] h-[40px]" />
+      <TouchableOpacity className=" ml-auto">
+      <Image source={assets.menu} resizeMode="contain" className="w-[25px] h-[40px] mr-4" />
+      </TouchableOpacity>
+      </View>
+      
+      <View className="flex flex-row items-center justify-center mt-12 mb-4">
         <TouchableOpacity
           style={{
             paddingVertical: 10,
@@ -23,7 +27,7 @@ function ISBN() {
             backgroundColor: "#15803D",
           }}
         >
-          <Text>Sell</Text>
+          <Text className="text-white text-2xl" style={{ fontFamily: FONTS.bold }}>Buy</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -32,7 +36,16 @@ function ISBN() {
             backgroundColor: "#D74B4B",
           }}
         >
-          <Text>Buy</Text>
+          <Text className="text-white text-2xl" style={{ fontFamily: FONTS.bold }}>Sell</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            backgroundColor: "#DC582A",
+          }}
+        >
+          <Text className="text-white text-2xl" style={{ fontFamily: FONTS.bold }}>Rent</Text>
         </TouchableOpacity>
       </View>
       <Searchbar
@@ -42,6 +55,7 @@ function ISBN() {
         style={{
           marginHorizontal: 20,
           marginVertical: 10,
+          fontFamily: FONTS.bold,
         }}
       />
       <View
@@ -59,7 +73,7 @@ function ISBN() {
             marginHorizontal: 5,
           }}
         />
-        <Text>OR</Text>
+        <Text className="text-black text-2xl" style={{ fontFamily: FONTS.bold }}>OR</Text>
         <Text
           style={{
             height: 2,
@@ -87,13 +101,14 @@ function ISBN() {
         >
           <MaterialCommunityIcons name="barcode-scan" size={24} color="white" />
           <Text
-            style={{ marginHorizontal: 5, fontWeight: "bold", color: "white" }}
+            style={{  fontFamily: FONTS.bold }}
+            className="text-white text-2xl ml-2"
           >
             SCAN BARCODE
           </Text>
         </View>
       </TouchableOpacity>
-    </>
+      </SafeAreaView>
   );
 }
 

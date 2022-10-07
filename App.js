@@ -1,22 +1,40 @@
-import { StatusBar } from "expo-status-bar";
-import { Text, View, StyleSheet, Platform, SafeAreaView } from "react-native";
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { useFonts } from "expo-font";
+
 import ISBN from "./screens/ISBN/ISBN";
 
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: "#F2F2F2",
+  },
+};
+
+const Stack = createStackNavigator();
+
 export default function App() {
+  const [loaded] = useFonts({
+    GoldleafBoldPersonalUseBold: require("./assets/fonts/GoldleafBoldPersonalUseBold-eZ4dO.ttf"),
+  });
+
+  if (!loaded) return null;
+
   return (
-    <SafeAreaView style={styles.AndroidSafeArea}>
-      <View className="flex-1 bg-white">
-        {/* <Text className="bg-slate-600">hello</Text> */}
-        <ISBN />
-        <StatusBar style="auto" />
-      </View>
-    </SafeAreaView>
+    <NavigationContainer theme={theme}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+        initialRouteName="ISBN"
+      >
+        <Stack.Screen name="ISBN" component={ISBN} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = {
-  AndroidSafeArea: {
-    flex: 1,
-    paddingTop: Platform.OS === "android" ? 25 : 0,
-  },
-};
+
