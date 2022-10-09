@@ -7,26 +7,30 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import Scanner from "./Scanner";
 import { Searchbar } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FONTS, COLORS, assets } from "../../constants";
 import FocusedStatusBar from "../../shared/FocusedStatusBar";
-import { update } from "../../features/testSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+// import { update } from "../../features/testSlice";
+// import { useSelector, useDispatch } from "react-redux";
 
 function ISBN() {
   const [ISBN, setISBN] = useState([]);
   const [searchType, setSearchType] = useState("buy");
   const [openScanner, setOpenScanner] = useState(false);
-  const [test, setTest] = useState(0);
+  // const [test, setTest] = useState(0);
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   function getScannedISBN(isbn) {
     setISBN(isbn);
     setOpenScanner(false);
+    navigation.navigate("ISBN RESULT", {
+      isbn: isbn,
+      type: searchType,
+    });
   }
 
   function onISBNChange(isbn) {
@@ -34,6 +38,13 @@ function ISBN() {
     var regex = new RegExp(character, "g");
     isbn = isbn.replace(regex, "");
     setISBN(isbn);
+  }
+
+  function navigationTest() {
+    navigation.navigate("ISBN RESULT", {
+      isbn: "9783161484100",
+      type: searchType,
+    });
   }
 
   return (
@@ -44,6 +55,9 @@ function ISBN() {
           <ScrollView>
             <View>
               <View className="flex flex-row items-center justify-center mt-12 mb-4 ">
+                <TouchableOpacity onPress={navigationTest}>
+                  <Text>Result</Text>
+                </TouchableOpacity>
                 <TouchableOpacity
                   style={{
                     paddingVertical: 10,

@@ -13,6 +13,7 @@ import Contact from "./screens/contact/Contact";
 import PrivacyPolicy from "./screens/privacyPolicy/PrivacyPolicy";
 import Faq from "./screens/faq/Faq";
 import TermsOfUse from "./screens/termsOfUse/TermsOfUse";
+import ISBNHome from "./screens/ISBN/ISBNHome";
 
 const theme = {
   ...DefaultTheme,
@@ -47,7 +48,7 @@ export default function App() {
         >
           <Drawer.Screen
             name="ISBN SCANNER"
-            component={ISBN}
+            component={ISBNHome}
             options={{
               drawerIcon: () => (
                 <Image
