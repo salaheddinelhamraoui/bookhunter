@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import React from "react";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -131,14 +132,6 @@ export default function App() {
             }}
           />
         </Drawer.Navigator>
-        {/* <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-          initialRouteName="ISBN"
-        >
-          <Stack.Screen name="ISBN" component={ISBN} />
-        </Stack.Navigator> */}
       </NavigationContainer>
     </Provider>
   );

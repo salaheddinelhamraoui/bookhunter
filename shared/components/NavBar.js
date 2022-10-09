@@ -1,7 +1,6 @@
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
-import { Drawer } from "react-native-paper";
 import { assets } from "../../constants";
 
 function NavBar() {
