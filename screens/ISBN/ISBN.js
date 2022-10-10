@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Text,
   TouchableOpacity,
@@ -13,6 +13,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FONTS, COLORS, assets } from "../../constants";
 import FocusedStatusBar from "../../shared/FocusedStatusBar";
 import { useNavigation } from "@react-navigation/native";
+import Toast from "react-native-root-toast";
 // import { update } from "../../features/testSlice";
 // import { useSelector, useDispatch } from "react-redux";
 
@@ -20,8 +21,8 @@ function ISBN() {
   const [ISBN, setISBN] = useState([]);
   const [searchType, setSearchType] = useState("buy");
   const [openScanner, setOpenScanner] = useState(false);
-  // const [test, setTest] = useState(0);
   const navigation = useNavigation();
+  // const [test, setTest] = useState(0);
   // const dispatch = useDispatch();
 
   function getScannedISBN(isbn) {
@@ -40,11 +41,22 @@ function ISBN() {
     setISBN(isbn);
   }
 
-  function navigationTest() {
-    navigation.navigate("ISBN RESULT", {
-      isbn: "9783161484100",
-      type: searchType,
-    });
+  function search() {
+    if (ISBN.length >= 10) {
+      navigation.navigate("ISBN RESULT", {
+        isbn: ISBN,
+        type: searchType,
+      });
+    } else {
+      Toast.show("Invalid ISBN", {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+      });
+    }
   }
 
   return (
@@ -55,9 +67,9 @@ function ISBN() {
           <ScrollView>
             <View>
               <View className="flex flex-row items-center justify-center mt-12 mb-4 ">
-                <TouchableOpacity onPress={navigationTest}>
+                {/* <TouchableOpacity onPress={navigationTest}>
                   <Text>Result</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity
                   style={{
                     paddingVertical: 10,
@@ -105,11 +117,25 @@ function ISBN() {
                 </TouchableOpacity>
               </View>
               <Searchbar
+                onSubmitEditing={search}
                 placeholder="ISBN Code"
                 value={ISBN}
                 keyboardType="decimal-pad"
                 onChangeText={(isbn) => onISBNChange(isbn)}
               />
+              <TouchableOpacity
+                className={` ${
+                  ISBN.length >= 10 ? "bg-[#15803D]" : "bg-gray-500"
+                } py-5 rounded-sm mt-2`}
+              >
+                <Text
+                  onPress={search}
+                  className="text-center text-gray-50 text-lg"
+                  style={{ fontFamily: FONTS.JosefinSansBold }}
+                >
+                  Search
+                </Text>
+              </TouchableOpacity>
               {/* <InputSearch ISBN={ISBN} /> */}
               <View
                 style={{
@@ -198,7 +224,10 @@ function ISBN() {
           </ScrollView>
         </SafeAreaView>
       ) : (
-        <Scanner getScannedISBN={getScannedISBN} />
+        <Scanner
+          getScannedISBN={getScannedISBN}
+          closeScanner={() => setOpenScanner(false)}
+        />
       )}
     </>
   );

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Button, ToastAndroid } from "react-native";
+import { Text, View, StyleSheet, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FONTS } from "../../constants";
 import Toast from "react-native-root-toast";
 import { FontAwesome } from "@expo/vector-icons";
 
-export default function Scanner({ getScannedISBN }) {
+export default function Scanner({ getScannedISBN, closeScanner }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState("No ISBN Scanned");
@@ -60,7 +60,7 @@ export default function Scanner({ getScannedISBN }) {
 
   // Return the View
   return (
-    <View className="flex-1">
+    <View className="flex-1 ">
       <View style={styles.barcodebox}>
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
@@ -78,24 +78,39 @@ export default function Scanner({ getScannedISBN }) {
       </View>
 
       {scanned && (
-        <View className="flex-row gap-10 justify-center align-bottom">
+        <View className="flex-row gap-10 justify-center">
           <TouchableOpacity
             onPress={() => {
               setText("No ISBN Scanned");
               setScanned(false);
             }}
-            className="bg-red-400 py-4 px-3 rounded-md"
+            className="bg-red-400 py-3 px-2 rounded-sm"
           >
-            <Text>Scanne Again?</Text>
+            <Text style={{ fontFamily: FONTS.JosefinSansBold }}>
+              Scanne Again?
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => getScannedISBN(text)}
-            className="bg-green-400 py-4 px-3 rounded-md"
+            className="bg-green-400 py-3 px-2 rounded-sm"
           >
-            <Text>Confirme</Text>
+            <Text style={{ fontFamily: FONTS.JosefinSansBold }}>Confirme</Text>
           </TouchableOpacity>
         </View>
       )}
+      <View style={{ margin: 20 }} className=" flex-1">
+        <TouchableOpacity
+          onPress={closeScanner}
+          className=" bg-red-500 py-3 px-2 rounded-sm "
+        >
+          <Text
+            style={{ fontFamily: FONTS.JosefinSansBold }}
+            className="text-base text-center"
+          >
+            Cancel
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
