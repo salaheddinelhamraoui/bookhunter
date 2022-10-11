@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import InfoBookCard from "../../shared/components/InfoBookCard";
-import { getISBNResult } from "../../utils/services";
+import { getISBNResult, sortVendorsBuy } from "../../utils/services";
 import { ActivityIndicator } from "react-native-paper";
 import SellerCard from "../../shared/components/SellerCard";
 import { ScrollView } from "react-native-gesture-handler";
@@ -13,7 +13,6 @@ function ISBNResult({ route, navigation }) {
 
   useEffect(() => {
     setIsLoaded(false);
-    console.log("isbn result");
     getISBNResult(isbn, type)
       .then((result) => result.json())
       .then((data) => {
@@ -29,8 +28,12 @@ function ISBNResult({ route, navigation }) {
           <InfoBookCard bookData={data.bookData} />
           <>
             <ScrollView style={{ marginHorizontal: 10 }}>
-              {data.Vendors.map((vendor, i) => (
-                <SellerCard vendor={vendor} key={vendor.vendorName + "" + i} />
+              {sortVendorsBuy(data.Vendors).map((vendor, i) => (
+                <SellerCard
+                  type={type}
+                  vendor={vendor}
+                  key={vendor.vendorName + "" + i}
+                />
               ))}
             </ScrollView>
           </>
