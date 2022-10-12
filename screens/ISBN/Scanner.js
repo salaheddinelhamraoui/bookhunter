@@ -61,7 +61,7 @@ export default function Scanner({ getScannedISBN, closeScanner }) {
   // Return the View
   return (
     <View className="flex-1 ">
-      <View style={styles.barcodebox}>
+      <View style={styles.barcodebox} className="mt-8">
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={({ height: 400, width: 400 }, StyleSheet.absoluteFill)}
@@ -84,28 +84,28 @@ export default function Scanner({ getScannedISBN, closeScanner }) {
               setText("No ISBN Scanned");
               setScanned(false);
             }}
-            className="bg-red-400 py-3 px-2 rounded-sm"
+            className="bg-red-400 py-3 px-2 rounded-lg w-[140px]"
           >
-            <Text style={{ fontFamily: FONTS.JosefinSansBold }}>
+            <Text style={{ fontFamily: FONTS.JosefinSansBold }} className="text-base text-center text-white">
               Scanne Again?
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => getScannedISBN(text)}
-            className="bg-green-400 py-3 px-2 rounded-sm"
+            className="bg-green-400 py-3 px-2 rounded-lg w-[140px]"
           >
-            <Text style={{ fontFamily: FONTS.JosefinSansBold }}>Confirme</Text>
+            <Text style={{ fontFamily: FONTS.JosefinSansBold }} className="text-base text-center text-white">Confirme</Text>
           </TouchableOpacity>
         </View>
       )}
       <View style={{ margin: 20 }} className=" flex-1">
         <TouchableOpacity
           onPress={closeScanner}
-          className=" bg-red-500 py-3 px-2 rounded-sm "
+          className=" bg-red-500 py-3 px-2 rounded-lg "
         >
           <Text
             style={{ fontFamily: FONTS.JosefinSansBold }}
-            className="text-base text-center"
+            className="text-base text-center text-white"
           >
             Cancel
           </Text>

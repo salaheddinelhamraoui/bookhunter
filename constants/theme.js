@@ -12,7 +12,7 @@ export const SIZES = {
   base: 10,
   small: 11,
   font: 12,
-  medium: 13,
+  medium: 15,
   extraMedium: 18,
   large: 24,
   extraLarge: 26,
