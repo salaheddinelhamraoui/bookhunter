@@ -10,7 +10,7 @@ function CartVendor({ data, title }) {
     <>
       {subItems && subItems.length > 0 && (
         <View className="mt-2">
-          <View className="bg-[#4e8098]  py-3 items-center">
+          <View className="bg-[#82d9d9]  py-3 items-center">
             <Text
               style={{ fontFamily: FONTS.JosefinSansBold }}
               className="text-white text-lg"
@@ -22,7 +22,6 @@ function CartVendor({ data, title }) {
             {subItems.map((item, i) => (
               <CartItem item={item} key={i} />
             ))}
-
           </ScrollView>
         </View>
       )}
