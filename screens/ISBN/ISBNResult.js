@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import InfoBookCard from "../../shared/components/InfoBookCard";
+import InfoBookCard from "../../components/InfoBookCard";
 import { getISBNResult, sortVendorsBuy } from "../../utils/services";
 import { ActivityIndicator } from "react-native-paper";
-import SellerCard from "../../shared/components/SellerCard";
+import SellerCard from "../../components/SellerCard";
 import { ScrollView } from "react-native-gesture-handler";
 
 function ISBNResult({ route, navigation }) {
@@ -24,20 +24,18 @@ function ISBNResult({ route, navigation }) {
   return (
     <View className="flex-1">
       {isLoaded ? (
-        <>
+        <ScrollView style={{ marginHorizontal: 10 }}>
           <InfoBookCard bookData={data.bookData} />
           <>
-            <ScrollView style={{ marginHorizontal: 10 }}>
-              {sortVendorsBuy(data.Vendors).map((vendor, i) => (
-                <SellerCard
-                  type={type}
-                  vendor={vendor}
-                  key={vendor.vendorName + "" + i}
-                />
-              ))}
-            </ScrollView>
+            {sortVendorsBuy(data.Vendors).map((vendor, i) => (
+              <SellerCard
+                type={type}
+                vendor={vendor}
+                key={vendor.vendorName + "" + i}
+              />
+            ))}
           </>
-        </>
+        </ScrollView>
       ) : (
         <View className="flex-1 align-middle ">
           <ActivityIndicator animating={true} className="flex-1 align-middle" />

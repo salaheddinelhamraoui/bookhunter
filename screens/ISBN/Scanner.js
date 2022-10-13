@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import { Text, View, StyleSheet, Button, useWindowDimensions } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FONTS } from "../../constants";
@@ -10,6 +10,7 @@ export default function Scanner({ getScannedISBN, closeScanner }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState("No ISBN Scanned");
+  const windowWidth = useWindowDimensions().width;
 
   function showToast(text) {
     Toast.show(text, {
@@ -60,11 +61,11 @@ export default function Scanner({ getScannedISBN, closeScanner }) {
 
   // Return the View
   return (
-    <View className="flex-1 ">
-      <View style={styles.barcodebox} className="mt-8">
+    <View className="flex-1 w-full mt-12">
+      <View style={styles.barcodebox} className="mt-8 w-full">
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={({ height: 400, width: 400 }, StyleSheet.absoluteFill)}
+          style={{ height: 600, width: windowWidth }}
         />
       </View>
       <View className="py-4 align-middle flex-row justify-center gap-5">
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
   barcodebox: {
     alignItems: "center",
     justifyContent: "center",
-    height: 300,
+    height: 150,
     overflow: "hidden",
   },
 });

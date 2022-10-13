@@ -11,7 +11,7 @@ import Scanner from "./Scanner";
 import { Searchbar } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FONTS, COLORS, assets } from "../../constants";
-import FocusedStatusBar from "../../shared/FocusedStatusBar";
+import FocusedStatusBar from "../../components/FocusedStatusBar";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-root-toast";
 // import { update } from "../../features/testSlice";

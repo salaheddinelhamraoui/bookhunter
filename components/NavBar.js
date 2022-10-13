@@ -2,7 +2,7 @@ import { DrawerActions, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
-import { assets } from "../../constants";
+import { assets } from "../constants";
 
 function NavBar() {
   const navigation = useNavigation();
@@ -27,7 +27,7 @@ function NavBar() {
       />
       <TouchableOpacity
         className="mr-4"
-        // onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+      // onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
       >
         <Image
           source={assets.bag}
