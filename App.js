@@ -1,11 +1,11 @@
 import "react-native-gesture-handler";
+import "react-native-get-random-values";
 import React from "react";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useFonts } from "expo-font";
-import ISBN from "./screens/ISBN/ISBN";
 import NavBar from "./components/NavBar";
-import { Text, Image } from "react-native";
+import { Image } from "react-native";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { assets, FONTS, SIZES } from "./constants";
@@ -13,7 +13,10 @@ import Contact from "./screens/contact/Contact";
 import PrivacyPolicy from "./screens/privacyPolicy/PrivacyPolicy";
 import Faq from "./screens/faq/Faq";
 import TermsOfUse from "./screens/termsOfUse/TermsOfUse";
-import ISBNHome from "./screens/ISBN/ISBNHome";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Cart from "./screens/cart/Cart";
+import ISBNResult from "./screens/ISBN/ISBNResult";
+import ISBN from "./screens/ISBN/ISBN";
 
 const theme = {
   ...DefaultTheme,
@@ -23,6 +26,7 @@ const theme = {
   },
 };
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [loaded] = useFonts({
@@ -48,7 +52,7 @@ export default function App() {
         >
           <Drawer.Screen
             name="ISBN SCANNER"
-            component={ISBNHome}
+            component={ISBN}
             options={{
               drawerIcon: () => (
                 <Image
@@ -129,6 +133,24 @@ export default function App() {
               drawerLabelStyle: {
                 fontFamily: FONTS.JosefinSansBold,
                 fontSize: SIZES.medium,
+              },
+            }}
+          />
+          <Drawer.Screen
+            name="CART"
+            component={Cart}
+            options={{
+              drawerItemStyle: {
+                display: "none",
+              },
+            }}
+          />
+          <Drawer.Screen
+            name="ISBN RESULT"
+            component={ISBNResult}
+            options={{
+              drawerItemStyle: {
+                display: "none",
               },
             }}
           />

@@ -19,7 +19,7 @@ function ISBNResult({ route, navigation }) {
         setData(data);
         setIsLoaded(true);
       });
-  }, []);
+  }, [isbn, type]);
 
   return (
     <View className="flex-1">
@@ -29,6 +29,7 @@ function ISBNResult({ route, navigation }) {
           <>
             {sortVendorsBuy(data.Vendors).map((vendor, i) => (
               <SellerCard
+                bookData={data.bookData}
                 type={type}
                 vendor={vendor}
                 key={vendor.vendorName + "" + i}
@@ -37,7 +38,7 @@ function ISBNResult({ route, navigation }) {
           </>
         </ScrollView>
       ) : (
-        <View className="flex-1 align-middle ">
+        <View className="flex-1 align-middle">
           <ActivityIndicator animating={true} className="flex-1 align-middle" />
         </View>
       )}

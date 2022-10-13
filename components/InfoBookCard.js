@@ -7,7 +7,7 @@ function InfoBookCard({ bookData }) {
   const { book } = bookData;
   return (
     <View>
-      <View className="my-2 rounded-lg bg-white px-4 py-4">
+      <View className="my-2 rounded-lg bg-white px-4 py-4 ">
         {console.log(book.image)}
         <Image
           source={{ uri: book.image }}
@@ -52,18 +52,18 @@ function InfoBookCard({ bookData }) {
           ISBN 13: {book.isbn13}
         </Text>
       </View>
-      <View className="bg-white rounded-lg px-4 py-4 nt-4 flex flex-row items-center justify-center flex-wrap">
-        <TouchableOpacity className="bg-blue-500 px-2 py-2 rounded-lg ">
+      <View className="bg-white rounded-lg px-4 py-4 nt-4 flex flex-row items-center justify-center flex-wrap mb-1">
+        <TouchableOpacity className="bg-[#4e8098] px-2 py-2 rounded-lg ">
           <Text className="text-white " style={{ fontFamily: FONTS.JosefinSansBold }}>
             View on Amazon
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity className="bg-blue-500 ml-2 px-2 py-2 rounded-lg ">
+        <TouchableOpacity className="bg-[#4e8098] ml-2 px-2 py-2 rounded-lg ">
           <Text className="text-white" style={{ fontFamily: FONTS.JosefinSansBold }}>
-            SALES RANK: 216.84K
+            Sales Rank: 216.84K
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity className="bg-blue-500 ml-2 px-2 mt-4 py-2 rounded-lg ">
+        <TouchableOpacity className="bg-[#4e8098] ml-2 px-2 mt-6 py-2 rounded-lg ">
           <Text className="text-white" style={{ fontFamily: FONTS.JosefinSansBold }}>
             Amazon Sellers: 27 from: $4.69
           </Text>
