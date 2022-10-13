@@ -19,7 +19,7 @@ function ISBNResult({ route, navigation }) {
         setData(data);
         setIsLoaded(true);
       });
-  }, []);
+  }, [isbn, type]);
 
   return (
     <View className="flex-1">

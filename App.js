@@ -13,7 +13,6 @@ import Contact from "./screens/contact/Contact";
 import PrivacyPolicy from "./screens/privacyPolicy/PrivacyPolicy";
 import Faq from "./screens/faq/Faq";
 import TermsOfUse from "./screens/termsOfUse/TermsOfUse";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Cart from "./screens/cart/Cart";
 import ISBNResult from "./screens/ISBN/ISBNResult";
 import ISBN from "./screens/ISBN/ISBN";
@@ -26,7 +25,6 @@ const theme = {
   },
 };
 const Drawer = createDrawerNavigator();
-const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [loaded] = useFonts({
