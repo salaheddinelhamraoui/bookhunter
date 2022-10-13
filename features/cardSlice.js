@@ -11,8 +11,8 @@ export const cardSlice = createSlice({
   initialState,
   reducers: {
     addToCard: (state, action) => {
-      const { vendor, bookData } = action.payload;
-      state.items = addVendor(state.items, vendor, bookData);
+      const { vendor, bookData, type } = action.payload;
+      state.items = addVendor(state.items, vendor, bookData, type);
       state.qty = ++state.qty;
     },
 
@@ -24,7 +24,7 @@ export const cardSlice = createSlice({
   },
 });
 
-function addVendor(items, vendor, bookData) {
+function addVendor(items, vendor, bookData, type) {
   const vendorIndex = items.findIndex(
     (item) => item.vendor === vendor.vendorName
   );
@@ -34,13 +34,13 @@ function addVendor(items, vendor, bookData) {
       ...items,
       {
         vendor: vendor.vendorName,
-        subItems: [{ id: uuidv4(), vendor, bookData }],
+        subItems: [{ id: uuidv4(), type, vendor, bookData }],
       },
     ];
   } else {
     items[vendorIndex].subItems = [
       ...items[vendorIndex].subItems,
-      { id: uuidv4(), vendor, bookData },
+      { id: uuidv4(), type, vendor, bookData },
     ];
     return items;
   }

@@ -1,13 +1,36 @@
-import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import React, { useCallback } from "react";
+import {
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+  Alert,
+  Linking,
+} from "react-native";
 import { FONTS } from "../constants";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { deleteFromCard } from "../features/cardSlice";
 
+const API = "https://bookhunter.com";
+
 const CartItem = ({ item }) => {
+  const { bookData, vendor, type } = item;
   const dispatch = useDispatch();
-  const { id, bookData, vendor } = item;
+
+  const handlePress = useCallback(async () => {
+    // Checking if the link is supported for links with custom URL scheme.
+    const supported = await Linking.canOpenURL(vendor.link);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(vendor.link);
+    } else {
+      Alert.alert(`Cannot Open This URL Please Contact Support`);
+    }
+  }, [vendor.link]);
+
   return (
     <View className="h-44 w-44 bg-white shadow-sm rounded-md m-2 overflow-hidden border">
       <View className="p-2 flex-row justify-between">
@@ -20,7 +43,7 @@ const CartItem = ({ item }) => {
       </View>
       <View className="flex-1 justify-center items-center">
         <Image
-          source={{ uri: "https://bookhunter.com/Booksrun.png" }}
+          source={{ uri: API + vendor.vendorLogo }}
           className="h-12 w-12"
         />
       </View>
@@ -42,12 +65,15 @@ const CartItem = ({ item }) => {
             <Ionicons name="ios-trash-outline" size={24} color="white" />
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity className="w-[50%] h-full bg-green-700  justify-center">
+        <TouchableOpacity
+          className="w-[50%] h-full bg-green-700  justify-center"
+          onPress={handlePress}
+        >
           <Text
             className="text-center text-white text-base"
             style={{ fontFamily: FONTS.JosefinSansBold }}
           >
-            Sell
+            {type}
           </Text>
         </TouchableOpacity>
       </View>

@@ -117,11 +117,12 @@ function ISBN() {
                 onChangeText={(isbn) => onISBNChange(isbn)}
               />
               <TouchableOpacity
-                className={` ${ISBN.length >= 10 ? "bg-[#82d9d9]" : "bg-gray-400"
-                  } py-5 rounded-sm mt-2`}
+                onPressIn={search}
+                className={` ${
+                  ISBN.length >= 10 ? "bg-[#82d9d9]" : "bg-gray-400"
+                } py-5 rounded-sm mt-2`}
               >
                 <Text
-                  onPress={search}
                   className="text-center text-gray-50 text-lg"
                   style={{ fontFamily: FONTS.JosefinSansBold }}
                 >
