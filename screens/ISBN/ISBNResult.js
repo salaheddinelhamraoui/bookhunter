@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import InfoBookCard from "../../shared/components/InfoBookCard";
 import { getISBNResult, sortVendorsBuy } from "../../utils/services";
 import { ActivityIndicator } from "react-native-paper";
@@ -30,6 +30,7 @@ function ISBNResult({ route, navigation }) {
             <ScrollView style={{ marginHorizontal: 10 }}>
               {sortVendorsBuy(data.Vendors).map((vendor, i) => (
                 <SellerCard
+                  bookData={data.bookData}
                   type={type}
                   vendor={vendor}
                   key={vendor.vendorName + "" + i}
@@ -39,7 +40,7 @@ function ISBNResult({ route, navigation }) {
           </>
         </>
       ) : (
-        <View className="flex-1 align-middle ">
+        <View className="flex-1 align-middle">
           <ActivityIndicator animating={true} className="flex-1 align-middle" />
         </View>
       )}

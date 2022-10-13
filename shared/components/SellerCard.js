@@ -5,7 +5,7 @@ import { FONTS } from "../../constants";
 import { useSelector, useDispatch } from "react-redux";
 import { addToCard } from "../../features/cardSlice";
 
-function SellerCard({ vendor, type }) {
+function SellerCard({ vendor, type, bookData }) {
   const dispatch = useDispatch();
 
   const API = "https://bookhunter.com";
@@ -17,6 +17,13 @@ function SellerCard({ vendor, type }) {
     sell,
     duration = false,
   } = vendor;
+
+  const DATA = {
+    vendor: { ...vendor },
+    type,
+    bookData,
+  };
+
   return (
     <TouchableOpacity
       style={{
@@ -43,7 +50,7 @@ function SellerCard({ vendor, type }) {
         </View>
       </View>
       <TouchableOpacity
-        onPress={() => dispatch(addToCard(vendor))}
+        onPress={() => dispatch(addToCard(DATA))}
         className={`flex-1 justify-center px-5 rounded-md ${
           parseFloat(price.replace("$", "")) === 0
             ? "bg-gray-400"

@@ -27,16 +27,19 @@ function NavBar() {
       />
       <TouchableOpacity
         className="mr-4"
-        // onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+        onPress={() => navigation.navigate("CART")}
       >
         <Image
           source={assets.bag}
           resizeMode="contain"
           className="w-[25px] h-[40px] mr-4"
         />
-        <Text className="absolute bg-green-600 rounded-full w-5 h-5 text-center left-4 top-3">
-          {qty}
-        </Text>
+        <View
+          className="absolute bg-green-600 w-5 h-5  left-4 top-3 justify-center"
+          style={{ borderRadius: "50%" }}
+        >
+          <Text className="text-center">{qty}</Text>
+        </View>
       </TouchableOpacity>
     </View>
   );

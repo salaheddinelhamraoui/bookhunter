@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Text,
   TouchableOpacity,
@@ -14,16 +14,12 @@ import { FONTS, COLORS, assets } from "../../constants";
 import FocusedStatusBar from "../../shared/FocusedStatusBar";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-root-toast";
-// import { update } from "../../features/testSlice";
-// import { useSelector, useDispatch } from "react-redux";
 
 function ISBN() {
   const [ISBN, setISBN] = useState([]);
   const [searchType, setSearchType] = useState("buy");
   const [openScanner, setOpenScanner] = useState(false);
   const navigation = useNavigation();
-  // const [test, setTest] = useState(0);
-  // const dispatch = useDispatch();
 
   function getScannedISBN(isbn) {
     setISBN(isbn);
@@ -67,9 +63,6 @@ function ISBN() {
           <ScrollView>
             <View>
               <View className="flex flex-row items-center justify-center mt-12 mb-4 ">
-                {/* <TouchableOpacity onPress={navigationTest}>
-                  <Text>Result</Text>
-                </TouchableOpacity> */}
                 <TouchableOpacity
                   style={{
                     paddingVertical: 10,
@@ -124,8 +117,9 @@ function ISBN() {
                 onChangeText={(isbn) => onISBNChange(isbn)}
               />
               <TouchableOpacity
-                className={` ${ISBN.length >= 10 ? "bg-[#15803D]" : "bg-gray-500"
-                  } py-5 rounded-sm mt-2`}
+                className={` ${
+                  ISBN.length >= 10 ? "bg-[#15803D]" : "bg-gray-500"
+                } py-5 rounded-sm mt-2`}
               >
                 <Text
                   onPress={search}
@@ -135,7 +129,6 @@ function ISBN() {
                   Search
                 </Text>
               </TouchableOpacity>
-              {/* <InputSearch ISBN={ISBN} /> */}
               <View
                 style={{
                   flexDirection: "row",

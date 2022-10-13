@@ -39,7 +39,6 @@ export default function Scanner({ getScannedISBN, closeScanner }) {
     setScanned(true);
     setText(data);
     showToast("QR Code Scanned");
-    console.log("Type: " + type + "\nData: " + data);
   };
 
   // Check permissions and return the screens
@@ -86,7 +85,10 @@ export default function Scanner({ getScannedISBN, closeScanner }) {
             }}
             className="bg-red-400 py-3 px-2 rounded-lg w-[140px]"
           >
-            <Text style={{ fontFamily: FONTS.JosefinSansBold }} className="text-base text-center text-white">
+            <Text
+              style={{ fontFamily: FONTS.JosefinSansBold }}
+              className="text-base text-center text-white"
+            >
               Scanne Again?
             </Text>
           </TouchableOpacity>
@@ -94,7 +96,12 @@ export default function Scanner({ getScannedISBN, closeScanner }) {
             onPress={() => getScannedISBN(text)}
             className="bg-green-400 py-3 px-2 rounded-lg w-[140px]"
           >
-            <Text style={{ fontFamily: FONTS.JosefinSansBold }} className="text-base text-center text-white">Confirme</Text>
+            <Text
+              style={{ fontFamily: FONTS.JosefinSansBold }}
+              className="text-base text-center text-white"
+            >
+              Confirme
+            </Text>
           </TouchableOpacity>
         </View>
       )}
