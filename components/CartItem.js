@@ -1,15 +1,15 @@
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import { FONTS } from "../../constants";
+import { FONTS } from "../constants";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
-import { deleteFromCard } from "../../features/cardSlice";
+import { deleteFromCard } from "../features/cardSlice";
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
   const { id, bookData, vendor } = item;
   return (
-    <View className="h-44 w-44 bg-white shadow-sm rounded-md m-2 overflow-hidden">
+    <View className="h-44 w-44 bg-white shadow-sm rounded-md m-2 overflow-hidden border">
       <View className="p-2 flex-row justify-between">
         <Text style={{ fontFamily: FONTS.JosefinSansBold }}>
           {vendor.vendorName}
@@ -28,7 +28,7 @@ const CartItem = ({ item }) => {
         <Text style={{ fontFamily: FONTS.JosefinSansBold }} numberOfLines={2}>
           {bookData.book.title}
         </Text>
-        <Text style={{ fontFamily: FONTS.JosefinSansBold }}>
+        <Text style={{ fontFamily: FONTS.JosefinSansBold }} className="mb-2">
           {bookData.book.isbn13}
         </Text>
       </View>

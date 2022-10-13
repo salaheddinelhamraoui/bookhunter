@@ -4,7 +4,7 @@ import React from "react";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useFonts } from "expo-font";
-import NavBar from "./shared/components/NavBar";
+import NavBar from "./components/NavBar";
 import { Image } from "react-native";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";

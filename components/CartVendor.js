@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
-import { FONTS } from "../../constants";
+import { FONTS } from "../constants";
 import CartItem from "./CartItem";
 
 function CartVendor({ data, title }) {
@@ -22,6 +22,7 @@ function CartVendor({ data, title }) {
             {subItems.map((item, i) => (
               <CartItem item={item} key={i} />
             ))}
+
           </ScrollView>
         </View>
       )}

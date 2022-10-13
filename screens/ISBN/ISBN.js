@@ -11,13 +11,13 @@ import Scanner from "./Scanner";
 import { Searchbar } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FONTS, COLORS, assets } from "../../constants";
-import FocusedStatusBar from "../../shared/FocusedStatusBar";
+import FocusedStatusBar from "../../components/FocusedStatusBar";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-root-toast";
 
 function ISBN() {
   const [ISBN, setISBN] = useState([]);
-  const [searchType, setSearchType] = useState("buy");
+  const [searchType, setSearchType] = useState("sell");
   const [openScanner, setOpenScanner] = useState(false);
   const navigation = useNavigation();
 
@@ -67,7 +67,7 @@ function ISBN() {
                   style={{
                     paddingVertical: 10,
                     paddingHorizontal: 20,
-                    backgroundColor: searchType === "buy" ? "#15803D" : "grey",
+                    backgroundColor: searchType === "buy" ? "#82d9d9" : "grey",
                   }}
                   onPress={() => setSearchType("buy")}
                 >
@@ -82,7 +82,7 @@ function ISBN() {
                   style={{
                     paddingVertical: 10,
                     paddingHorizontal: 20,
-                    backgroundColor: searchType === "sell" ? "#15803D" : "grey",
+                    backgroundColor: searchType === "sell" ? "#82d9d9" : "grey",
                   }}
                   onPress={() => setSearchType("sell")}
                 >
@@ -97,7 +97,7 @@ function ISBN() {
                   style={{
                     paddingVertical: 10,
                     paddingHorizontal: 20,
-                    backgroundColor: searchType === "rent" ? "#15803D" : "grey",
+                    backgroundColor: searchType === "rent" ? "#82d9d9" : "grey",
                   }}
                   onPress={() => setSearchType("rent")}
                 >
@@ -117,9 +117,8 @@ function ISBN() {
                 onChangeText={(isbn) => onISBNChange(isbn)}
               />
               <TouchableOpacity
-                className={` ${
-                  ISBN.length >= 10 ? "bg-[#15803D]" : "bg-gray-500"
-                } py-5 rounded-sm mt-2`}
+                className={` ${ISBN.length >= 10 ? "bg-[#82d9d9]" : "bg-gray-400"
+                  } py-5 rounded-sm mt-2`}
               >
                 <Text
                   onPress={search}
@@ -168,7 +167,7 @@ function ISBN() {
                   marginVertical: 10,
                   paddingVertical: 20,
                   alignItems: "center",
-                  backgroundColor: "#4E8098",
+                  backgroundColor: "#393e59",
                 }}
               >
                 <View
@@ -191,25 +190,11 @@ function ISBN() {
                   </Text>
                 </View>
               </TouchableOpacity>
-
-              <View className="bg-white mt-4 px-4 py-4 rounded-lg">
-                <Text
-                  className="text-center"
-                  style={{
-                    fontFamily: FONTS.textBold,
-                    lineHeight: 20,
-                  }}
-                >
-                  BookHunter is the Ultimate Book Scouting Tool! Imagine every
-                  single book you touch you’ll know if it’s profitable or not.
-                  When you scan a book, you can see how much profit you’ll make
-                  if you sold it on Amazon while at the same time see how much
-                  profit you’ll make if you sold it to vendors!
-                </Text>
+              <View className="rounded-lg">
                 <Image
                   source={assets.barcode}
                   resizeMode="contain"
-                  className="w-[80%] h-[80px] mx-auto mt-4"
+                  className="w-[80%] h-[230px] mx-auto mt-4 rounded-lg"
                 />
               </View>
             </View>
