@@ -2,14 +2,14 @@ import { DrawerActions, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
-import { assets } from "../constants";
+import { assets, FONTS } from "../constants";
 
 function NavBar() {
   const navigation = useNavigation();
   const { qty } = useSelector((state) => state.cardSlice);
 
   return (
-    <View className="felx flex-row items-between justify-between  h-[50px] mt-4">
+    <View className="felx flex-row items-between justify-between  h-[50px] mt-4 border-b-[0.2px]">
       <TouchableOpacity
         className=""
         onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
@@ -35,9 +35,11 @@ function NavBar() {
           className="w-[25px] h-[40px] mr-4"
         />
         <View
-          className="absolute bg-green-600 w-5 h-5  left-4 top-3 justify-center rounded-full"
+          className="absolute bg-lightTeal w-5 h-5  left-4 top-3 justify-center rounded-full"
         >
-          <Text className="text-center">{qty}</Text>
+          <Text className="text-center text-white" style={{
+            fontFamily: FONTS.textBold,
+          }}>{qty}</Text>
         </View>
       </TouchableOpacity>
     </View>

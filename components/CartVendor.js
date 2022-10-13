@@ -26,7 +26,6 @@ function CartVendor({ data, title }) {
           </ScrollView>
         </View>
       )}
-
     </>
   );
 }

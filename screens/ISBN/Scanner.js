@@ -9,7 +9,7 @@ import { FontAwesome } from "@expo/vector-icons";
 export default function Scanner({ getScannedISBN, closeScanner }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [text, setText] = useState("No ISBN Scanned");
+  const [text, setText] = useState("Place Over Barcode");
   const windowWidth = useWindowDimensions().width;
 
   function showToast(text) {
@@ -81,7 +81,7 @@ export default function Scanner({ getScannedISBN, closeScanner }) {
         <View className="flex-row gap-10 justify-center">
           <TouchableOpacity
             onPress={() => {
-              setText("No ISBN Scanned");
+              setText("Place Over Barcode");
               setScanned(false);
             }}
             className="bg-red-400 py-3 px-2 rounded-lg w-[140px]"
@@ -106,16 +106,17 @@ export default function Scanner({ getScannedISBN, closeScanner }) {
           </TouchableOpacity>
         </View>
       )}
-      <View style={{ margin: 20 }} className=" flex-1">
+
+      <View className="absolute w-full bottom-5 mx-auto flex-1">
         <TouchableOpacity
           onPress={closeScanner}
-          className=" bg-red-500 py-3 px-2 rounded-lg "
+          className="mx-auto bg-greyBlue py-3 px-2 rounded-lg w-[200px]"
         >
           <Text
             style={{ fontFamily: FONTS.JosefinSansBold }}
             className="text-base text-center text-white"
           >
-            Cancel
+            Back To Home Page
           </Text>
         </TouchableOpacity>
       </View>

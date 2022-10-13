@@ -1,56 +1,61 @@
 import React from "react";
 import { Pressable, Text, View, Image, TouchableOpacity } from "react-native";
 import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
-import { FONTS } from "../constants";
+import { FONTS, SIZES } from "../constants";
 
 function InfoBookCard({ bookData }) {
   const { book } = bookData;
   return (
     <View>
-      <View className="my-2 rounded-lg bg-white px-4 py-4 ">
-        {console.log(book.image)}
-        <Image
-          source={{ uri: book.image }}
-          resizeMode="contain"
-          className="w-full h-[250px] mb-4"
-        />
-        {/* <Card.Cover className="p-2 bg-transparent rounded-lg" source={{ uri: book.image }} /> */}
+      <View className="flex my-2 rounded-lg bg-white px-4 py-4">
         <Text
-          style={{ fontFamily: FONTS.JosefinSansBold }}
-          className="text-xl text-center mb-4"
+          style={{ fontFamily: FONTS.JosefinSansBold, fontSize: SIZES.medium }}
+          className="text-xl text-center mb-2"
         >
           {book.title}
         </Text>
-        <Text
-          className="text-base text-gray-600"
-          style={{ fontFamily: FONTS.JosefinSansBold }}
-        >
-          Author: {book.authors[0]}
-        </Text>
-        <Text
-          className="text-base text-gray-600"
-          style={{ fontFamily: FONTS.JosefinSansBold }}
-        >
-          Publisher: {book.publisher}
-        </Text>
-        <Text
-          className="text-base text-gray-600"
-          style={{ fontFamily: FONTS.JosefinSansBold }}
-        >
-          Date Published: {book.date_published}
-        </Text>
-        <Text
-          className="text-base text-gray-600"
-          style={{ fontFamily: FONTS.JosefinSansBold }}
-        >
-          ISBN 10: {book.isbn10}
-        </Text>
-        <Text
-          className="text-base text-gray-600"
-          style={{ fontFamily: FONTS.JosefinSansBold }}
-        >
-          ISBN 13: {book.isbn13}
-        </Text>
+        <View className="flex flex-row ">
+          <Image
+            source={{ uri: book.image }}
+            resizeMode="contain"
+            className="h-[150px] w-[30%]"
+          />
+          <View className="px-2">
+            <Text
+              className="text-base text-gray-600 "
+              style={{ fontFamily: FONTS.JosefinSansBold }}
+            >
+              Authors: <Text className="" style={{ fontFamily: FONTS.textRegular }}>{book.authors[0]}</Text>
+            </Text>
+            <Text
+              className="text-base text-gray-600"
+              style={{ fontFamily: FONTS.JosefinSansBold }}
+            >
+              Publisher: <Text className="" style={{ fontFamily: FONTS.textRegular }}>{book.publisher}</Text>
+            </Text>
+            <Text
+              className="text-base text-gray-600"
+              style={{ fontFamily: FONTS.JosefinSansBold }}
+            >
+              Date Published: <Text className="" style={{ fontFamily: FONTS.textRegular }}>{book.date_published}</Text>
+            </Text>
+            <Text
+              className="text-base text-gray-600"
+              style={{ fontFamily: FONTS.JosefinSansBold }}
+            >
+              ISBN 10: <Text className="" style={{ fontFamily: FONTS.textRegular }}>{book.isbn10}</Text>
+            </Text>
+            <Text
+              className="text-base text-gray-600"
+              style={{ fontFamily: FONTS.JosefinSansBold }}
+            >
+              ISBN 13: <Text className="" style={{ fontFamily: FONTS.textRegular }}>{book.isbn13}</Text>
+            </Text>
+          </View>
+        </View>
+
+
+
       </View>
       <View className="bg-white rounded-lg px-4 py-4 nt-4 flex flex-row items-center justify-center flex-wrap mb-1">
         <TouchableOpacity className="bg-[#4e8098] px-2 py-2 rounded-lg ">
