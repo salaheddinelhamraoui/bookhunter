@@ -98,6 +98,5 @@ function convISBN13toISBN10(str) {
   }
   checkDigit = (11 - (checkDigit % 11)) % 11;
   result += checkDigit == 10 ? "X" : checkDigit + "";
-  console.log(result);
   return result;
 }

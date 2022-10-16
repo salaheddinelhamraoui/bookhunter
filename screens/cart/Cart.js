@@ -3,7 +3,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import CartVendor from "../../components/CartVendor";
 import { Text, View, Image } from "react-native";
-import { assets, FONTS } from "../../constants"
+import { assets, FONTS } from "../../constants";
 
 function Cart() {
   const { items } = useSelector((state) => state.cardSlice);
@@ -15,9 +15,6 @@ function Cart() {
         {items.map((item, i) => (
           <CartVendor data={item} key={i} title={item.vendor} />
         ))}
-
-        {console.log('items', qty === 0)}
-
       </ScrollView>
 
       {qty === 0 && (
@@ -27,14 +24,17 @@ function Cart() {
             resizeMode="contain"
             className="w-[250px] h-[250px] -mt-24"
           />
-          <Text style={{
-            fontFamily: FONTS.JosefinSansBold,
-            fontSize: 20,
-          }}>Your Cart Is Currently Empty !</Text>
+          <Text
+            style={{
+              fontFamily: FONTS.JosefinSansBold,
+              fontSize: 20,
+            }}
+          >
+            Your Cart Is Currently Empty !
+          </Text>
         </View>
       )}
     </View>
-
   );
 }
 

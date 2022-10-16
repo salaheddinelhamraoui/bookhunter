@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FONTS } from "../constants";
-import { useSelector, useDispatch } from "react-redux";
-import { addToCard } from "../features/cardSlice";
+
+import CardModal from "./CardModal";
 
 function SellerCard({ vendor, type, bookData }) {
-  const dispatch = useDispatch();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const API = "https://bookhunter.com";
   const {
@@ -25,68 +25,75 @@ function SellerCard({ vendor, type, bookData }) {
   };
 
   return (
-    <TouchableOpacity
-      style={{
-        marginVertical: 5,
-        paddingHorizontal: 10,
-        paddingVertical: 20,
-      }}
-      className="bg-white flex-row justify-between align-middle rounded-lg"
-    >
-      <View className="flex flex-row   w-[70%]">
-        <Image
-          source={{ uri: API + vendorLogo }}
-          resizeMode="contain"
-          className="w-[35px] mr-2"
+    <>
+      <TouchableOpacity
+        style={{
+          marginVertical: 5,
+          paddingHorizontal: 10,
+          paddingVertical: 20,
+        }}
+        className="bg-white flex-row justify-between align-middle rounded-lg"
+      >
+        <CardModal
+          data={DATA}
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
         />
-        <View>
-          <Text
-            style={{ fontFamily: FONTS.JosefinSansBold }}
-            className="text-base"
-          >
-            {vendorName}
-          </Text>
-        </View>
-        {parseFloat(price.replace("$", "")) !== 0 && (
-          <View className="ml-auto">
+        <View className="flex flex-row   w-[70%]">
+          <Image
+            source={{ uri: API + vendorLogo }}
+            resizeMode="contain"
+            className="w-[35px] mr-2"
+          />
+          <View>
             <Text
               style={{ fontFamily: FONTS.JosefinSansBold }}
               className="text-base"
             >
-              {price}
+              {vendorName}
             </Text>
           </View>
+          {parseFloat(price.replace("$", "")) !== 0 && (
+            <View className="ml-auto">
+              <Text
+                style={{ fontFamily: FONTS.JosefinSansBold }}
+                className="text-base"
+              >
+                {price}
+              </Text>
+            </View>
+          )}
+        </View>
+        {parseFloat(price.replace("$", "")) !== 0 && (
+          <TouchableOpacity
+            onPress={() => setModalVisible(true)}
+            className={`flex-1 justify-center px-5 rounded-md ${
+              parseFloat(price.replace("$", "")) === 0
+                ? "bg-gray-400"
+                : "bg-red-400"
+            }`}
+            disabled={parseFloat(price.replace("$", "")) === 0 ? true : false}
+          >
+            <Text
+              style={{ fontFamily: FONTS.JosefinSansBold }}
+              className="text-base text-white"
+            >
+              {type.toUpperCase()}
+            </Text>
+          </TouchableOpacity>
         )}
-      </View>
-      {parseFloat(price.replace("$", "")) !== 0 && (
-        <TouchableOpacity
-          onPress={() => dispatch(addToCard(DATA))}
-          className={`flex-1 justify-center px-5 rounded-md ${
-            parseFloat(price.replace("$", "")) === 0
-              ? "bg-gray-400"
-              : "bg-red-400"
-          }`}
-          disabled={parseFloat(price.replace("$", "")) === 0 ? true : false}
-        >
-          <Text
-            style={{ fontFamily: FONTS.JosefinSansBold }}
-            className="text-base text-white"
-          >
-            {type.toUpperCase()}
-          </Text>
-        </TouchableOpacity>
-      )}
-      {parseFloat(price.replace("$", "")) === 0 && (
-        <TouchableOpacity onPress={() => {}} className="">
-          <Text
-            style={{ fontFamily: FONTS.textRegular, fontSize: 13 }}
-            className="text-base text-black mr-12"
-          >
-            No available offers
-          </Text>
-        </TouchableOpacity>
-      )}
-    </TouchableOpacity>
+        {parseFloat(price.replace("$", "")) === 0 && (
+          <TouchableOpacity onPress={() => {}} className="">
+            <Text
+              style={{ fontFamily: FONTS.textRegular, fontSize: 13 }}
+              className="text-base text-black mr-12"
+            >
+              No available offers
+            </Text>
+          </TouchableOpacity>
+        )}
+      </TouchableOpacity>
+    </>
   );
 }
 

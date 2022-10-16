@@ -17,6 +17,8 @@ import Cart from "./screens/cart/Cart";
 import ISBNResult from "./screens/ISBN/ISBNResult";
 import ISBN from "./screens/ISBN/ISBN";
 import Scanner from "./screens/ISBN/Scanner";
+import Modal from "./components/CardModal";
+import CardModal from "./components/CardModal";
 
 const theme = {
   ...DefaultTheme,

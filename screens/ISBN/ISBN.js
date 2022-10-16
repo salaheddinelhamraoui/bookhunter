@@ -6,6 +6,8 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
+  TextInput,
+  Keyboard,
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -103,18 +105,14 @@ function ISBN() {
                 </Text>
               </TouchableOpacity>
             </View>
-            <View className="flex-row z-50 mr-[0.5px]">
-              <View className="flex-grow">
-                <Searchbar
-                  className="w-[100%]"
-                  onSubmitEditing={search}
-                  placeholder="ISBN Code"
-                  value={ISBN}
-                  keyboardType="decimal-pad"
-                  onChangeText={(isbn) => onISBNChange(isbn)}
-                />
-              </View>
-            </View>
+
+            <Searchbar
+              onSubmitEditing={search}
+              placeholder="ISBN Code"
+              value={ISBN}
+              keyboardType="decimal-pad"
+              onChangeText={(isbn) => onISBNChange(isbn)}
+            />
 
             <TouchableOpacity
               onPressIn={search}

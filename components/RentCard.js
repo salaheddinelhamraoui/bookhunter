@@ -1,23 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FONTS } from "../constants";
-import { useSelector, useDispatch } from "react-redux";
-import { addToCard } from "../features/cardSlice";
+import CardModal from "./CardModal";
 
 function RentCard({ vendor, type, bookData }) {
-  const dispatch = useDispatch();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const API = "https://bookhunter.com";
 
-  const renderItems = (item) => {
+  const renderItems = (item, i) => {
     const DATA = {
       vendor: { ...item },
       type,
       bookData,
     };
+
     return (
       <TouchableOpacity
+        key={i + "" + item.vendorName}
         style={{
           marginVertical: 5,
           paddingHorizontal: 10,
@@ -25,6 +26,11 @@ function RentCard({ vendor, type, bookData }) {
         }}
         className="bg-white flex-row justify-between align-middle rounded-lg shadow-sm"
       >
+        <CardModal
+          data={DATA}
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+        />
         <View className="flex flex-row   w-[70%]">
           <Image
             source={{ uri: API + item.vendorLogo }}
@@ -52,7 +58,7 @@ function RentCard({ vendor, type, bookData }) {
         </View>
         {parseFloat(item.price.replace("$", "")) !== 0 && (
           <TouchableOpacity
-            onPress={() => dispatch(addToCard(DATA))}
+            onPress={() => setModalVisible(true)}
             className={`flex-1 justify-center px-5 rounded-md ${
               parseFloat(item.price.replace("$", "")) === 0
                 ? "bg-gray-400"
@@ -73,8 +79,8 @@ function RentCard({ vendor, type, bookData }) {
         {parseFloat(item.price.replace("$", "")) === 0 && (
           <TouchableOpacity onPress={() => {}} className="">
             <Text
-              style={{ fontFamily: FONTS.textRegular, fontSize: 13 }}
-              className="text-base text-black mr-12"
+              style={{ fontFamily: FONTS.textRegular, fontSize: 11 }}
+              className="text-base text-black "
             >
               No available offers
             </Text>
@@ -84,7 +90,7 @@ function RentCard({ vendor, type, bookData }) {
     );
   };
 
-  return <>{vendor.map((item) => renderItems(item))}</>;
+  return <>{vendor.map((item, i) => renderItems(item, i))}</>;
 }
 
 export default RentCard;
