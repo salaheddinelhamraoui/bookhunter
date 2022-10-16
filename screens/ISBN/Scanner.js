@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Button, useWindowDimensions } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Button,
+  useWindowDimensions,
+} from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FONTS } from "../../constants";
 import Toast from "react-native-root-toast";
 import { FontAwesome } from "@expo/vector-icons";
 
-export default function Scanner({ getScannedISBN, closeScanner }) {
+export default function Scanner({ getScannedISBN, closeScanner, route }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState("Place Over Barcode");
@@ -39,6 +45,7 @@ export default function Scanner({ getScannedISBN, closeScanner }) {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     setText(data);
+    getScannedISBN(data);
     showToast("QR Code Scanned");
   };
 
@@ -77,7 +84,7 @@ export default function Scanner({ getScannedISBN, closeScanner }) {
         </Text>
       </View>
 
-      {scanned && (
+      {/* {scanned && (
         <View className="flex-row gap-10 justify-center">
           <TouchableOpacity
             onPress={() => {
@@ -105,7 +112,7 @@ export default function Scanner({ getScannedISBN, closeScanner }) {
             </Text>
           </TouchableOpacity>
         </View>
-      )}
+      )} */}
 
       <View className="absolute w-full bottom-5 mx-auto flex-1">
         <TouchableOpacity

@@ -65,7 +65,7 @@ function ISBNResult({ route }) {
           </View>
         )}
         <View
-          className="absolute w-full bottom-0 py-4 mx-auto flex-1 bg-white rounded-lg"
+          className="absolute w-full bottom-0 py-4 mx-auto flex-1 bg-white rounded-lg flex-row"
           style={{
             shadowColor: "#565958",
 
@@ -90,6 +90,20 @@ function ISBNResult({ route }) {
               className="text-base text-center text-white"
             >
               Back To Home Page
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            // onPress={() => navigation.navigate("SCANNER")}
+            className="mx-auto bg-greyBlue py-3 px-2 rounded-lg w-[200px]"
+          >
+            <Text
+              style={{
+                fontFamily: FONTS.JosefinSansBold,
+                shadowColor: "#565958",
+              }}
+              className="text-base text-center text-white"
+            >
+              Scan Another Book
             </Text>
           </TouchableOpacity>
         </View>

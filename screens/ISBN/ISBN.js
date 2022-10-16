@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Text,
   TouchableOpacity,
@@ -14,12 +14,19 @@ import { FONTS, COLORS, assets } from "../../constants";
 import FocusedStatusBar from "../../components/FocusedStatusBar";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-root-toast";
+import DropDownMenu from "../../components/DropDownMenu";
 
-function ISBN() {
+function ISBN({ route }) {
   const [ISBN, setISBN] = useState([]);
   const [searchType, setSearchType] = useState("sell");
   const [openScanner, setOpenScanner] = useState(false);
+  const [item, setItem] = useState("");
+  const newScan = route.params ? route.params.newScan : false;
   const navigation = useNavigation();
+
+  const selectItem = (value) => {
+    setItem(value);
+  };
 
   function getScannedISBN(isbn) {
     setISBN(isbn);
@@ -40,7 +47,7 @@ function ISBN() {
   function search() {
     if (ISBN.length >= 10) {
       navigation.navigate("ISBN RESULT", {
-        isbn: ISBN,
+        isbn: item + ISBN,
         type: searchType,
       });
     } else {
@@ -55,9 +62,16 @@ function ISBN() {
     }
   }
 
+  console.log(newScan, openScanner);
+
   return (
     <>
-      {!openScanner ? (
+      {openScanner ? (
+        <Scanner
+          getScannedISBN={getScannedISBN}
+          closeScanner={() => setOpenScanner(false)}
+        />
+      ) : (
         <SafeAreaView style={{ flex: 1, marginHorizontal: 20 }}>
           <FocusedStatusBar backgroundColor={COLORS.black} />
           <ScrollView>
@@ -109,13 +123,21 @@ function ISBN() {
                   </Text>
                 </TouchableOpacity>
               </View>
-              <Searchbar
-                onSubmitEditing={search}
-                placeholder="ISBN Code"
-                value={ISBN}
-                keyboardType="decimal-pad"
-                onChangeText={(isbn) => onISBNChange(isbn)}
-              />
+              <View className="flex-row z-50 mr-[0.5px]">
+                <DropDownMenu item={item} selectItem={selectItem} />
+
+                <View className="flex-grow">
+                  <Searchbar
+                    className="w-[100%]"
+                    onSubmitEditing={search}
+                    placeholder="ISBN Code"
+                    value={ISBN}
+                    keyboardType="decimal-pad"
+                    onChangeText={(isbn) => onISBNChange(isbn)}
+                  />
+                </View>
+              </View>
+
               <TouchableOpacity
                 onPressIn={search}
                 className={` ${
@@ -201,11 +223,6 @@ function ISBN() {
             </View>
           </ScrollView>
         </SafeAreaView>
-      ) : (
-        <Scanner
-          getScannedISBN={getScannedISBN}
-          closeScanner={() => setOpenScanner(false)}
-        />
       )}
     </>
   );

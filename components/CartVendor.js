@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import { FONTS } from "../constants";
 import CartItem from "./CartItem";
 

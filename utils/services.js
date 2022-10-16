@@ -2,9 +2,10 @@ import _ from "lodash";
 const API = "https://bookhunter.com/api/";
 
 export const getISBNResult = async (isbn, type) => {
+  const isbn13ToIsbn10 = verifyIfISBNLong(isbn);
   const request = await fetch(`${API}bookSearch/`, {
     body: JSON.stringify({
-      isbn,
+      isbn: isbn13ToIsbn10,
       type,
     }),
     method: "POST",
@@ -76,3 +77,27 @@ export const sortRent = (vendors) => {
 const sortByDuration = (data) => {
   return _.sortBy(data, (o) => o.duration).reverse();
 };
+
+const verifyIfISBNLong = (isbn) => {
+  if (isbn.length >= 13) {
+    return convISBN13toISBN10(isbn);
+  } else return isbn;
+};
+
+function convISBN13toISBN10(str) {
+  var s;
+  var c;
+  var checkDigit = 0;
+  var result = "";
+
+  s = str.substring(3, str.length);
+  for (let i = 10; i > 1; i--) {
+    c = s.charAt(10 - i);
+    checkDigit += (c - 0) * i;
+    result += c;
+  }
+  checkDigit = (11 - (checkDigit % 11)) % 11;
+  result += checkDigit == 10 ? "X" : checkDigit + "";
+  console.log(result);
+  return result;
+}

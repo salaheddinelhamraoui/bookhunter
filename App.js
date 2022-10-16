@@ -16,6 +16,7 @@ import TermsOfUse from "./screens/termsOfUse/TermsOfUse";
 import Cart from "./screens/cart/Cart";
 import ISBNResult from "./screens/ISBN/ISBNResult";
 import ISBN from "./screens/ISBN/ISBN";
+import Scanner from "./screens/ISBN/Scanner";
 
 const theme = {
   ...DefaultTheme,
@@ -43,7 +44,7 @@ export default function App() {
         <NavBar />
         <Drawer.Navigator
           useLegacyImplementation={true}
-          initialRouteName="ISBN"
+          initialRouteName="ISBN SCANNER"
           screenOptions={{
             headerShown: false,
           }}
@@ -146,6 +147,15 @@ export default function App() {
           <Drawer.Screen
             name="ISBN RESULT"
             component={ISBNResult}
+            options={{
+              drawerItemStyle: {
+                display: "none",
+              },
+            }}
+          />
+          <Drawer.Screen
+            name="SCANNER"
+            component={Scanner}
             options={{
               drawerItemStyle: {
                 display: "none",
