@@ -93,7 +93,11 @@ function ISBNResult({ route }) {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            // onPress={() => navigation.navigate("SCANNER")}
+            onPress={() =>
+              navigation.navigate("SCANNER", {
+                type,
+              })
+            }
             className="mx-auto bg-greyBlue py-3 px-2 rounded-lg w-[200px]"
           >
             <Text

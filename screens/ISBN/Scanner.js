@@ -10,13 +10,13 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FONTS } from "../../constants";
 import Toast from "react-native-root-toast";
-import { FontAwesome } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
-export default function Scanner({ getScannedISBN, closeScanner, route }) {
+export default function Scanner({ route }) {
   const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
-  const [text, setText] = useState("Place Over Barcode");
   const windowWidth = useWindowDimensions().width;
+  const navigation = useNavigation();
+  const { type } = route.params;
 
   function showToast(text) {
     Toast.show(text, {
@@ -42,10 +42,11 @@ export default function Scanner({ getScannedISBN, closeScanner, route }) {
   }, []);
 
   // What happens when we scan the bar code
-  const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    setText(data);
-    getScannedISBN(data);
+  const handleBarCodeScanned = ({ data }) => {
+    navigation.navigate("ISBN RESULT", {
+      isbn: data,
+      type,
+    });
     showToast("QR Code Scanned");
   };
 
@@ -70,53 +71,21 @@ export default function Scanner({ getScannedISBN, closeScanner, route }) {
     <View className="flex-1 w-full mt-12">
       <View style={styles.barcodebox} className="mt-8 w-full">
         <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          onBarCodeScanned={handleBarCodeScanned}
           style={{ height: 600, width: windowWidth }}
         />
       </View>
       <View className="py-4 align-middle flex-row justify-center gap-5">
-        {scanned && <FontAwesome name="barcode" size={24} color="black" />}
         <Text
           className="text-center text-lg"
           style={{ fontFamily: FONTS.JosefinSansBold }}
         >
-          {text}
+          Place Over Barcode
         </Text>
       </View>
-
-      {/* {scanned && (
-        <View className="flex-row gap-10 justify-center">
-          <TouchableOpacity
-            onPress={() => {
-              setText("Place Over Barcode");
-              setScanned(false);
-            }}
-            className="bg-red-400 py-3 px-2 rounded-lg w-[140px]"
-          >
-            <Text
-              style={{ fontFamily: FONTS.JosefinSansBold }}
-              className="text-base text-center text-white"
-            >
-              Scanne Again?
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => getScannedISBN(text)}
-            className="bg-green-400 py-3 px-2 rounded-lg w-[140px]"
-          >
-            <Text
-              style={{ fontFamily: FONTS.JosefinSansBold }}
-              className="text-base text-center text-white"
-            >
-              Confirme
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )} */}
-
       <View className="absolute w-full bottom-5 mx-auto flex-1">
         <TouchableOpacity
-          onPress={closeScanner}
+          onPress={() => navigation.goBack()}
           className="mx-auto bg-greyBlue py-3 px-2 rounded-lg w-[200px]"
         >
           <Text
