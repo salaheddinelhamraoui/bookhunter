@@ -10,13 +10,14 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FONTS } from "../../constants";
 import Toast from "react-native-root-toast";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 
 export default function Scanner({ route }) {
   const [hasPermission, setHasPermission] = useState(null);
   const windowWidth = useWindowDimensions().width;
   const navigation = useNavigation();
   const { type } = route.params;
+  const isFocused = useIsFocused();
 
   function showToast(text) {
     Toast.show(text, {
@@ -68,35 +69,39 @@ export default function Scanner({ route }) {
 
   // Return the View
   return (
-    <View className="flex-1 w-full mt-12">
-      <View style={styles.barcodebox} className="mt-8 w-full">
-        <BarCodeScanner
-          onBarCodeScanned={handleBarCodeScanned}
-          style={{ height: 600, width: windowWidth }}
-        />
-      </View>
-      <View className="py-4 align-middle flex-row justify-center gap-5">
-        <Text
-          className="text-center text-lg"
-          style={{ fontFamily: FONTS.JosefinSansBold }}
-        >
-          Place Over Barcode
-        </Text>
-      </View>
-      <View className="absolute w-full bottom-5 mx-auto flex-1">
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          className="mx-auto bg-greyBlue py-3 px-2 rounded-lg w-[200px]"
-        >
-          <Text
-            style={{ fontFamily: FONTS.JosefinSansBold }}
-            className="text-base text-center text-white"
-          >
-            Back To Home Page
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <>
+      {isFocused && (
+        <View className="flex-1 w-full mt-12">
+          <View style={styles.barcodebox} className="mt-8 w-full">
+            <BarCodeScanner
+              onBarCodeScanned={handleBarCodeScanned}
+              style={{ height: 600, width: windowWidth }}
+            />
+          </View>
+          <View className="py-4 align-middle flex-row justify-center gap-5">
+            <Text
+              className="text-center text-lg"
+              style={{ fontFamily: FONTS.JosefinSansBold }}
+            >
+              Place Over Barcode
+            </Text>
+          </View>
+          <View className="absolute w-full bottom-5 mx-auto flex-1">
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              className="mx-auto bg-greyBlue py-3 px-2 rounded-lg w-[200px]"
+            >
+              <Text
+                style={{ fontFamily: FONTS.JosefinSansBold }}
+                className="text-base text-center text-white"
+              >
+                Back To Home Page
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+    </>
   );
 }
 

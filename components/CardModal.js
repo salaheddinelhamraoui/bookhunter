@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+import React from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { useDispatch } from "react-redux";
 import { addToCard } from "../features/cardSlice";
 
 function CardModal({ data, modalVisible, setModalVisible }) {
   const dispatch = useDispatch();
+
+  // const save = async () => {
+  //   const dataStringify = JSON.stringify(data);
+  //   await AsyncStorage.setItem("items", dataStringify);
+  //   console.log("item Saved");
+  // };
 
   return (
     <View style={styles.centeredView}>
@@ -33,6 +40,7 @@ function CardModal({ data, modalVisible, setModalVisible }) {
                 style={[styles.button, styles.buttonOpen]}
                 onPress={() => {
                   dispatch(addToCard(data));
+                  save();
                   setModalVisible(!modalVisible);
                 }}
               >

@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 import "react-native-get-random-values";
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useFonts } from "expo-font";
@@ -17,8 +17,6 @@ import Cart from "./screens/cart/Cart";
 import ISBNResult from "./screens/ISBN/ISBNResult";
 import ISBN from "./screens/ISBN/ISBN";
 import Scanner from "./screens/ISBN/Scanner";
-import Modal from "./components/CardModal";
-import CardModal from "./components/CardModal";
 
 const theme = {
   ...DefaultTheme,

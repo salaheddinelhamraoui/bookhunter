@@ -10,6 +10,10 @@ export const cardSlice = createSlice({
   name: "card",
   initialState,
   reducers: {
+    initializeCart: (state, action) => {
+      (state.items = action.payload.items), (state.qty = action.payload.qty);
+    },
+
     addToCard: (state, action) => {
       const { vendor, bookData, type } = action.payload;
       state.items = addVendor(state.items, vendor, bookData, type);
@@ -56,6 +60,6 @@ function deleteVendor(items, id, vendorName) {
   return [...newItem, { vendor: vendorName, subItems: newSubItems }];
 }
 
-export const { addToCard, deleteFromCard } = cardSlice.actions;
+export const { addToCard, deleteFromCard, initializeCart } = cardSlice.actions;
 
 export default cardSlice.reducer;
