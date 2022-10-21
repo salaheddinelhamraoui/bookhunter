@@ -10,10 +10,10 @@ const Stack = createStackNavigator();
 function WelcomeScreen({ navigation }) {
   return (
     <SafeAreaView className="flex-1">
-      <View className="flex-1">
+      <View className="">
         <Image source={assets.goals} resizeMode="cover" className="w-full" />
       </View>
-      <View className="flex-1  flex-row justify-center items-center mx-4">
+      <View className="flex-row justify-center items-center mx-4">
         <Pressable
           onPress={() => navigation.navigate("SIGNIN")}
           className="bg-darkTeal px-10 py-4 rounded-l-md"
@@ -37,26 +37,32 @@ function WelcomeScreen({ navigation }) {
           </Text>
         </Pressable>
       </View>
+      <Pressable onPress={() => navigation.navigate("HOME")}>
+        <Text
+          className="text-gray-500 text-center mt-4 text-lg"
+          style={{ fontFamily: FONTS.JosefinSansBold }}
+        >
+          Login as a guest {">"}
+        </Text>
+      </Pressable>
     </SafeAreaView>
   );
 }
 
-export default function StackNavigation({ theme }) {
+export default function StackNavigation() {
   return (
-    <NavigationContainer theme={theme}>
-      <Stack.Navigator
-        initialRouteName="WELCOME"
-        screenOptions={{
-          headerShown: false,
-          gestureEnabled: true,
-          presentation: "modal",
-          headerMode: "screen",
-        }}
-      >
-        <Stack.Screen name="WELCOME" component={WelcomeScreen} />
-        <Stack.Screen name="SIGNIN" component={SignIn} />
-        <Stack.Screen name="SIGNUP" component={SignUp} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator
+      initialRouteName="WELCOME"
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: true,
+        presentation: "modal",
+        headerMode: "screen",
+      }}
+    >
+      <Stack.Screen name="WELCOME" component={WelcomeScreen} />
+      <Stack.Screen name="SIGNIN" component={SignIn} />
+      <Stack.Screen name="SIGNUP" component={SignUp} />
+    </Stack.Navigator>
   );
 }
