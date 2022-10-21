@@ -9,6 +9,7 @@ import bag from "../assets/icons/bag.png";
 import menus from "../assets/icons/menus.png";
 import barcode from "../assets/images/barcode.gif";
 import empty from "../assets/images/empty.png";
+import goals from "../assets/undraw_Shared_goals_re_jvqd.png";
 
 export default {
   hunter,
@@ -21,5 +22,6 @@ export default {
   bag,
   menus,
   barcode,
-  empty
+  empty,
+  goals,
 };

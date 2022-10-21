@@ -1,11 +1,11 @@
 import "react-native-gesture-handler";
 import "react-native-get-random-values";
-import React, { useEffect } from "react";
+import React from "react";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useFonts } from "expo-font";
 import NavBar from "./components/NavBar";
-import { Image } from "react-native";
+import { Image, SafeAreaView } from "react-native";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { assets, FONTS, SIZES } from "./constants";
@@ -17,6 +17,10 @@ import Cart from "./screens/cart/Cart";
 import ISBNResult from "./screens/ISBN/ISBNResult";
 import ISBN from "./screens/ISBN/ISBN";
 import Scanner from "./screens/ISBN/Scanner";
+import Home from "./screens/Home/Home";
+import SignIn from "./screens/Auth/SignIn";
+import SignUp from "./screens/Auth/SignUp";
+import StackNavigation from "./screens/Welcome/StackNavigation";
 
 const theme = {
   ...DefaultTheme,
@@ -40,15 +44,44 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer theme={theme}>
-        <NavBar />
+      <StackNavigation theme={theme} />
+      {/* <NavigationContainer theme={theme}>
         <Drawer.Navigator
           useLegacyImplementation={true}
-          initialRouteName="ISBN SCANNER"
+          initialRouteName="HOME"
           screenOptions={{
             headerShown: false,
           }}
         >
+          <Drawer.Screen
+            name="HOME"
+            component={Home}
+            options={{
+              drawerItemStyle: {
+                display: "none",
+              },
+            }}
+          />
+
+          <Drawer.Screen
+            name="SIGNIN"
+            component={SignIn}
+            options={{
+              drawerItemStyle: {
+                display: "none",
+              },
+            }}
+          />
+
+          <Drawer.Screen
+            name="SIGNUP"
+            component={SignUp}
+            options={{
+              drawerItemStyle: {
+                display: "none",
+              },
+            }}
+          />
           <Drawer.Screen
             name="ISBN SCANNER"
             component={ISBN}
@@ -163,7 +196,7 @@ export default function App() {
             }}
           />
         </Drawer.Navigator>
-      </NavigationContainer>
+      </NavigationContainer> */}
     </Provider>
   );
 }
