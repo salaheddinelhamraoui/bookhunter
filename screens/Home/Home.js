@@ -78,6 +78,7 @@ function Home() {
             },
           }}
         />
+
         <Drawer.Screen
           name="PRIVACY POLICY"
           component={PrivacyPolicy}
