@@ -42,20 +42,6 @@ function SignUp() {
             >
               Lets Register Account
             </Text>
-            {/* <View>
-            <Text
-              style={{ fontFamily: FONTS.JosefinSansBold }}
-              className="text-2xl"
-            >
-              Welcome Back,
-            </Text>
-            <Text
-              style={{ fontFamily: FONTS.JosefinSansBold }}
-              className="text-2xl mb-8"
-            >
-              You have been missed
-            </Text>
-          </View> */}
             <View className="gap-1">
               <TextInput
                 outlineColor="#6fbfbf"
@@ -68,7 +54,7 @@ function SignUp() {
                 outlineColor="#6fbfbf"
                 activeOutlineColor="#393e59"
                 mode="outlined"
-                label="First Name"
+                label="Last Name"
                 placeholder="Last Name"
               />
               <TextInput
