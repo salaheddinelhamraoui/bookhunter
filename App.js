@@ -33,7 +33,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <NavigationContainer independent={true}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="FIRST LAUNCH" component={StackNavigation} />
           <Stack.Screen name="HOME" component={Home} />

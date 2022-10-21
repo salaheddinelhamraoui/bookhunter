@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
-import React from "react";
-import { Image, Platform, SafeAreaView, StatusBar, View } from "react-native";
+import React, { useEffect } from "react";
+import { Image } from "react-native";
 import NavBar from "../../components/NavBar";
 import { assets, FONTS, SIZES } from "../../constants";
 import Cart from "../cart/Cart";
@@ -17,7 +17,7 @@ const Drawer = createDrawerNavigator();
 
 function Home() {
   return (
-    <>
+    <NavigationContainer independent={true}>
       <NavBar />
       <Drawer.Navigator
         useLegacyImplementation={true}
@@ -140,7 +140,7 @@ function Home() {
           }}
         />
       </Drawer.Navigator>
-    </>
+    </NavigationContainer>
   );
 }
 

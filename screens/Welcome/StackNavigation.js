@@ -37,7 +37,7 @@ function WelcomeScreen({ navigation }) {
           </Text>
         </Pressable>
       </View>
-      <Pressable onPress={() => navigation.navigate("HOME")}>
+      <Pressable onPress={() => navigation.replace("HOME")}>
         <Text
           className="text-gray-500 text-center mt-4 text-lg"
           style={{ fontFamily: FONTS.JosefinSansBold }}
