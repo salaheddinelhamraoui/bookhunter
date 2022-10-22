@@ -12,11 +12,10 @@ import { FONTS } from "../../constants";
 import { FontAwesome } from "@expo/vector-icons";
 
 function SignIn() {
-  console.log();
   return (
     <SafeAreaView>
       {Platform.OS !== "android" && (
-        <Pressable className="self-center h-2 bg-gray-300 w-16 my-4 rounded-xl"></Pressable>
+        <Pressable className="self-center h-1 bg-gray-300 w-16 my-4 rounded-xl"></Pressable>
       )}
       <View
         className="mx-4"

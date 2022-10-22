@@ -18,7 +18,7 @@ import { signUpAPI } from "../../utils/auth.service";
 function SignUp({ navigation }) {
   const [checked, setChecked] = useState(false);
 
-  const [username, setUsername] = useState();
+  const [username, setUsername] = useState("");
   const [isValidUsername, setIsValidUsername] = useState();
 
   const [firstName, setFirstName] = useState();
@@ -51,12 +51,12 @@ function SignUp({ navigation }) {
       case "USERNAME":
         if (str.length <= 6) {
           setIsValidUsername(false);
-          setUsername(str.replaceAll(" ", ""));
+          setUsername(str);
           setFormIsValid(false);
           setErrMsg("Invalid Username");
         } else {
           setIsValidUsername(true);
-          setUsername(str.replaceAll(" ", ""));
+          setUsername(str);
           setFormIsValid(true);
           setErrMsg("");
         }
@@ -140,35 +140,29 @@ function SignUp({ navigation }) {
     }
   }
 
-  async function handleFormSubmition() {
+  function handleFormSubmition() {
     setIsLoading(true);
-    const response = await signUpAPI(
-      username,
-      firstName,
-      lastName,
-      email,
-      password,
-      confirmPassword
-    );
-
-    setIsLoading(false);
-    if (response.error) {
-      setErr(true);
-      Toast.show(response.data.message, {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.CENTER,
-        shadow: true,
-        animation: true,
-        hideOnPress: true,
-        delay: 0,
-        containerStyle: {
-          height: 60,
-          justifyContent: "center",
-        },
+    signUpAPI(username, firstName, lastName, email, password)
+      .then(() => {
+        setIsLoading(false);
+        navigation.goBack();
+      })
+      .catch((err) => {
+        Toast.show("Username or Email already exist!", {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.CENTER,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+          containerStyle: {
+            height: 60,
+            justifyContent: "center",
+          },
+        });
+        setErr(true);
+        setIsLoading(false);
       });
-    } else {
-      navigation.goBack();
-    }
   }
 
   const handleCheckBox = () => {
@@ -180,6 +174,11 @@ function SignUp({ navigation }) {
 
   return (
     <SafeAreaView>
+      {isLoading && (
+        <View className="flex-1 h-[130%] w-full bg-slate-200 opacity-80 absolute z-50 justify-center">
+          <Text className="text-center text-black ">Loading...</Text>
+        </View>
+      )}
       <View
         className="mx-4"
         style={{
