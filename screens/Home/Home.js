@@ -1,7 +1,12 @@
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList,
+} from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import { Image } from "react-native";
+import { Image, Text } from "react-native";
 import NavBar from "../../components/NavBar";
 import { assets, FONTS, SIZES } from "../../constants";
 import Cart from "../cart/Cart";
@@ -14,10 +19,62 @@ import PrivacyPolicy from "../privacyPolicy/PrivacyPolicy";
 import TermsOfUse from "../termsOfUse/TermsOfUse";
 import Triggers from "../triggers/Triggers";
 import EditTrigger from "../triggers/EditTrigger";
+import { login, logout } from "../../features/userSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch } from "react-redux";
+import { initializeCartRedux } from "../../features/cardSlice";
+import Toast from "react-native-root-toast";
 
 const Drawer = createDrawerNavigator();
 
-function Home() {
+function Home({ navigation, route }) {
+  const { user } = route.params;
+  const dispatch = useDispatch();
+
+  async function signOut() {
+    try {
+      console.log("SIGNOUT");
+      await AsyncStorage.clear();
+      dispatch(logout());
+      navigation.replace("FIRST LAUNCH");
+    } catch (error) {
+      navigation.replace("FIRST LAUNCH");
+      console.log(error);
+    }
+  }
+
+  async function initializeCart() {
+    try {
+      const cartStringify = await AsyncStorage.getItem("cartData");
+      const cartJson = await JSON.parse(cartStringify);
+      if (cartJson?.qty > 0) {
+        dispatch(initializeCartRedux(cartJson));
+      }
+      return;
+    } catch (error) {
+      console.log(error);
+      Toast.show("Something goes wrong, Please try again!", {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.CENTER,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+        containerStyle: {
+          backgroundColor: "#FF8787",
+          height: 60,
+          justifyContent: "center",
+        },
+      });
+    }
+  }
+
+  useEffect(() => {
+    console.log("USEEFFECT");
+    dispatch(login(user));
+    initializeCart();
+  }, [user]);
+
   return (
     <NavigationContainer independent={true}>
       <NavBar />
@@ -26,6 +83,14 @@ function Home() {
         initialRouteName="ISBN SCANNER"
         screenOptions={{
           headerShown: false,
+        }}
+        drawerContent={(props) => {
+          return (
+            <DrawerContentScrollView {...props}>
+              <DrawerItemList {...props} />
+              <DrawerItem label="Sign Out" onPress={signOut} />
+            </DrawerContentScrollView>
+          );
         }}
       >
         <Drawer.Screen
@@ -50,27 +115,29 @@ function Home() {
           name="EditTrigger"
           component={EditTrigger}
           options={{
-            drawerItemStyle: { display: 'none' }
+            drawerItemStyle: { display: "none" },
           }}
         />
-        <Drawer.Screen
-          name="TRIGGERS"
-          component={Triggers}
-          options={{
-            drawerIcon: () => (
-              <Image
-                source={assets.ISBN}
-                resizeMode="contain"
-                className="w-[25px] h-[25px]"
-              />
-            ),
+        {user?.accessToken && (
+          <Drawer.Screen
+            name="TRIGGERS"
+            component={Triggers}
+            options={{
+              drawerIcon: () => (
+                <Image
+                  source={assets.ISBN}
+                  resizeMode="contain"
+                  className="w-[25px] h-[25px]"
+                />
+              ),
 
-            drawerLabelStyle: {
-              fontFamily: FONTS.JosefinSansBold,
-              fontSize: SIZES.medium,
-            },
-          }}
-        />
+              drawerLabelStyle: {
+                fontFamily: FONTS.JosefinSansBold,
+                fontSize: SIZES.medium,
+              },
+            }}
+          />
+        )}
         <Drawer.Screen
           name="FAQs"
           component={Faq}

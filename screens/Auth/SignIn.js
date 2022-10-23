@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
 import {
   Pressable,
@@ -74,19 +75,8 @@ function SignIn({ navigation }) {
 
       if (data.accessToken) {
         setIsLoading(false);
-        Toast.show(data.accessToken, {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.CENTER,
-          shadow: true,
-          animation: true,
-          hideOnPress: true,
-          delay: 0,
-          containerStyle: {
-            backgroundColor: "#B6E388",
-            height: 60,
-            justifyContent: "center",
-          },
-        });
+        await AsyncStorage.setItem("loginData", JSON.stringify({ data: data }));
+        navigation.replace("HOME", { user: data });
       } else {
         setIsLoading(false);
         Toast.show("Username or Password Incorrect, Please try again!", {

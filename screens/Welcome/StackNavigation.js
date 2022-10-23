@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignIn from "../Auth/SignIn";
 import SignUp from "../Auth/SignUp";
-import { NavigationContainer } from "@react-navigation/native";
-import { Image, Pressable, SafeAreaView, Text, View, ScrollView } from "react-native";
+import {
+  Image,
+  Pressable,
+  SafeAreaView,
+  Text,
+  View,
+  ScrollView,
+} from "react-native";
 import { assets, FONTS } from "../../constants";
 
 const Stack = createStackNavigator();
@@ -13,7 +19,11 @@ function WelcomeScreen({ navigation }) {
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView>
         <View className="">
-          <Image source={assets.auth} resizeMode="contain" className="w-full h-[60vh] mt-28" />
+          <Image
+            source={assets.auth}
+            resizeMode="contain"
+            className="w-full h-[60vh] mt-28"
+          />
         </View>
         <View className="flex-row justify-center items-center mx-4">
           <Pressable

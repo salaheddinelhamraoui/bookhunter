@@ -7,12 +7,6 @@ import { addToCard } from "../features/cardSlice";
 function CardModal({ data, modalVisible, setModalVisible }) {
   const dispatch = useDispatch();
 
-  // const save = async () => {
-  //   const dataStringify = JSON.stringify(data);
-  //   await AsyncStorage.setItem("items", dataStringify);
-  //   console.log("item Saved");
-  // };
-
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -40,7 +34,6 @@ function CardModal({ data, modalVisible, setModalVisible }) {
                 style={[styles.button, styles.buttonOpen]}
                 onPress={() => {
                   dispatch(addToCard(data));
-                  save();
                   setModalVisible(!modalVisible);
                 }}
               >
