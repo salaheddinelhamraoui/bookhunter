@@ -24,6 +24,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import { initializeCartRedux } from "../../features/cardSlice";
 import Toast from "react-native-root-toast";
+import Teams from "../teams/Teams";
 
 const Drawer = createDrawerNavigator();
 
@@ -118,26 +119,46 @@ function Home({ navigation, route }) {
             drawerItemStyle: { display: "none" },
           }}
         />
-        {user?.accessToken && (
-          <Drawer.Screen
-            name="TRIGGERS"
-            component={Triggers}
-            options={{
-              drawerIcon: () => (
-                <Image
-                  source={assets.ISBN}
-                  resizeMode="contain"
-                  className="w-[25px] h-[25px]"
-                />
-              ),
+        {
+          // user?.accessToken 
+          // && 
+          (
+            <Drawer.Screen
+              name="TRIGGERS"
+              component={Triggers}
+              options={{
+                drawerIcon: () => (
+                  <Image
+                    source={assets.ISBN}
+                    resizeMode="contain"
+                    className="w-[25px] h-[25px]"
+                  />
+                ),
 
-              drawerLabelStyle: {
-                fontFamily: FONTS.JosefinSansBold,
-                fontSize: SIZES.medium,
-              },
-            }}
-          />
-        )}
+                drawerLabelStyle: {
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.medium,
+                },
+              }}
+            />
+          )}
+        <Drawer.Screen
+          name="Teams"
+          component={Teams}
+          options={{
+            drawerIcon: () => (
+              <Image
+                source={assets.faq}
+                resizeMode="contain"
+                className="w-[25px] h-[25px]"
+              />
+            ),
+            drawerLabelStyle: {
+              fontFamily: FONTS.JosefinSansBold,
+              fontSize: SIZES.medium,
+            },
+          }}
+        />
         <Drawer.Screen
           name="FAQs"
           component={Faq}
