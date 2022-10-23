@@ -205,7 +205,7 @@ function SignUp({ navigation }) {
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text
               style={{ fontFamily: FONTS.JosefinSansBold }}
-              className="text-5xl mb-4"
+              className="text-5xl mb-4 mt-8"
             >
               Lets Register Your Account
             </Text>

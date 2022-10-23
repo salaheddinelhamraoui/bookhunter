@@ -9,7 +9,9 @@ import bag from "../assets/icons/bag.png";
 import menus from "../assets/icons/menus.png";
 import barcode from "../assets/images/barcode.gif";
 import empty from "../assets/images/empty.png";
-import goals from "../assets/undraw_Shared_goals_re_jvqd.png";
+import auth from "../assets/images/auth.png";
+import edit from "../assets/icons/edit.png";
+import close from "../assets/icons/close.png";
 
 export default {
   hunter,
@@ -23,5 +25,7 @@ export default {
   menus,
   barcode,
   empty,
-  goals,
+  auth,
+  edit,
+  close
 };

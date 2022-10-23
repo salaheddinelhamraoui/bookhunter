@@ -141,7 +141,7 @@ function SignIn({ navigation }) {
       >
         <Text
           style={{ fontFamily: FONTS.JosefinSansBold }}
-          className="text-5xl mb-4"
+          className="text-5xl mb-4 mt-8"
         >
           Lets Sign you in
         </Text>
