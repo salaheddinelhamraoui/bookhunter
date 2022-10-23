@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import { FONTS } from "../../constants";
-import { FontAwesome } from "@expo/vector-icons";
 
 function SignIn() {
   return (
@@ -28,7 +27,7 @@ function SignIn() {
       >
         <Text
           style={{ fontFamily: FONTS.JosefinSansBold }}
-          className="text-5xl mb-4"
+          className="text-5xl mb-4 mt-8"
         >
           Lets Sign you in
         </Text>
@@ -89,20 +88,6 @@ function SignIn() {
             or
           </Text>
           <Text className="h-[1px] bg-darkBlue flex-grow ml-2"></Text>
-        </View>
-        <View className="flex-row gap-2 justify-center my-3">
-          <Pressable>
-            <FontAwesome name="twitter" size={24} color="#010326" />
-          </Pressable>
-          <Pressable>
-            <FontAwesome name="facebook-square" size={24} color="#010326" />
-          </Pressable>
-          <Pressable>
-            <FontAwesome name="google" size={24} color="#010326" />
-          </Pressable>
-          <Pressable>
-            <FontAwesome name="instagram" size={24} color="#010326" />
-          </Pressable>
         </View>
         <View className="flex-row justify-center">
           <Text

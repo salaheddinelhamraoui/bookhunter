@@ -12,6 +12,8 @@ import ISBNResult from "../ISBN/ISBNResult";
 import Scanner from "../ISBN/Scanner";
 import PrivacyPolicy from "../privacyPolicy/PrivacyPolicy";
 import TermsOfUse from "../termsOfUse/TermsOfUse";
+import Triggers from "../triggers/Triggers";
+import EditTrigger from "../triggers/EditTrigger";
 
 const Drawer = createDrawerNavigator();
 
@@ -29,6 +31,31 @@ function Home() {
         <Drawer.Screen
           name="ISBN SCANNER"
           component={ISBN}
+          options={{
+            drawerIcon: () => (
+              <Image
+                source={assets.ISBN}
+                resizeMode="contain"
+                className="w-[25px] h-[25px]"
+              />
+            ),
+
+            drawerLabelStyle: {
+              fontFamily: FONTS.JosefinSansBold,
+              fontSize: SIZES.medium,
+            },
+          }}
+        />
+        <Drawer.Screen
+          name="EditTrigger"
+          component={EditTrigger}
+          options={{
+            drawerItemStyle: { display: 'none' }
+          }}
+        />
+        <Drawer.Screen
+          name="TRIGGERS"
+          component={Triggers}
           options={{
             drawerIcon: () => (
               <Image

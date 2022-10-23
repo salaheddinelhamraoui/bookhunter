@@ -196,7 +196,7 @@ function SignUp({ navigation }) {
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text
               style={{ fontFamily: FONTS.JosefinSansBold }}
-              className="text-5xl mb-4"
+              className="text-5xl mb-4 mt-8"
             >
               Lets Register Your Account
             </Text>
@@ -314,11 +314,10 @@ function SignUp({ navigation }) {
             </View>
             <Pressable
               disabled={!formIsValid || !checked}
-              className={`my-5 py-4 rounded-md ${
-                formIsValid && checked
+              className={`my-5 py-4 rounded-md ${formIsValid && checked
                   ? "bg-darkBlue"
                   : "bg-greyBlue opacity-70"
-              }`}
+                }`}
               onPress={handleFormSubmition}
             >
               <Text

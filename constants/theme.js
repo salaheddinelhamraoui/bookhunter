@@ -11,7 +11,7 @@ export const COLORS = {
 export const SIZES = {
   base: 10,
   small: 11,
-  font: 12,
+  font: 14,
   medium: 15,
   extraMedium: 18,
   large: 24,
