@@ -57,7 +57,6 @@ function SignUp({ navigation }) {
         } else {
           setIsValidUsername(true);
           setUsername(str);
-          setFormIsValid(true);
           setErrMsg("");
         }
         break;
@@ -69,7 +68,6 @@ function SignUp({ navigation }) {
           setErrMsg("Invalid first name");
         } else {
           setIsValidFirstName(true);
-          setFormIsValid(true);
           setFirstName(str);
           setErrMsg("");
         }
@@ -83,7 +81,6 @@ function SignUp({ navigation }) {
         } else {
           setIsValidLastName(true);
           setLastName(str);
-          setFormIsValid(true);
           setErrMsg("");
         }
         break;
@@ -96,7 +93,6 @@ function SignUp({ navigation }) {
         } else {
           setIsValidEmail(true);
           setEmail(str);
-          setFormIsValid(true);
           setErrMsg("");
         }
         break;
@@ -113,7 +109,6 @@ function SignUp({ navigation }) {
         } else {
           setIsValidPwd(true);
           setPassword(str);
-          setFormIsValid(true);
           setErrMsg("");
         }
         break;
@@ -131,7 +126,6 @@ function SignUp({ navigation }) {
         } else {
           setIsValidCPwd(true);
           setConfirmPassword(str);
-          setFormIsValid(true);
           setErrMsg("");
         }
         break;
@@ -170,6 +164,21 @@ function SignUp({ navigation }) {
       setFormIsValid(!prev);
       return !prev;
     });
+  };
+
+  const checkIsValid = () => {
+    if (
+      isValidUsername &&
+      isValidFirstName &&
+      isValidLastName &&
+      isValidEmail &&
+      isValidPwd &&
+      isValidCPwd &&
+      checked
+    ) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -313,11 +322,9 @@ function SignUp({ navigation }) {
               )}
             </View>
             <Pressable
-              disabled={!formIsValid || !checked}
+              disabled={checkIsValid() ? false : true}
               className={`my-5 py-4 rounded-md ${
-                formIsValid && checked
-                  ? "bg-darkBlue"
-                  : "bg-greyBlue opacity-70"
+                checkIsValid() ? "bg-darkBlue" : "bg-greyBlue opacity-70"
               }`}
               onPress={handleFormSubmition}
             >
