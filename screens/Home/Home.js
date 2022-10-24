@@ -25,6 +25,8 @@ import { useDispatch } from "react-redux";
 import { initializeCartRedux } from "../../features/cardSlice";
 import Toast from "react-native-root-toast";
 import Teams from "../teams/Teams";
+import AddMember from "../teams/AddMember";
+import Vendors from "../vendors/Vendors";
 
 const Drawer = createDrawerNavigator();
 
@@ -119,6 +121,13 @@ function Home({ navigation, route }) {
             drawerItemStyle: { display: "none" },
           }}
         />
+        <Drawer.Screen
+          name="AddMember"
+          component={AddMember}
+          options={{
+            drawerItemStyle: { display: "none" },
+          }}
+        />
         {
           // user?.accessToken 
           // && 
@@ -143,7 +152,24 @@ function Home({ navigation, route }) {
             />
           )}
         <Drawer.Screen
-          name="Teams"
+          name="VENDORS"
+          component={Vendors}
+          options={{
+            drawerIcon: () => (
+              <Image
+                source={assets.faq}
+                resizeMode="contain"
+                className="w-[25px] h-[25px]"
+              />
+            ),
+            drawerLabelStyle: {
+              fontFamily: FONTS.JosefinSansBold,
+              fontSize: SIZES.medium,
+            },
+          }}
+        />
+        <Drawer.Screen
+          name="TEAMS"
           component={Teams}
           options={{
             drawerIcon: () => (

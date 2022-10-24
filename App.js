@@ -10,6 +10,7 @@ import StackNavigation from "./screens/Welcome/StackNavigation";
 import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 const theme = {
   ...DefaultTheme,
   colors: {
