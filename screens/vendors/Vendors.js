@@ -125,7 +125,7 @@ const Vendors = () => {
                         Vendors
                     </Text>
                 </View>
-                <View className="mx-4 mb-2 rounded-lg">
+                <View className="mx-4 mb-2 rounded-lg ">
                     <View className="flex flex-row flex-wrap items-center justify-between">
                         {DATA.map((item) => (
                             <View key={item.id} className="w-[48%] flex flex-col items-center justify-center mt-6 bg-white rounded-lg px-4 py-4">
