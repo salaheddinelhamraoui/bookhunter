@@ -6,4 +6,6 @@ export const getTriggersSet = (id) => {
   return axios.get(`${API}getTriggersSet/${id}`);
 };
 
-export const addTriggersSet = () => {};
+export const addTriggersSet = (id) => {
+  return axios.put(`${API}setTriggersSet/${id}`);
+};

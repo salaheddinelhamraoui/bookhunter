@@ -21,9 +21,17 @@ const data_2 = [
   { label: "Ave", value: "ave" },
 ];
 
-const EditTrigger = () => {
+const EditTrigger = ({ navigation, route }) => {
+  const { FBACostPerLBS, _id, buyCost, description, fulfillement } =
+    route.params.triggerSet;
+
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+
+  const [title, setTitle] = useState(description);
+  const [buyC, setBuyCost] = useState(buyCost);
+  const [fbaCostPerLBS, setFBACostPerLBS] = useState(FBACostPerLBS);
+  const [fulFillement, setFulfillement] = useState(fulfillement);
 
   const [value2, setValue2] = useState(null);
   const [isFocus2, setIsFocus2] = useState(false);
@@ -74,6 +82,7 @@ const EditTrigger = () => {
               activeOutlineColor={"#393e59"}
               mode="outlined"
               label="Title"
+              value={title}
               placeholder="Title"
               className="border-[0.2px] rounded-lg px-2 py-2"
             />
@@ -93,13 +102,13 @@ const EditTrigger = () => {
               maxHeight={300}
               labelField="label"
               valueField="value"
-              placeholder={!isFocus ? "Select item" : "..."}
+              placeholder={fulFillement ? fulFillement : "..."}
               searchPlaceholder="Search..."
-              value={value}
+              value={fulFillement}
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
               onChange={(item) => {
-                setValue(item.value);
+                setFulfillement(item.value);
                 setIsFocus(false);
               }}
               className="border-[0.2px] rounded-lg px-2 py-2"

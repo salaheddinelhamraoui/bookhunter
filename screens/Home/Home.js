@@ -36,7 +36,6 @@ function Home({ navigation, route }) {
 
   async function signOut() {
     try {
-      console.log("SIGNOUT");
       await AsyncStorage.clear();
       dispatch(logout());
       navigation.replace("FIRST LAUNCH");
@@ -73,7 +72,6 @@ function Home({ navigation, route }) {
   }
 
   useEffect(() => {
-    console.log("USEEFFECT");
     dispatch(login(user));
     initializeCart();
   }, [user]);
@@ -129,28 +127,27 @@ function Home({ navigation, route }) {
           }}
         />
         {
-          // user?.accessToken 
-          // && 
-          (
-            <Drawer.Screen
-              name="TRIGGERS"
-              component={Triggers}
-              options={{
-                drawerIcon: () => (
-                  <Image
-                    source={assets.ISBN}
-                    resizeMode="contain"
-                    className="w-[25px] h-[25px]"
-                  />
-                ),
+          // user?.accessToken
+          // &&
+          <Drawer.Screen
+            name="TRIGGERS"
+            component={Triggers}
+            options={{
+              drawerIcon: () => (
+                <Image
+                  source={assets.ISBN}
+                  resizeMode="contain"
+                  className="w-[25px] h-[25px]"
+                />
+              ),
 
-                drawerLabelStyle: {
-                  fontFamily: FONTS.JosefinSansBold,
-                  fontSize: SIZES.medium,
-                },
-              }}
-            />
-          )}
+              drawerLabelStyle: {
+                fontFamily: FONTS.JosefinSansBold,
+                fontSize: SIZES.medium,
+              },
+            }}
+          />
+        }
         <Drawer.Screen
           name="VENDORS"
           component={Vendors}

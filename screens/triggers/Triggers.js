@@ -1,65 +1,96 @@
+import { useIsFocused } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, ScrollView, SafeAreaView } from "react-native";
+import { ActivityIndicator, FAB } from "react-native-paper";
 import { useSelector } from "react-redux";
 import { FONTS, SIZES } from "../../constants";
-import { getTriggersSet } from "../../utils/Triggers.service";
+import { addTriggersSet, getTriggersSet } from "../../utils/Triggers.service";
 import TriggerSetCard from "./TriggerSetCard";
+import Toast from "react-native-root-toast";
 
 const Triggers = ({ navigation }) => {
   const user = useSelector((state) => state.userSlice.data);
+  const isFocused = useIsFocused();
   const id = user.id;
 
+  const [isLoading, setIsLoading] = useState(false);
   const [triggersSet, setTriggersSet] = useState([]);
 
   useEffect(() => {
-    getTriggersSet(id).then((res) => setTriggersSet(res.data));
-  }, [id]);
+    setTriggersSet([]);
+    setIsLoading(true);
+    if (isFocused) {
+      getTriggersSet(id)
+        .then((res) => setTriggersSet(res.data))
+        .finally(() => setIsLoading(false));
+    }
+  }, [id, isFocused]);
+
+  const addNewTriggerSet = () => {
+    addTriggersSet(id)
+      .then((res) => Toast.show(res.data.message))
+      .then(() => {
+        getTriggersSet(id).then((res) => setTriggersSet(res.data));
+      })
+      .catch((err) => console.log(JSON.stringify(err)));
+  };
+
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <View className="mx-4 my-4 bg-white px-4 py-4 rounded-lg">
-          <Text
-            className="text-center"
-            style={{
-              fontFamily: FONTS.JosefinSansBold,
-              fontSize: SIZES.extraMedium,
-            }}
-          >
-            Triggers
-          </Text>
-        </View>
-        <View className="mx-4 bg-white px-4 py-4 mb-2 rounded-lg">
-          <Text
-            className="text-center px-1"
-            style={{
-              fontFamily: FONTS.textRegular,
-              fontSize: SIZES.font,
-            }}
-          >
-            Triggers help with calculating what is profitable. Use our default
-            buying criteria or create your own.
-          </Text>
-        </View>
-        <View className="flex flex-row flex-wrap mx-4 my-2 mt-4 items-center justify-between">
-          {triggersSet.length > 0
-            ? triggersSet.map((triggerSet, i) => (
-                <TriggerSetCard
-                  key={"trrigerId:" + i}
-                  navigation={navigation}
-                  triggerSet={triggerSet}
-                />
-              ))
-            : null}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <>
+      <SafeAreaView>
+        <ScrollView>
+          {isFocused ? (
+            <>
+              <View className="mx-4 my-4 bg-white px-4 py-4 rounded-lg">
+                <Text
+                  className="text-center"
+                  style={{
+                    fontFamily: FONTS.JosefinSansBold,
+                    fontSize: SIZES.extraMedium,
+                  }}
+                >
+                  Triggers
+                </Text>
+              </View>
+              <View className="mx-4 bg-white px-4 py-4 mb-2 rounded-lg">
+                <Text
+                  className="text-center px-1"
+                  style={{
+                    fontFamily: FONTS.textRegular,
+                    fontSize: SIZES.font,
+                  }}
+                >
+                  Triggers help with calculating what is profitable. Use our
+                  default buying criteria or create your own.
+                </Text>
+              </View>
+              <View className="flex flex-row flex-wrap mx-4 my-2 mt-4 items-center justify-between">
+                {isLoading ? (
+                  <View className="flex-1 justify-center align-middle">
+                    <ActivityIndicator />
+                  </View>
+                ) : null}
+                {triggersSet.length > 0
+                  ? triggersSet.map((triggerSet, i) => (
+                      <TriggerSetCard
+                        key={"trrigerId:" + i}
+                        navigation={navigation}
+                        triggerSet={triggerSet}
+                      />
+                    ))
+                  : null}
+              </View>
+            </>
+          ) : null}
+        </ScrollView>
+      </SafeAreaView>
+
+      <FAB
+        icon="plus"
+        className="absolute bottom-3 right-3 bg-lightTeal"
+        onPress={addNewTriggerSet}
+      />
+    </>
   );
 };
 

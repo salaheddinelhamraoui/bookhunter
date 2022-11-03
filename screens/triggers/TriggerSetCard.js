@@ -4,7 +4,6 @@ import { assets, FONTS, SIZES } from "../../constants";
 
 function TriggerSetCard({ navigation, triggerSet }) {
   const { fulfillement, buyCost, FBACostPerLBS, active } = triggerSet;
-  console.log(typeof active);
   return (
     <View className="bg-white rounded-2xl w-[48%] mb-6">
       <View className="px-4 py-4 mb-4">
@@ -104,7 +103,7 @@ function TriggerSetCard({ navigation, triggerSet }) {
 
       <View
         className={`rounded-b-2xl ${
-          !active === "true" ? "bg-gray-400" : "bg-green-500"
+          active === "true" ? "bg-green-500" : "bg-gray-400"
         }`}
       >
         <Text

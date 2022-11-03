@@ -24,13 +24,11 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
 
-  console.log(user, isLoggedIn);
 
   const checkIfIsAlreadyLoggedIn = async () => {
     try {
       const dataString = await AsyncStorage.getItem("loginData");
       const jsonData = await JSON.parse(dataString);
-      console.log(dataString);
       if (!jsonData?.data) {
         setUser(null);
         setIsLoggedIn(false);

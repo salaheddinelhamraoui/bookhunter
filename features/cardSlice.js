@@ -37,19 +37,6 @@ async function setCartInDatabase(items) {
     await AsyncStorage.setItem("cartData", JSON.stringify(items));
   } catch (error) {
     console.log(error);
-    // Toast.show("Something goes wrong, Please try again!", {
-    //   duration: Toast.durations.SHORT,
-    //   position: Toast.positions.CENTER,
-    //   shadow: true,
-    //   animation: true,
-    //   hideOnPress: true,
-    //   delay: 0,
-    //   containerStyle: {
-    //     backgroundColor: "#FF8787",
-    //     height: 60,
-    //     justifyContent: "center",
-    //   },
-    // });
   }
 }
 
