@@ -27,6 +27,7 @@ import Toast from "react-native-root-toast";
 import Teams from "../teams/Teams";
 import AddMember from "../teams/AddMember";
 import Vendors from "../vendors/Vendors";
+import TriggerSetCard from "../triggers/TriggerSetCard";
 
 const Drawer = createDrawerNavigator();
 
@@ -126,6 +127,7 @@ function Home({ navigation, route }) {
             drawerItemStyle: { display: "none" },
           }}
         />
+
         {
           // user?.accessToken
           // &&

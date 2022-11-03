@@ -14,6 +14,7 @@ const Triggers = ({ navigation }) => {
   const id = user.id;
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
   const [triggersSet, setTriggersSet] = useState([]);
 
   useEffect(() => {
@@ -27,16 +28,24 @@ const Triggers = ({ navigation }) => {
   }, [id, isFocused]);
 
   const addNewTriggerSet = () => {
+    setIsLoading2(true);
     addTriggersSet(id)
       .then((res) => Toast.show(res.data.message))
       .then(() => {
         getTriggersSet(id).then((res) => setTriggersSet(res.data));
       })
-      .catch((err) => console.log(JSON.stringify(err)));
+      .catch((err) => console.log(JSON.stringify(err)))
+      .finally(() => setIsLoading2(false));
   };
 
   return (
     <>
+      {isLoading2 ? (
+        <>
+          <View className="flex-1 absolute h-full w-full z-[999] bg-slate-600 opacity-10"></View>
+          <ActivityIndicator className=" flex-1 absolute top-1/2 right-1/2 z-50" />
+        </>
+      ) : null}
       <SafeAreaView>
         <ScrollView>
           {isFocused ? (
@@ -76,6 +85,7 @@ const Triggers = ({ navigation }) => {
                         key={"trrigerId:" + i}
                         navigation={navigation}
                         triggerSet={triggerSet}
+                        userId={user.id}
                       />
                     ))
                   : null}

@@ -10,6 +10,14 @@ import { FONTS, SIZES } from "../../constants";
 import { Dropdown } from "react-native-element-dropdown";
 import { useState } from "react";
 import TriggerCard from "./TriggerCard";
+import {
+  deleteTriggerSet,
+  updateTriggerSet,
+} from "../../utils/Triggers.service";
+import Toast from "react-native-root-toast";
+import { ActivityIndicator } from "react-native-paper";
+import { useEffect } from "react";
+import { useIsFocused } from "@react-navigation/native";
 
 const data = [
   { label: "FBA", value: "fba" },
@@ -24,20 +32,73 @@ const data_2 = [
 const EditTrigger = ({ navigation, route }) => {
   const { FBACostPerLBS, _id, buyCost, description, fulfillement } =
     route.params.triggerSet;
+  const { userId } = route.params;
 
-  const [value, setValue] = useState(null);
-  const [isFocus, setIsFocus] = useState(false);
+  const isFocused = useIsFocused;
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [title, setTitle] = useState(description);
   const [buyC, setBuyCost] = useState(buyCost);
   const [fbaCostPerLBS, setFBACostPerLBS] = useState(FBACostPerLBS);
-  const [fulFillement, setFulfillement] = useState(fulfillement);
+  const [fulFillement, setFulfillement] = useState(() => {
+    return fulfillement ? fulfillement : data[0].value;
+  });
+  const [salesRankType, setSalesRankType] = useState(data_2[0].label);
+  const [MFFixed, setMFFixedCost] = useState();
+  const [MFCostPerLBS, setMFCostPerLB] = useState();
 
-  const [value2, setValue2] = useState(null);
-  const [isFocus2, setIsFocus2] = useState(false);
+  useEffect(() => {}, [isFocused]);
+
+  const deleteSet = () => {
+    setIsLoading(true);
+    deleteTriggerSet(_id)
+      .then(() => {
+        setIsLoading(false);
+        navigation.navigate("TRIGGERS");
+      })
+      .catch((err) => {
+        console.log(JSON.stringify(err));
+        setIsLoading(false);
+      })
+      .finally(() => Toast.show("Triggers set had been deleted"));
+  };
+
+  // TODO: Update Triggers Set need to know the attributes that comes with before continue working on it
+
+  const updateSet = () => {
+    const triggerSetData = {
+      description: title,
+      fulfillement: fulFillement.toUpperCase(),
+      buyCost: buyC,
+      FBACostPerLBS: fbaCostPerLBS,
+      MFFixed,
+      MFCostPerLBS,
+      salesRankType,
+      TriggerId: _id,
+    };
+
+    setIsLoading(true);
+    updateTriggerSet(userId, triggerSetData)
+      .then(() => {
+        setIsLoading(false);
+        navigation.navigate("TRIGGERS");
+      })
+      .catch((err) => {
+        console.log(JSON.stringify(err));
+        setIsLoading(false);
+      })
+      .finally(() => Toast.show("Triggers set had been updated"));
+  };
 
   return (
     <SafeAreaView>
+      {isLoading ? (
+        <>
+          <View className="flex-1 absolute h-full w-full z-[999] bg-slate-600 opacity-10"></View>
+          <ActivityIndicator className=" flex-1 absolute top-1/2 right-1/2 z-50" />
+        </>
+      ) : null}
       <ScrollView>
         <View className="mx-4 my-4 mb-0 bg-white px-4 py-4 rounded-lg">
           <Text
@@ -51,7 +112,7 @@ const EditTrigger = ({ navigation, route }) => {
           </Text>
         </View>
         <View className="flex items-center justify-center mx-4 ">
-          <TouchableOpacity className="w-full ">
+          <TouchableOpacity className="w-full" onPress={deleteSet}>
             <View className="mt-4 bg-red-500  rounded-lg px-4 py-4">
               <Text
                 className="text-center"
@@ -77,7 +138,9 @@ const EditTrigger = ({ navigation, route }) => {
               Title
             </Text>
             <TextInput
-              onChangeText={(text) => {}}
+              onChangeText={(text) => {
+                setTitle(text);
+              }}
               outlineColor={"#6fbfbf"}
               activeOutlineColor={"#393e59"}
               mode="outlined"
@@ -105,11 +168,11 @@ const EditTrigger = ({ navigation, route }) => {
               placeholder={fulFillement ? fulFillement : "..."}
               searchPlaceholder="Search..."
               value={fulFillement}
-              onFocus={() => setIsFocus(true)}
-              onBlur={() => setIsFocus(false)}
               onChange={(item) => {
                 setFulfillement(item.value);
-                setIsFocus(false);
+                setFBACostPerLBS(null);
+                setMFCostPerLB(null);
+                setMFFixedCost(null);
               }}
               className="border-[0.2px] rounded-lg px-2 py-2"
             />
@@ -129,14 +192,14 @@ const EditTrigger = ({ navigation, route }) => {
               maxHeight={300}
               labelField="label"
               valueField="value"
-              placeholder={!isFocus2 ? "Select item" : "..."}
+              placeholder={!salesRankType ? "Select item" : salesRankType}
               searchPlaceholder="Search..."
-              value={value2}
-              onFocus={() => setIsFocus2(true)}
-              onBlur={() => setIsFocus2(false)}
+              value={salesRankType}
               onChange={(item) => {
-                setValue2(item.value);
-                setIsFocus2(false);
+                setSalesRankType(item.value);
+                setFBACostPerLBS(null);
+                setMFCostPerLB(null);
+                setMFFixedCost(null);
               }}
               className="border-[0.2px] rounded-lg px-2 py-2"
             />
@@ -151,7 +214,10 @@ const EditTrigger = ({ navigation, route }) => {
               Buy Cost
             </Text>
             <TextInput
-              onChangeText={(text) => {}}
+              onChangeText={(text) => {
+                setBuyCost(text);
+              }}
+              value={buyC}
               outlineColor={"#6fbfbf"}
               activeOutlineColor={"#393e59"}
               mode="outlined"
@@ -160,46 +226,78 @@ const EditTrigger = ({ navigation, route }) => {
               className="border-[0.2px] rounded-lg px-2 py-2"
             />
           </View>
-          <View className="mt-4">
-            <Text
-              className="mb-2"
-              style={{
-                fontFamily: FONTS.textRegular,
-              }}
-            >
-              Mf Fixed Cost
-            </Text>
-            <TextInput
-              onChangeText={(text) => {}}
-              outlineColor={"#6fbfbf"}
-              activeOutlineColor={"#393e59"}
-              mode="outlined"
-              label="Mf Fixed Cost"
-              placeholder="Mf Fixed Cost"
-              className="border-[0.2px] rounded-lg px-2 py-2"
-            />
-          </View>
-          <View className="mt-4">
-            <Text
-              className="mb-2"
-              style={{
-                fontFamily: FONTS.textRegular,
-              }}
-            >
-              Mf Cost Per Lb
-            </Text>
-            <TextInput
-              onChangeText={(text) => {}}
-              outlineColor={"#6fbfbf"}
-              activeOutlineColor={"#393e59"}
-              mode="outlined"
-              label="Mf Cost Per Lb"
-              placeholder="Mf Cost Per Lb"
-              className="border-[0.2px] rounded-lg px-2 py-2"
-            />
-          </View>
+          {fulFillement.toUpperCase() === "MF" ? (
+            <>
+              <View className="mt-4">
+                <Text
+                  className="mb-2"
+                  style={{
+                    fontFamily: FONTS.textRegular,
+                  }}
+                >
+                  Mf Fixed Cost
+                </Text>
+                <TextInput
+                  onChangeText={(text) => setMFFixedCost(text)}
+                  outlineColor={"#6fbfbf"}
+                  activeOutlineColor={"#393e59"}
+                  mode="outlined"
+                  label="Mf Fixed Cost"
+                  placeholder="Mf Fixed Cost"
+                  className="border-[0.2px] rounded-lg px-2 py-2"
+                />
+              </View>
+              <View className="mt-4">
+                <Text
+                  className="mb-2"
+                  style={{
+                    fontFamily: FONTS.textRegular,
+                  }}
+                >
+                  Mf Cost Per Lb
+                </Text>
+                <TextInput
+                  onChangeText={(text) => setMFCostPerLB(text)}
+                  outlineColor={"#6fbfbf"}
+                  activeOutlineColor={"#393e59"}
+                  mode="outlined"
+                  label="Mf Cost Per Lb"
+                  placeholder="Mf Cost Per Lb"
+                  className="border-[0.2px] rounded-lg px-2 py-2"
+                />
+              </View>
+            </>
+          ) : null}
+
+          {fulFillement.toUpperCase() === "FBA" ? (
+            <>
+              <View className="mt-4">
+                <Text
+                  className="mb-2"
+                  style={{
+                    fontFamily: FONTS.textRegular,
+                  }}
+                >
+                  FBA COST PER LB
+                </Text>
+                <TextInput
+                  onChangeText={(text) => {
+                    setFBACostPerLBS(text);
+                  }}
+                  value={fbaCostPerLBS}
+                  outlineColor={"#6fbfbf"}
+                  activeOutlineColor={"#393e59"}
+                  mode="outlined"
+                  label="FBA COST PER LB"
+                  placeholder="FBA COST PER LB"
+                  className="border-[0.2px] rounded-lg px-2 py-2"
+                />
+              </View>
+            </>
+          ) : null}
+
           <View className="flex items-center justify-center">
-            <TouchableOpacity className="w-[250px]">
+            <TouchableOpacity className="w-[250px]" onPress={updateSet}>
               <View className="mt-4 bg-[#6fbfbf]  rounded-lg px-4 py-2">
                 <Text
                   className="text-center"
@@ -239,43 +337,3 @@ const EditTrigger = ({ navigation, route }) => {
 };
 
 export default EditTrigger;
-
-// const styles = StyleSheet.create({
-//     container: {
-//         backgroundColor: 'white',
-//         padding: 16,
-//     },
-//     dropdown: {
-//         height: 50,
-//         borderColor: 'gray',
-//         borderWidth: 0.5,
-//         borderRadius: 8,
-//         paddingHorizontal: 8,
-//     },
-//     icon: {
-//         marginRight: 5,
-//     },
-//     label: {
-//         position: 'absolute',
-//         backgroundColor: 'white',
-//         left: 22,
-//         top: 8,
-//         zIndex: 999,
-//         paddingHorizontal: 8,
-//         fontSize: 14,
-//     },
-//     placeholderStyle: {
-//         fontSize: 16,
-//     },
-//     selectedTextStyle: {
-//         fontSize: 16,
-//     },
-//     iconStyle: {
-//         width: 20,
-//         height: 20,
-//     },
-//     inputSearchStyle: {
-//         height: 40,
-//         fontSize: 16,
-//     },
-// });

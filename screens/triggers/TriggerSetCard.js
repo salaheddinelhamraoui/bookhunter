@@ -2,14 +2,16 @@ import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { assets, FONTS, SIZES } from "../../constants";
 
-function TriggerSetCard({ navigation, triggerSet }) {
+function TriggerSetCard({ navigation, triggerSet, userId }) {
   const { fulfillement, buyCost, FBACostPerLBS, active } = triggerSet;
   return (
     <View className="bg-white rounded-2xl w-[48%] mb-6">
       <View className="px-4 py-4 mb-4">
         <TouchableOpacity
           className="absolute top-[-15] right-[-8] rounded-full w-[35px] h-[35px] bg-gray-200"
-          onPress={() => navigation.navigate("EditTrigger", { triggerSet })}
+          onPress={() =>
+            navigation.navigate("EditTrigger", { triggerSet, userId })
+          }
         >
           <View className="mx-auto my-auto">
             <Image
