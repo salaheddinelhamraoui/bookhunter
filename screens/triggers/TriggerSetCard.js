@@ -2,8 +2,16 @@ import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { assets, FONTS, SIZES } from "../../constants";
 
-function TriggerSetCard({ navigation, triggerSet, userId }) {
+function TriggerSetCard({
+  navigation,
+  triggerSet,
+  userId,
+  inactiveTriggerSet,
+}) {
   const { fulfillement, buyCost, FBACostPerLBS, active } = triggerSet;
+  const updateTrigger = () => {
+    inactiveTriggerSet(triggerSet._id);
+  };
   return (
     <View className="bg-white rounded-2xl w-[48%] mb-6">
       <View className="px-4 py-4 mb-4">
@@ -103,7 +111,8 @@ function TriggerSetCard({ navigation, triggerSet, userId }) {
         </View>
       </View>
 
-      <View
+      <TouchableOpacity
+        onPress={() => updateTrigger()}
         className={`rounded-b-2xl ${
           active === "true" ? "bg-green-500" : "bg-gray-400"
         }`}
@@ -117,7 +126,7 @@ function TriggerSetCard({ navigation, triggerSet, userId }) {
         >
           {active === "true" ? "Active" : "Inactive"}
         </Text>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }

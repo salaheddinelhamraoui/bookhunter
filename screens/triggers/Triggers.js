@@ -4,7 +4,11 @@ import { View, Text, ScrollView, SafeAreaView } from "react-native";
 import { ActivityIndicator, FAB } from "react-native-paper";
 import { useSelector } from "react-redux";
 import { FONTS, SIZES } from "../../constants";
-import { addTriggersSet, getTriggersSet } from "../../utils/Triggers.service";
+import {
+  addTriggersSet,
+  getTriggersSet,
+  updateTriggerSet,
+} from "../../utils/Triggers.service";
 import TriggerSetCard from "./TriggerSetCard";
 import Toast from "react-native-root-toast";
 
@@ -38,9 +42,32 @@ const Triggers = ({ navigation }) => {
       .finally(() => setIsLoading2(false));
   };
 
+  const inactiveTriggerSet = (triggerSetId) => {
+    setIsLoading(true);
+    triggersSet.map((triggerSet) => {
+      if (triggerSet.active === "true" && triggerSet._id !== triggerSetId) {
+        updateTriggerSet(id, {
+          ...triggerSet,
+          active: "false",
+          TriggerId: triggerSet._id,
+        });
+      }
+      if (triggerSet._id === triggerSetId) {
+        updateTriggerSet(id, {
+          ...triggerSet,
+          active: "true",
+          TriggerId: triggerSet._id,
+        });
+      }
+    });
+    getTriggersSet(id)
+      .then((res) => setTriggersSet(res.data))
+      .finally(() => setIsLoading(false));
+  };
+
   return (
     <>
-      {isLoading2 ? (
+      {isLoading ? (
         <>
           <View className="flex-1 absolute h-full w-full z-[999] bg-slate-600 opacity-10"></View>
           <ActivityIndicator className=" flex-1 absolute top-1/2 right-1/2 z-50" />
@@ -74,14 +101,10 @@ const Triggers = ({ navigation }) => {
                 </Text>
               </View>
               <View className="flex flex-row flex-wrap mx-4 my-2 mt-4 items-center justify-between">
-                {isLoading ? (
-                  <View className="flex-1 justify-center align-middle">
-                    <ActivityIndicator />
-                  </View>
-                ) : null}
                 {triggersSet.length > 0
                   ? triggersSet.map((triggerSet, i) => (
                       <TriggerSetCard
+                        inactiveTriggerSet={inactiveTriggerSet}
                         key={"trrigerId:" + i}
                         navigation={navigation}
                         triggerSet={triggerSet}
