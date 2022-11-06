@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Pressable,
   SafeAreaView,
@@ -7,6 +7,8 @@ import {
   View,
   Platform,
   StatusBar,
+  Linking,
+  Alert,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import Toast from "react-native-root-toast";
@@ -23,6 +25,16 @@ function SignIn({ navigation }) {
   const [errMsg, setErrMsg] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const url = "https://bookhunter.com/sendEmail";
+  const handlePress = useCallback(async () => {
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Can't open this URL: ${url}`);
+    }
+  }, []);
 
   const checkFormIsValid = () => {
     if (isValidPwd && isValidUsername) {
@@ -178,7 +190,7 @@ function SignIn({ navigation }) {
               {errMsg}
             </Text>
           )}
-          <Pressable>
+          <Pressable onPress={handlePress}>
             <Text
               style={{ fontFamily: FONTS.JosefinSansBold }}
               className="underline self-end"
@@ -201,30 +213,6 @@ function SignIn({ navigation }) {
             Sign In
           </Text>
         </Pressable>
-        {/* <View className="flex-row w-full items-center">
-          <Text className="h-[1px] bg-darkBlue flex-grow mr-2"></Text>
-          <Text
-            style={{ fontFamily: FONTS.JosefinSansBold }}
-            className="text-lg "
-          >
-            or
-          </Text>
-          <Text className="h-[1px] bg-darkBlue flex-grow ml-2"></Text>
-        </View> */}
-        {/* <View className="flex-row gap-2 justify-center my-3">
-          <Pressable>
-            <FontAwesome name="twitter" size={24} color="#010326" />
-          </Pressable>
-          <Pressable>
-            <FontAwesome name="facebook-square" size={24} color="#010326" />
-          </Pressable>
-          <Pressable>
-            <FontAwesome name="google" size={24} color="#010326" />
-          </Pressable>
-          <Pressable>
-            <FontAwesome name="instagram" size={24} color="#010326" />
-          </Pressable>
-        </View> */}
         <View className="flex-row justify-center">
           <Text
             style={{ fontFamily: FONTS.JosefinSansBold }}
