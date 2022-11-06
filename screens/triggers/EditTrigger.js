@@ -21,6 +21,7 @@ import Toast from "react-native-root-toast";
 import { ActivityIndicator } from "react-native-paper";
 import { useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
+import Loading from "../../components/Loading";
 
 const data = [
   { label: "FBA", value: "fba" },
@@ -112,12 +113,7 @@ const EditTrigger = ({ navigation, route }) => {
 
   return (
     <SafeAreaView>
-      {isLoading ? (
-        <>
-          <View className="flex-1 absolute h-full w-full z-[999] bg-slate-600 opacity-10"></View>
-          <ActivityIndicator className=" flex-1 absolute top-1/2 right-1/2 z-50" />
-        </>
-      ) : null}
+      {isLoading ? <Loading /> : null}
       <ScrollView>
         {/* //* START TRIGGER SET */}
 

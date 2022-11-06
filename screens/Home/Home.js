@@ -6,7 +6,7 @@ import {
 } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import { Image, Text } from "react-native";
+import { Image, View } from "react-native";
 import NavBar from "../../components/NavBar";
 import { assets, FONTS, SIZES } from "../../constants";
 import Cart from "../cart/Cart";
@@ -19,7 +19,7 @@ import PrivacyPolicy from "../privacyPolicy/PrivacyPolicy";
 import TermsOfUse from "../termsOfUse/TermsOfUse";
 import Triggers from "../triggers/Triggers";
 import EditTrigger from "../triggers/EditTrigger";
-import { login, logout } from "../../features/userSlice";
+import { login, reset } from "../../features/userSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import { initializeCartRedux } from "../../features/cardSlice";
@@ -27,7 +27,8 @@ import Toast from "react-native-root-toast";
 import Teams from "../teams/Teams";
 import AddMember from "../teams/AddMember";
 import Vendors from "../vendors/Vendors";
-import TriggerSetCard from "../triggers/TriggerSetCard";
+import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
+import Profile from "../profile/Profile";
 
 const Drawer = createDrawerNavigator();
 
@@ -38,7 +39,7 @@ function Home({ navigation, route }) {
   async function signOut() {
     try {
       await AsyncStorage.clear();
-      dispatch(logout());
+      await dispatch(reset());
       navigation.replace("FIRST LAUNCH");
     } catch (error) {
       navigation.replace("FIRST LAUNCH");
@@ -88,10 +89,53 @@ function Home({ navigation, route }) {
         }}
         drawerContent={(props) => {
           return (
-            <DrawerContentScrollView {...props}>
-              <DrawerItemList {...props} />
-              <DrawerItem label="Sign Out" onPress={signOut} />
-            </DrawerContentScrollView>
+            // <DrawerContentScrollView
+            //   {...props}
+            //   style={{ backgroundColor: "red" }}
+            // >
+            <View className=" py-2 flex-1 justify-between">
+              <View>
+                <DrawerItemList {...props} />
+              </View>
+              {!user?.accessToken ? (
+                <View>
+                  <DrawerItem
+                    label="Sign In"
+                    onPress={() => navigation.navigate("FIRST LAUNCH")}
+                    style={{
+                      bottom: 0,
+                    }}
+                    labelStyle={{
+                      fontFamily: FONTS.JosefinSansBold,
+                      fontSize: SIZES.medium,
+                    }}
+                    icon={() => (
+                      <MaterialIcons name="logout" size={24} color="black" />
+                    )}
+                  />
+                </View>
+              ) : null}
+              {user?.accessToken ? (
+                <View>
+                  <DrawerItem
+                    label="Sign Out"
+                    onPress={signOut}
+                    style={{
+                      bottom: 0,
+                    }}
+                    labelStyle={{
+                      fontFamily: FONTS.JosefinSansBold,
+                      fontSize: SIZES.medium,
+                    }}
+                    icon={() => (
+                      <MaterialIcons name="logout" size={24} color="black" />
+                    )}
+                  />
+                </View>
+              ) : null}
+            </View>
+
+            // {/* </DrawerContentScrollView> */}
           );
         }}
       >
@@ -128,62 +172,67 @@ function Home({ navigation, route }) {
           }}
         />
 
-        {
-          // user?.accessToken
-          // &&
-          <Drawer.Screen
-            name="TRIGGERS"
-            component={Triggers}
-            options={{
-              drawerIcon: () => (
-                <Image
-                  source={assets.ISBN}
-                  resizeMode="contain"
-                  className="w-[25px] h-[25px]"
-                />
-              ),
+        {user?.accessToken && (
+          <>
+            <Drawer.Screen
+              name="PROFILE"
+              component={Profile}
+              options={{
+                drawerIcon: () => (
+                  <Ionicons
+                    name="ios-settings-outline"
+                    size={24}
+                    color="black"
+                  />
+                ),
 
-              drawerLabelStyle: {
-                fontFamily: FONTS.JosefinSansBold,
-                fontSize: SIZES.medium,
-              },
-            }}
-          />
-        }
+                drawerLabelStyle: {
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.medium,
+                },
+              }}
+            />
+            <Drawer.Screen
+              name="TRIGGERS"
+              component={Triggers}
+              options={{
+                drawerIcon: () => (
+                  <MaterialIcons name="touch-app" size={24} color="black" />
+                ),
+
+                drawerLabelStyle: {
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.medium,
+                },
+              }}
+            />
+            <Drawer.Screen
+              name="TEAMS"
+              component={Teams}
+              options={{
+                drawerIcon: () => (
+                  <Ionicons name="people-outline" size={24} color="black" />
+                ),
+                drawerLabelStyle: {
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.medium,
+                },
+              }}
+            />
+          </>
+        )}
         <Drawer.Screen
           name="VENDORS"
           component={Vendors}
           options={{
-            drawerIcon: () => (
-              <Image
-                source={assets.faq}
-                resizeMode="contain"
-                className="w-[25px] h-[25px]"
-              />
-            ),
+            drawerIcon: () => <Entypo name="shop" size={24} color="black" />,
             drawerLabelStyle: {
               fontFamily: FONTS.JosefinSansBold,
               fontSize: SIZES.medium,
             },
           }}
         />
-        <Drawer.Screen
-          name="TEAMS"
-          component={Teams}
-          options={{
-            drawerIcon: () => (
-              <Image
-                source={assets.faq}
-                resizeMode="contain"
-                className="w-[25px] h-[25px]"
-              />
-            ),
-            drawerLabelStyle: {
-              fontFamily: FONTS.JosefinSansBold,
-              fontSize: SIZES.medium,
-            },
-          }}
-        />
+
         <Drawer.Screen
           name="FAQs"
           component={Faq}

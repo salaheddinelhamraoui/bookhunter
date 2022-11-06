@@ -11,7 +11,6 @@ import {
 import { TextInput } from "react-native-paper";
 import Toast from "react-native-root-toast";
 import { FONTS } from "../../constants";
-// import { FontAwesome } from "@expo/vector-icons";
 import { signInAPI } from "../../utils/auth.service";
 
 function SignIn({ navigation }) {
@@ -48,11 +47,7 @@ function SignIn({ navigation }) {
         }
         break;
       case "PWD":
-        if (
-          !containNumber.test(str) ||
-          !containSpecialCaractere.test(str) ||
-          str.length < 8
-        ) {
+        if (str.length < 8) {
           setIsValidPwd(false);
           setPassword(str);
           setErrMsg("Invalid Password");
