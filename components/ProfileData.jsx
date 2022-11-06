@@ -7,8 +7,9 @@ import { FONTS, SIZES } from "../constants";
 
 function ProfileData({ data, userData }) {
   const [newUserData, setNewUserData] = useState();
+
   useEffect(() => {
-    setNewUserData(userData);
+    setNewUserData({ ...userData.subscription, ...userData.user });
   }, [userData]);
   return (
     <View className="bg-white p-6 rounded-md shadow-md shadow-gray-300 m-4">
@@ -20,6 +21,7 @@ function ProfileData({ data, userData }) {
       </Text>
       <View>
         <TextInput
+          disabled
           onChangeText={(text) =>
             setNewUserData((prev) => {
               return {
@@ -36,6 +38,7 @@ function ProfileData({ data, userData }) {
       </View>
       <View>
         <TextInput
+          disabled
           onChangeText={(text) =>
             setNewUserData((prev) => {
               return {
@@ -52,6 +55,7 @@ function ProfileData({ data, userData }) {
       </View>
       <View>
         <TextInput
+          disabled
           onChangeText={(text) =>
             setNewUserData((prev) => {
               return {
@@ -68,6 +72,7 @@ function ProfileData({ data, userData }) {
       </View>
       <View>
         <Dropdown
+          disabled
           data={data}
           maxHeight={300}
           labelField="label"

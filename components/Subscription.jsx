@@ -12,9 +12,17 @@ function Subscription({ sub }) {
       Alert.alert(`Can't open this URL: ${url}`);
     }
   }, []);
+
+  const convertDate = (ms) => {
+    const month = new Date(ms * 1000).getMonth() + 1;
+    const day = new Date(ms * 1000).getDate();
+    const year = new Date(ms * 1000).getFullYear();
+    return `${month}/${day}/${year}`;
+  };
+
   return (
     <View className="bg-white p-6 rounded-md shadow-md shadow-gray-300 m-4">
-      {!sub?.plan ? (
+      {!sub?.subscription?.plan ? (
         <>
           <Text
             style={{ fontFamily: FONTS.JosefinSansBold }}
@@ -40,22 +48,31 @@ function Subscription({ sub }) {
           </View>
         </>
       ) : null}
-      {sub?.plan ? (
+      {sub?.subscription?.plan ? (
         <>
           <Text
             style={{ fontFamily: FONTS.JosefinSansBold }}
             className="text-2xl text-center"
           >
-            {sub.plan}
+            {sub?.subscription?.plan}
           </Text>
           <View className="flex items-center">
             <Text
               style={{ fontFamily: FONTS.JosefinSansBold }}
-              className={`text-lg text-center w-28 text-white ${
-                sub.status === "active" ? "bg-green-500" : "bg-red-500"
+              className={`text-lg text-center w-28 text-white my-2 ${
+                sub?.subscription?.status === "active"
+                  ? "bg-green-500"
+                  : "bg-red-500"
               }`}
             >
-              {sub.status}
+              {sub?.subscription?.status}
+            </Text>
+            <Text
+              style={{ fontFamily: FONTS.JosefinSansBold }}
+              className={`text-lg text-center my-2`}
+            >
+              Next Payment:{" "}
+              {convertDate(sub?.strapi?.data[0]?.current_period_end)}
             </Text>
           </View>
         </>

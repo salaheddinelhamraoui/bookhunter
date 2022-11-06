@@ -26,53 +26,45 @@ const data_2 = [
   { label: "Database + Live", value: "dbl" },
 ];
 
-const AddMember = () => {
+const EditMember = ({ route }) => {
+  const oldMember = route.params?.member;
   const navigation = useNavigation();
   const user = useSelector((state) => state.userSlice.data);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [member, setMember] = useState({
-    firstName: "",
-    lastName: "",
-    username: "",
-    email: "",
-    role: "...",
-    type: "...",
-    counter: 0,
-    subID: "",
-  });
+  const [member, setMember] = useState(oldMember);
 
-  const addNewMember = async () => {
-    setIsLoading(true);
-    try {
-      const data = await setSubId();
-      const userData = await getCounter();
-      await setMember((prev) => {
-        return {
-          ...prev,
-          subID: data?.id,
-          counter: userData?.counter,
-        };
-      });
-      const { message } = await addMember(user.id, member);
-      Toast.show(message);
-      navigation.navigate("TEAMS");
-    } catch (error) {
-      Toast.show("Invalid fields, Please try again!");
-    } finally {
-      setIsLoading(false);
-      setMember({
-        firstName: "",
-        lastName: "",
-        username: "",
-        email: "",
-        role: "...",
-        type: "...",
-        counter: 0,
-        subID: "",
-      });
-    }
-  };
+  // const addNewMember = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const data = await setSubId();
+  //     const userData = await getCounter();
+  //     await setMember((prev) => {
+  //       return {
+  //         ...prev,
+  //         subID: data?.id,
+  //         counter: userData?.counter,
+  //       };
+  //     });
+  //     const { message } = await addMember(user.id, member);
+  //     Toast.show(message);
+  //     navigation.navigate("TEAMS");
+  //   } catch (error) {
+  //     Toast.show("Invalid fields, Please try again!");
+  //   } finally {
+  //     setIsLoading(false);
+  //     setMember({
+  //       firstName: "",
+  //       lastName: "",
+  //       username: "",
+  //       email: "",
+  //       role: "...",
+  //       type: "...",
+  //       counter: 0,
+  //       subID: "",
+  //     });
+  //   }
+  // };
 
   const setSubId = async () => {
     try {
@@ -102,7 +94,7 @@ const AddMember = () => {
               fontSize: SIZES.medium,
             }}
           >
-            Add New Team Member
+            Edit Member
           </Text>
         </View>
         <View className="flex flex-col bg-white mx-4 my-4 rounded-lg px-4 py-4">
@@ -126,6 +118,7 @@ const AddMember = () => {
               mode="outlined"
               label="First Name"
               placeholder="First Name"
+              value={member.firstName}
               className="border-[0.2px] rounded-lg px-2 py-2"
             />
           </View>
@@ -150,6 +143,7 @@ const AddMember = () => {
               mode="outlined"
               label="Last Name"
               placeholder="Last Name"
+              value={member.lastName}
               className="border-[0.2px] rounded-lg px-2 py-2"
             />
           </View>
@@ -163,17 +157,14 @@ const AddMember = () => {
               Username
             </Text>
             <TextInput
-              onChangeText={(text) => {
-                setMember((prev) => {
-                  return { ...prev, username: text };
-                });
-              }}
+              editable={false}
               outlineColor={"#6fbfbf"}
               activeOutlineColor={"#393e59"}
               mode="outlined"
               label="Username"
               placeholder="Username"
-              className="border-[0.2px] rounded-lg px-2 py-2"
+              value={member.username}
+              className="border-[0.2px] rounded-lg px-2 py-2 bg-gray-100"
             />
           </View>
           <View className="mt-4">
@@ -194,8 +185,9 @@ const AddMember = () => {
               outlineColor={"#6fbfbf"}
               activeOutlineColor={"#393e59"}
               mode="outlined"
-              label="Username"
-              placeholder="Username"
+              label="Email"
+              placeholder="Email"
+              value={member.email}
               className="border-[0.2px] rounded-lg px-2 py-2"
             />
           </View>
@@ -246,7 +238,10 @@ const AddMember = () => {
             />
           </View>
           <View className="flex items-center justify-center">
-            <TouchableOpacity className="w-[200px]" onPress={addNewMember}>
+            <TouchableOpacity
+              className="w-[200px]"
+              // onPress={addNewMember}
+            >
               <View className="mt-4 bg-[#6fbfbf]  rounded-lg px-4 py-3">
                 <Text
                   className="text-center"
@@ -256,7 +251,7 @@ const AddMember = () => {
                     color: "white",
                   }}
                 >
-                  Add Member
+                  Save
                 </Text>
               </View>
             </TouchableOpacity>
@@ -267,4 +262,4 @@ const AddMember = () => {
   );
 };
 
-export default AddMember;
+export default EditMember;

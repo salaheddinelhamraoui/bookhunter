@@ -24,8 +24,9 @@ function Profile() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if (!isFocused) return;
     setIsLoading(true);
-    getSubscriptionData(user.id)
+    getSubscriptionData(user.id, user.stripe_customer_id)
       .then((res) => {
         setUserProfileSubscription(res);
         setIsLoading(false);

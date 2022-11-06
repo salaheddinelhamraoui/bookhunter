@@ -29,6 +29,7 @@ import AddMember from "../teams/AddMember";
 import Vendors from "../vendors/Vendors";
 import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 import Profile from "../profile/Profile";
+import EditMember from "../teams/EditMember";
 
 const Drawer = createDrawerNavigator();
 
@@ -155,6 +156,14 @@ function Home({ navigation, route }) {
               fontFamily: FONTS.JosefinSansBold,
               fontSize: SIZES.medium,
             },
+          }}
+        />
+        {/* EditMember */}
+        <Drawer.Screen
+          name="EditMember"
+          component={EditMember}
+          options={{
+            drawerItemStyle: { display: "none" },
           }}
         />
         <Drawer.Screen
