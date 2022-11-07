@@ -9,7 +9,7 @@ function ProfileData({ data, userData }) {
   const [newUserData, setNewUserData] = useState();
 
   useEffect(() => {
-    setNewUserData({ ...userData.subscription, ...userData.user });
+    setNewUserData({ ...userData?.subscription, ...userData?.user });
   }, [userData]);
   return (
     <View className="bg-white p-6 rounded-md shadow-md shadow-gray-300 m-4">
