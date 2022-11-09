@@ -84,7 +84,7 @@ const verifyIfISBNLong = (isbn) => {
   } else return isbn;
 };
 
-function convISBN13toISBN10(str) {
+export function convISBN13toISBN10(str) {
   var s;
   var c;
   var checkDigit = 0;

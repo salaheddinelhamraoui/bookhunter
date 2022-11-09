@@ -53,3 +53,7 @@ export const updateTriggerById = (triggerId, triggerData) => {
 export const deleteTriggerById = (triggerId) => {
   return axios.delete(`${API}deleteTrigger/${triggerId}`);
 };
+
+export const triggersResult = (isbn) => {
+  return axios.post(`${API}triggersResult/`, { isbn });
+};

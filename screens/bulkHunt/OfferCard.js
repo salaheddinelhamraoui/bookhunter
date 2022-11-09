@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput, Image, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native'
 import { FONTS, SIZES, assets } from "../../constants";
 
 const OfferCard = ({ bg }) => {

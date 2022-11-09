@@ -30,7 +30,7 @@ import Vendors from "../vendors/Vendors";
 import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 import Profile from "../profile/Profile";
 import EditMember from "../teams/EditMember";
-import BulkOffer from "../bulkOffer/BulkOffer";
+import BulkOffer from "../bulkHunt/BulkHunt";
 
 const Drawer = createDrawerNavigator();
 
@@ -40,10 +40,11 @@ function Home({ navigation, route }) {
 
   async function signOut() {
     try {
-      await AsyncStorage.clear();
       await dispatch(reset());
+      await AsyncStorage.clear();
       navigation.replace("FIRST LAUNCH");
     } catch (error) {
+      await dispatch(reset());
       navigation.replace("FIRST LAUNCH");
       console.log(error);
     }
@@ -76,6 +77,7 @@ function Home({ navigation, route }) {
   }
 
   useEffect(() => {
+    console.log(user);
     dispatch(login(user));
     initializeCart();
   }, [user]);
