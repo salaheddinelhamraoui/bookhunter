@@ -1,8 +1,18 @@
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
-import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import {
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  Dimensions,
+} from "react-native";
 import { useDispatch } from "react-redux";
 import { addToCard } from "../features/cardSlice";
+
+const windowWidth = Dimensions.get("window").width;
 
 function CardModal({ data, modalVisible, setModalVisible }) {
   const dispatch = useDispatch();
@@ -50,7 +60,14 @@ function CardModal({ data, modalVisible, setModalVisible }) {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    justifyContent: "center",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: [
+      {
+        translateX: -windowWidth / 2.2,
+      },
+    ],
     alignItems: "center",
     marginTop: 22,
   },

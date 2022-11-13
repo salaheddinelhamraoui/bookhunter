@@ -35,7 +35,6 @@ const OfferCard = ({ index, data, salesRank, huntScore }) => {
   }
 
   function addToStore(quantity, vendor) {
-    console.log(vendor);
     const vendorPrice = Number(vendor?.price.replace("$", ""));
     console.log(vendorPrice);
     try {
