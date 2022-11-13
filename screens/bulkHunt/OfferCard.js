@@ -1,12 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  View,
-  Text,
-  TextInput,
-  Image,
-  TouchableOpacity,
-  Pressable,
-} from "react-native";
+import { View, Text, TextInput, Image, Pressable } from "react-native";
 import Toast from "react-native-root-toast";
 import { useDispatch } from "react-redux";
 import { SIZES } from "../../constants";
@@ -20,9 +13,33 @@ const OfferCard = ({ index, data, salesRank, huntScore }) => {
 
   // AsyncStorage.clear();
 
+  function VendorQuantity(vendor) {
+    switch (vendor?.vendorName) {
+      case "WinyaBooks":
+        return 5;
+      case "Empire Text":
+        return 2;
+      case "BookToCash":
+        return 1;
+      case "Textbook Maniac":
+        return 10;
+      case "eCampus":
+        return 5;
+      case "sellbackbooks":
+        return 5;
+      case "ValoreBooks":
+        return vendor?.quantity[0] || 0;
+      default:
+        return 1;
+    }
+  }
+
   function addToStore(quantity, vendor) {
+    console.log(vendor);
+    const vendorPrice = Number(vendor?.price.replace("$", ""));
+    console.log(vendorPrice);
     try {
-      if (quantity[0] !== "0") {
+      if (vendorPrice > 0) {
         const newData = {
           type,
           bookData: bookData[0],
@@ -122,34 +139,40 @@ const OfferCard = ({ index, data, salesRank, huntScore }) => {
       </Text>
       <View className="ml-4 flex flex-row items-center">
         {Vendors?.length
-          ? Vendors.map((vendor, index) =>
-              vendor?.price !== "0" && vendor?.price !== "$0" ? (
-                <Pressable
-                  onPress={() => addToStore(vendor?.quantity, vendor)}
-                  className="w-24 flex flex-col"
-                  key={vendor.vendorName + vendor.price + index}
-                >
-                  <View className="flex flex-row items-center">
-                    <Image
-                      source={{
-                        uri: "https://bookhunter.com" + vendor?.vendorLogo,
-                      }}
-                      resizeMode="contain"
-                      className="w-[20px] h-[20px] mr-2"
-                    />
-                    <Text>{vendor?.price}</Text>
-                  </View>
-                  <Text
-                    style={{
-                      fontSize: SIZES.base,
-                    }}
-                    className="text-center"
-                  >
-                    Max Qty: {vendor?.quantity}
-                  </Text>
-                </Pressable>
-              ) : null
+          ? Vendors.sort(
+              (a, b) => a?.price?.replace("$", "") < b?.price.replace("$", "")
             )
+              .filter((_, index) => index <= 2)
+              .map(
+                (vendor, index) => (
+                  // vendor?.price !== "0" && vendor?.price !== "$0" ? (
+                  <Pressable
+                    onPress={() => addToStore(vendor?.quantity, vendor)}
+                    className="w-24 flex flex-col"
+                    key={vendor.vendorName + vendor.price + index}
+                  >
+                    <View className="flex flex-row items-center">
+                      <Image
+                        source={{
+                          uri: "https://bookhunter.com" + vendor?.vendorLogo,
+                        }}
+                        resizeMode="contain"
+                        className="w-[20px] h-[20px] mr-2"
+                      />
+                      <Text>{vendor?.price}</Text>
+                    </View>
+                    <Text
+                      style={{
+                        fontSize: SIZES.base,
+                      }}
+                      className="text-center"
+                    >
+                      Max Qty: {VendorQuantity(vendor)}
+                    </Text>
+                  </Pressable>
+                )
+                // ) : null
+              )
           : null}
 
         {/* <Pressable className="w-[80px]" onPress={() => {}}>

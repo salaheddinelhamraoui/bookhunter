@@ -481,27 +481,6 @@ const BulkHunt = () => {
       .finally(() => setIsLoading(false));
   }
 
-  function VendorQuantity(vendorName, quantity) {
-    switch (vendorName) {
-      case "WinyaBooks":
-        return 5;
-      case "Empire Text":
-        return 2;
-      case "BookToCash":
-        return 1;
-      case "Textbook Maniac":
-        return 10;
-      case "eCampus":
-        return 5;
-      case "sellbackbooks":
-        return 5;
-      case "ValoreBooks":
-        return quantity[0] || 0;
-      default:
-        return 1;
-    }
-  }
-
   function handleSearch(text) {
     const inputs = text.split(",");
     setInputList(inputs);
@@ -526,11 +505,14 @@ const BulkHunt = () => {
               fontSize: SIZES.extraMedium,
             }}
           >
-            Bulk Offer
+            Bulk Hunt
           </Text>
           <Searchbar
-            placeholder="978...,278..,..."
+            placeholder="978...,278.."
+            onSubmitEditing={handleSearchButton}
             className=" my-4"
+            value={inputList}
+            placeholderTextColor={"#999"}
             onChangeText={handleSearch}
           />
           <TouchableOpacity onPress={handleSearchButton}>
