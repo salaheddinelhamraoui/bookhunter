@@ -2,20 +2,17 @@ import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native'
 import { FONTS, SIZES, assets } from "../../constants";
 import { useNavigation } from "@react-navigation/native";
 
-const OfferCard = ({ bg, books, scoreState, index, shipping, profitFBA, salesRank, ave, slaveEdit, price, masterVendors, saveSlaveEdit, isbn }) => {
-
-    console.log('----------------------------------------');
-    console.log("masterVendors", masterVendors);
+const OfferCard = ({ bg, books, scoreState, index, shipping, profitFBA, salesRank, ave, slaveEdit, price, masterVendors, saveSlaveEdit, isbn, selectionType }) => {
 
     const navigation = useNavigation();
 
     return (
-        <View className={`flex flex-row px-4 py-2 bg-white ${bg}`}>
+        <View className={`flex flex-row px-4  bg-white ${bg}`}>
             <Text
                 style={{
                     fontSize: SIZES.small,
                 }}
-                className="w-32 text-center"
+                className="w-32 text-center py-2"
             >{books[0].book.title}
                 {"\n"}
                 <Text className=" text-center pt-1"
@@ -32,13 +29,13 @@ const OfferCard = ({ bg, books, scoreState, index, shipping, profitFBA, salesRan
                 style={{
                     fontSize: SIZES.medium,
                 }}
-                className="text-center w-32"
+                className="text-center w-32 py-2"
             >{scoreState[index]}</Text>
             <Text
                 style={{
                     fontSize: SIZES.medium,
                 }}
-                className="text-center w-32"
+                className="text-center w-32 py-2"
             >{isNaN(profitFBA[index])
                 ? 0
                 : parseFloat(
@@ -49,34 +46,34 @@ const OfferCard = ({ bg, books, scoreState, index, shipping, profitFBA, salesRan
                 style={{
                     fontSize: SIZES.medium,
                 }}
-                className="text-center w-32"
+                className="text-center w-32 py-2"
             >{salesRank[index]}</Text>
             <Text
                 style={{
                     fontSize: SIZES.medium,
                 }}
-                className="text-center w-32"
+                className="text-center w-32 py-2"
             >{ave[index]}</Text>
 
             <Text
                 style={{
                     fontSize: SIZES.medium,
                 }}
-                className="text-center w-16"
+                className="text-center w-16 py-2"
             >1</Text>
             <Text
                 style={{
                     fontSize: SIZES.medium,
                 }}
-                className="text-center w-32"
+                className={`text-center w-32 ${selectionType === 'amazon' ? 'bg-red-300' : ''} py-2`}
             >{isNaN(price[index])
                 ? 0
                 : parseFloat(
                     price[index] + shipping[index]
                 ).toFixed(2)}</Text>
-            {masterVendors && <View className="ml-4 flex flex-row">
-                <View className="w-32 flex flex-col">
-                    <View className="flex flex-row items-center">
+            {masterVendors && <View className="ml-4 flex flex-row ">
+                <View className={`w-40 flex flex-col ${selectionType === 'vendors' ? 'bg-red-300' : ''} py-2 px-2`}>
+                    <View className="flex flex-row items-center  justify-center">
                         <Image
                             source={{ uri: 'https://www.bookhunter.com' + masterVendors[0].vendorLogo }}
                             resizeMode="contain"
@@ -96,8 +93,8 @@ const OfferCard = ({ bg, books, scoreState, index, shipping, profitFBA, salesRan
                         {masterVendors[0].price}
                     </Text>
                 </View>
-                <View className="w-36 flex flex-col">
-                    <View className="flex flex-row items-center">
+                <View className="w-40 flex flex-col py-2 px-2">
+                    <View className="flex flex-row items-center justify-center">
                         <Image
                             source={{ uri: 'https://www.bookhunter.com' + masterVendors[1].vendorLogo }}
                             resizeMode="contain"
@@ -117,8 +114,8 @@ const OfferCard = ({ bg, books, scoreState, index, shipping, profitFBA, salesRan
                         {masterVendors[1].price}
                     </Text>
                 </View>
-                <View className="w-36 flex flex-col">
-                    <View className="flex flex-row items-center">
+                <View className="w-40 flex flex-col py-2 px-2">
+                    <View className="flex flex-row items-center justify-center">
                         <Image
                             source={{ uri: 'https://www.bookhunter.com' + masterVendors[2].vendorLogo }}
                             resizeMode="contain"
@@ -138,7 +135,7 @@ const OfferCard = ({ bg, books, scoreState, index, shipping, profitFBA, salesRan
                         {masterVendors[2].price}
                     </Text>
                 </View>
-                <TouchableOpacity className="w-[160px]" onPress={() => {
+                <TouchableOpacity className="w-[160px] py-2" onPress={() => {
                     navigation.navigate("ISBN RESULT", {
                         isbn: isbn,
                         type: "sell",

@@ -64,8 +64,8 @@ function SellerCard({ vendor, type, bookData }) {
           <TouchableOpacity
             onPress={() => setModalVisible(true)}
             className={`flex-1 justify-center px-5 rounded-md ${parseFloat(price.replace("$", "")) === 0
-                ? "bg-gray-400"
-                : "bg-red-400"
+              ? "bg-gray-400"
+              : "bg-red-400"
               }`}
             disabled={parseFloat(price.replace("$", "")) === 0 ? true : false}
           >
@@ -87,12 +87,14 @@ function SellerCard({ vendor, type, bookData }) {
             </Text>
           </TouchableOpacity>
         )}
+
       </TouchableOpacity>
       <CardModal
         data={DATA}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />
+
     </>
   );
 }

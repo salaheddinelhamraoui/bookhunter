@@ -56,6 +56,7 @@ const BulkOffer = () => {
     const [scoreState, setScoreState] = useState([]);
     const [selectedListID, setSelectedListID] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectionType, setSelectionType] = useState('vendors')
 
     const user = useSelector((state) => state.userSlice.data);
 
@@ -225,6 +226,7 @@ const BulkOffer = () => {
     function sellAllToVendors() {
         setListIndex([]);
         calculatePrice();
+        setSelectionType('vendors')
     }
 
     useEffect(() => {
@@ -302,9 +304,11 @@ const BulkOffer = () => {
                 tempTotal += price[i] + shipping[i] * (slaveEdit[i] || 1);
             }
             setTotalPrice(tempTotal);
-            setOffer((totalPrice * tempTotal) / 100);
+            // setOffer((totalPrice * tempTotal) / 100);
             setId(2);
         }
+
+        setSelectionType('amazon')
     }
 
     useEffect(() => {
@@ -428,9 +432,18 @@ const BulkOffer = () => {
     }
 
     function handleSearchButton() {
+        setTotalPrice(0);
+        setMasterVendors([]);
         setData([]);
-        setSalesRank([]);
-        setAve([]);
+        setOffer(0);
+        setProfitFBA([]);
+        setPercentage(0);
+        // setInputList([]);
+        // setInput([]);
+        setPrice([]);
+        setVendors([]);
+        setBookStatus([]);
+        setVoted([]);
         submit();
     }
 
@@ -462,9 +475,7 @@ const BulkOffer = () => {
                             borderRadius: 10,
                             fontFamily: FONTS.JosefinSansRegular,
                         }}
-                        onTouchCancel={() => {
-                            console.log(';;;;;;sss');
-                        }}
+
                     />
                     <TouchableOpacity className="" onPress={handleSearchButton}>
                         <View className=" bg-[#6fbfbf]  rounded-lg px-4 py-3">
@@ -628,7 +639,7 @@ const BulkOffer = () => {
                     </View>
                     <View className="flex flex-row justify-between mt-2">
                         <View className="w-[48%]">
-                            <TouchableOpacity className="" onPress={() => { }}>
+                            <TouchableOpacity className="" onPress={sellAllToAmazon}>
                                 <View className="mt-4 bg-[#6fbfbf]  rounded-lg px-4 py-3">
                                     <Text
                                         className="text-center"
@@ -644,7 +655,7 @@ const BulkOffer = () => {
                             </TouchableOpacity>
                         </View>
                         <View className="w-[48%]">
-                            <TouchableOpacity className="" onPress={() => { }}>
+                            <TouchableOpacity className="" onPress={sellAllToVendors}>
                                 <View className="mt-4 bg-[#6fbfbf]  rounded-lg px-4 py-3">
                                     <Text
                                         className="text-center"
@@ -742,8 +753,22 @@ const BulkOffer = () => {
                         </View>
                         {data.length > 0 &&
                             data.map(
-                                (books, index) => <OfferCard bg="bg-gray-200" key={index} books={books} scoreState={scoreState} index={index} profitFBA={profitFBA} shipping={shipping} salesRank={salesRank} ave={ave} slaveEdit={slaveEdit} price={price} masterVendors={masterVendors[index]} saveSlaveEdit={saveSlaveEdit} isbn={data[index][0].book.isbn13.split(",")[0]} />)}
-
+                                (books, index) => <OfferCard 
+                                bg="bg-gray-200" 
+                                key={index} 
+                                books={books} 
+                                scoreState={scoreState} 
+                                index={index} 
+                                profitFBA={profitFBA} 
+                                shipping={shipping} 
+                                salesRank={salesRank} 
+                                ave={ave} 
+                                slaveEdit={slaveEdit} 
+                                price={price} 
+                                masterVendors={masterVendors[index]} 
+                                saveSlaveEdit={saveSlaveEdit} 
+                                isbn={data[index][0].book.isbn13.split(",")[0]} 
+                                selectionType={selectionType} />)}
                     </View>
                 </ScrollView>}
 
