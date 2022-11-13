@@ -1,8 +1,67 @@
-import { View, Text, TextInput, Image, TouchableOpacity } from "react-native";
-import { FONTS, SIZES, assets } from "../../constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
+import Toast from "react-native-root-toast";
+import { useDispatch } from "react-redux";
+import { SIZES } from "../../constants";
+import { addToCard } from "../../features/cardSlice";
+
+const type = "sell";
 
 const OfferCard = ({ index, data, salesRank, huntScore }) => {
   const { bookData, MasterVendors, Vendors, profitFBA } = data;
+  const dispatch = useDispatch();
+
+  // AsyncStorage.clear();
+
+  function addToStore(quantity, vendor) {
+    try {
+      if (quantity[0] !== "0") {
+        const newData = {
+          type,
+          bookData: bookData[0],
+          vendor,
+        };
+        dispatch(addToCard(newData));
+        Toast.show("added to cart");
+      } else {
+        Toast.show("There is no offer available", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.CENTER,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+          containerStyle: {
+            backgroundColor: "#FF8787",
+            height: 60,
+            justifyContent: "center",
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      Toast.show("There is no offer available", {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.CENTER,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+        containerStyle: {
+          backgroundColor: "#FF8787",
+          height: 60,
+          justifyContent: "center",
+        },
+      });
+    }
+  }
 
   return (
     <View
@@ -63,38 +122,37 @@ const OfferCard = ({ index, data, salesRank, huntScore }) => {
       </Text>
       <View className="ml-4 flex flex-row items-center">
         {Vendors?.length
-          ? Vendors.map((vendor) => (
-              <>
-                {vendor?.price !== "0" && vendor?.price !== "$0" ? (
-                  <View
-                    className="w-24 flex flex-col"
-                    key={vendor.vendorName + vendor.price}
-                  >
-                    <View className="flex flex-row items-center">
-                      <Image
-                        source={{
-                          uri: "https://bookhunter.com" + vendor?.vendorLogo,
-                        }}
-                        resizeMode="contain"
-                        className="w-[20px] h-[20px] mr-2"
-                      />
-                      <Text>{vendor?.price}</Text>
-                    </View>
-                    <Text
-                      style={{
-                        fontSize: SIZES.base,
+          ? Vendors.map((vendor, index) =>
+              vendor?.price !== "0" && vendor?.price !== "$0" ? (
+                <Pressable
+                  onPress={() => addToStore(vendor?.quantity, vendor)}
+                  className="w-24 flex flex-col"
+                  key={vendor.vendorName + vendor.price + index}
+                >
+                  <View className="flex flex-row items-center">
+                    <Image
+                      source={{
+                        uri: "https://bookhunter.com" + vendor?.vendorLogo,
                       }}
-                      className="text-center"
-                    >
-                      Max Qty: {vendor?.quantity}
-                    </Text>
+                      resizeMode="contain"
+                      className="w-[20px] h-[20px] mr-2"
+                    />
+                    <Text>{vendor?.price}</Text>
                   </View>
-                ) : null}
-              </>
-            ))
+                  <Text
+                    style={{
+                      fontSize: SIZES.base,
+                    }}
+                    className="text-center"
+                  >
+                    Max Qty: {vendor?.quantity}
+                  </Text>
+                </Pressable>
+              ) : null
+            )
           : null}
 
-        {/* <TouchableOpacity className="w-[80px]" onPress={() => {}}>
+        {/* <Pressable className="w-[80px]" onPress={() => {}}>
           <View className="bg-[#6fbfbf]  rounded-lg py-2 ">
             <Text
               className="text-center"
@@ -107,7 +165,7 @@ const OfferCard = ({ index, data, salesRank, huntScore }) => {
               Sell
             </Text>
           </View>
-        </TouchableOpacity> */}
+        </Pressable> */}
       </View>
     </View>
   );

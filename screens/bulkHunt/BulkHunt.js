@@ -16,6 +16,7 @@ import {
   triggersResult,
 } from "../../utils/Triggers.service";
 import OfferCard from "./OfferCard";
+import Loading from "../../components/Loading";
 
 const BulkHunt = () => {
   const user = useSelector((state) => state.userSlice.data);
@@ -38,7 +39,7 @@ const BulkHunt = () => {
   const [filteredDate, setFilteredDate] = useState([]);
   const [weight, setWeight] = useState([]);
   const [fba, setFba] = useState([]);
-  const [inputList, setInputList] = useState(["9780393918281"]);
+  const [inputList, setInputList] = useState([]);
   const [autoSearch, setAutoSearch] = useState(false);
   const [fulfillement, setFulfillement] = useState("FBA");
   const [items, setItems] = useState([]);
@@ -55,27 +56,27 @@ const BulkHunt = () => {
   const [amazonPrice, setAmazonPrice] = useState(null);
   const [searchInput, setSearchInput] = useState([]);
 
-  const isbn = "9780393918281";
-  console.log(inputList);
+  // const isbn = "9781524911959,9780470533314,9781111825867";
+  // const isbn = null;
+  // useEffect(() => {
+  //   if (isbn) {
+  //     setInputList(isbn.split(","));
+  //     setAutoSearch(true);
+  //   }
+  // }, [isbn, inputList]);
 
-  useEffect(() => {
-    if (isbn) {
-      setInputList(isbn.split(","));
-      setAutoSearch(true);
-    }
-  }, [isbn]);
-
-  useEffect(() => {
-    if (autoSearch) {
-      submit();
-    }
-  }, [autoSearch]);
+  // useEffect(() => {
+  //   if (autoSearch) {
+  //     submit();
+  //   }
+  // }, [autoSearch]);
 
   // useCallback((data) => {
   //   setInputList(data);
   // }, []);
 
   useEffect(() => {
+    if (!inputList.length) return;
     //get data from triggers database
     const user_Id = user?.id;
     getTriggersSet(user_Id)
@@ -102,6 +103,7 @@ const BulkHunt = () => {
   }, []);
 
   useEffect(() => {
+    if (!inputList.length) return;
     if (selectedValue.length) {
       let tempArray = [];
       selectedValue.map((item, index) => {
@@ -133,6 +135,7 @@ const BulkHunt = () => {
   }, [selectedValue]);
 
   useEffect(() => {
+    if (!inputList.length) return;
     // select the most profitable price based on the active trigger parameters
     let score = [];
     filteredDate.map((item, index) => {
@@ -180,6 +183,7 @@ const BulkHunt = () => {
   }, [triggers]);
 
   useEffect(() => {
+    if (!inputList.length) return;
     if (selectedFBA) {
       if (BBCompare == "Yes") {
         setSelectedValue((oldArray) => [
@@ -252,12 +256,12 @@ const BulkHunt = () => {
   function getBookStatus(isbn, index) {
     let statusList = [...bookStatus];
     let voteList = [...voted];
-    getRestrictedById(isbn)
-      .then((result) => {
-        statusList[index] = result.data.status;
-        voteList[index] = result.data.usersId.includes(user?.id);
-      })
-      .catch((err) => console.log(JSON.stringify(err)));
+    // getRestrictedById(isbn)
+    //   .then((result) => {
+    //     statusList[index] = result.data.status;
+    //     voteList[index] = result.data.usersId.includes(user?.id);
+    //   })
+    //   .catch((err) => console.log(JSON.stringify(err)));
     setBookStatus(statusList);
     setVoted(voteList);
   }
@@ -395,7 +399,7 @@ const BulkHunt = () => {
   const limitMessage = (message) => Toast.show(message);
 
   async function submit() {
-    console.log("SUBMIT", inputList);
+    setIsLoading(true);
     searchLimit(user?.id, "bulkHuntLimit", inputList.length, "")
       .then(async (result) => {
         if (result.data.status) {
@@ -437,18 +441,8 @@ const BulkHunt = () => {
             }
             await bulkHunt(ISBN || inputList[i])
               .then((result) => {
-                console.log(result);
                 setData((prev) => {
                   return [...prev, result.data];
-                  // return {
-                  //   masterVendors: [
-                  //     ...prev.masterVendors,
-                  //     result.data.MasterVendors,
-                  //   ],
-                  //   bookData: [...prev.bookData, result.data.bookData],
-                  //   vendors: [...prev.vendors, result.data.Vendors],
-                  //   profitFBA: [...prev.profitFBA, result.data.profitFBA],
-                  // };
                 });
                 filterTrackerDate(result.data.tracker);
                 setSalesRank((oldArray) => [
@@ -483,7 +477,8 @@ const BulkHunt = () => {
           limitMessage(result.data.message);
         }
       })
-      .catch((err) => console.log(JSON.stringify(err)));
+      .catch((err) => console.log(JSON.stringify(err)))
+      .finally(() => setIsLoading(false));
   }
 
   function VendorQuantity(vendorName, quantity) {
@@ -508,12 +503,11 @@ const BulkHunt = () => {
   }
 
   function handleSearch(text) {
-    const inputs = text.split(" ");
+    const inputs = text.split(",");
     setInputList(inputs);
   }
 
   function handleSearchButton() {
-    console.log("SEARCH");
     setData([]);
     setSalesRank([]);
     setAve([]);
@@ -522,6 +516,7 @@ const BulkHunt = () => {
 
   return (
     <>
+      {isLoading ? <Loading /> : null}
       <ScrollView>
         <View className="mx-4 mt-4 bg-white px-4 py-4 rounded-lg">
           <Text
@@ -534,7 +529,7 @@ const BulkHunt = () => {
             Bulk Offer
           </Text>
           <Searchbar
-            placeholder="ISBN"
+            placeholder="978...,278..,..."
             className=" my-4"
             onChangeText={handleSearch}
           />

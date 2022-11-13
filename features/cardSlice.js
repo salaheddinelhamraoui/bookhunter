@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice } from "@reduxjs/toolkit";
-import Toast from "react-native-root-toast";
 import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
