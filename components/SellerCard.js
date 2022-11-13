@@ -34,11 +34,7 @@ function SellerCard({ vendor, type, bookData }) {
         }}
         className="bg-white flex-row justify-between align-middle rounded-lg"
       >
-        <CardModal
-          data={DATA}
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-        />
+
         <View className="flex flex-row   w-[70%]">
           <Image
             source={{ uri: API + vendorLogo }}
@@ -67,11 +63,10 @@ function SellerCard({ vendor, type, bookData }) {
         {parseFloat(price.replace("$", "")) !== 0 && (
           <TouchableOpacity
             onPress={() => setModalVisible(true)}
-            className={`flex-1 justify-center px-5 rounded-md ${
-              parseFloat(price.replace("$", "")) === 0
+            className={`flex-1 justify-center px-5 rounded-md ${parseFloat(price.replace("$", "")) === 0
                 ? "bg-gray-400"
                 : "bg-red-400"
-            }`}
+              }`}
             disabled={parseFloat(price.replace("$", "")) === 0 ? true : false}
           >
             <Text
@@ -83,7 +78,7 @@ function SellerCard({ vendor, type, bookData }) {
           </TouchableOpacity>
         )}
         {parseFloat(price.replace("$", "")) === 0 && (
-          <TouchableOpacity onPress={() => {}} className="">
+          <TouchableOpacity onPress={() => { }} className="">
             <Text
               style={{ fontFamily: FONTS.textRegular, fontSize: 13 }}
               className="text-base text-black mr-12"
@@ -93,6 +88,11 @@ function SellerCard({ vendor, type, bookData }) {
           </TouchableOpacity>
         )}
       </TouchableOpacity>
+      <CardModal
+        data={DATA}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </>
   );
 }

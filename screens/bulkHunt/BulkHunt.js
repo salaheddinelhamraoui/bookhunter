@@ -117,7 +117,7 @@ const BulkHunt = () => {
                 fba[index] -
                 triggerSet.buyCost -
                 triggerSet.FBACostPerLBS * weight[index]) *
-                100
+              100
             ) / 100 || 0
           );
         } else {
@@ -126,7 +126,7 @@ const BulkHunt = () => {
           let totalFees = item * REFERRAL_FEE + CLOSSING_FEE;
           tempArray.push(
             Math.round((item - totalFees - triggerSet.buyCost - MFCPP) * 100) /
-              100 || 0
+            100 || 0
           );
         }
       });
@@ -573,14 +573,14 @@ const BulkHunt = () => {
             </View>
             {data?.length
               ? data?.map((dataList, i) => (
-                  <OfferCard
-                    key={i}
-                    index={i}
-                    data={dataList}
-                    salesRank={salesRank[i]}
-                    huntScore={huntScore[i]}
-                  />
-                ))
+                <OfferCard
+                  key={i}
+                  index={i}
+                  data={dataList}
+                  salesRank={salesRank[i]}
+                  huntScore={huntScore[i]}
+                />
+              ))
               : null}
           </View>
         </ScrollView>

@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import { getRestrictedById, searchLimit } from "../../utils/Bulk.service";
 import dataBackupService from "../../utils/data-backup.service";
 import bulkOffer from "../../utils/bulk-offer.service";
+import { Searchbar } from "react-native-paper";
+import Loading from "../../components/Loading";
 
 const BulkOffer = () => {
     const [data, setData] = useState([]);
@@ -53,6 +55,7 @@ const BulkOffer = () => {
     const [priceVendors, setPriceVendors] = useState();
     const [scoreState, setScoreState] = useState([]);
     const [selectedListID, setSelectedListID] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const user = useSelector((state) => state.userSlice.data);
 
@@ -62,22 +65,21 @@ const BulkOffer = () => {
         setInputList(values);
     }, [values]);
 
-    let isbn = "9781524911959,9780470533314,9781111825867";
+    // let isbn = "9781524911959,9780470533314,9781111825867";
 
-    useEffect(() => {
-        if (isbn) {
-            setInputList(isbn.split(","));
-            setAutoSearch(true);
-        }
-    }, [isbn]);
+    // useEffect(() => {
+    //     if (isbn) {
+    //         setInputList(isbn.split(","));
+    //         setAutoSearch(true);
+    //     }
+    // }, [isbn]);
 
-    useEffect(() => {
-        submit();
-    }, [autoSearch]);
+    // useEffect(() => {
+    //     submit();
+    // }, [autoSearch]);
 
     async function submit() {
-        console.log('------------------sss------------------')
-        console.log(inputList);
+        setIsLoading(true);
         searchLimit(user.id, "bulkHuntLimit", inputList.length).then(
             async (result) => {
                 if (result.data.status) {
@@ -183,8 +185,10 @@ const BulkOffer = () => {
 
                     }
                     setLoading(false);
+                    setIsLoading(false);
                 } else {
                     limitMessage(result.data.message);
+                    setIsLoading(false);
                 }
             }
         );
@@ -417,11 +421,22 @@ const BulkOffer = () => {
         setId(1);
     }
 
-    console.log('dddddddddd-------------');
-    console.log(totalPrice);
+
+    function handleSearch(text) {
+        const inputs = text.split(",");
+        setInputList(inputs);
+    }
+
+    function handleSearchButton() {
+        setData([]);
+        setSalesRank([]);
+        setAve([]);
+        submit();
+    }
 
     return (
         <>
+            {isLoading ? <Loading /> : null}
             <ScrollView>
                 <View className="mx-4 mt-4 bg-white px-4 py-4 rounded-lg">
                     <Text
@@ -434,8 +449,40 @@ const BulkOffer = () => {
                         Bulk Offer
                     </Text>
                 </View>
+                <View className="mx-4 mt-4 bg-white px-4 py-4 rounded-lg">
+                    <Searchbar
+                        placeholder="978...,278.."
+                        onSubmitEditing={handleSearchButton}
+                        className=" my-4"
+                        value={inputList}
+                        placeholderTextColor={"#999"}
+                        onChangeText={handleSearch}
+                        style={{
+                            backgroundColor: '#fff',
+                            borderRadius: 10,
+                            fontFamily: FONTS.JosefinSansRegular,
+                        }}
+                        onTouchCancel={() => {
+                            console.log(';;;;;;sss');
+                        }}
+                    />
+                    <TouchableOpacity className="" onPress={handleSearchButton}>
+                        <View className=" bg-[#6fbfbf]  rounded-lg px-4 py-3">
+                            <Text
+                                className="text-center"
+                                style={{
+                                    fontFamily: FONTS.JosefinSansBold,
+                                    fontSize: SIZES.font,
+                                    color: "white",
+                                }}
+                            >
+                                Search
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
 
-                <View className="mx-4 my-4 bg-white  pt-4 rounded-lg px-4 py-4 flex flex-col">
+                </View>
+                {data.length > 0 && <View className="mx-4 my-4 bg-white  pt-4 rounded-lg px-4 py-4 flex flex-col">
                     <View className="flex flex-row justify-between">
                         <View className="w-[45%]">
                             <Text
@@ -614,8 +661,9 @@ const BulkOffer = () => {
                         </View>
 
                     </View>
-                </View>
-                <ScrollView horizontal={true} className="mr-4">
+                </View>}
+
+                {data.length > 0 && <ScrollView horizontal={true} className="mr-4">
 
                     <View className="mx-4 my-4 bg-white  pt-4 rounded-lg ">
                         <View className="flex flex-row mb-4 px-4">
@@ -694,10 +742,11 @@ const BulkOffer = () => {
                         </View>
                         {data.length > 0 &&
                             data.map(
-                                (books, index) => <OfferCard bg="bg-gray-200" key={index} books={books} scoreState={scoreState} index={index} profitFBA={profitFBA} shipping={shipping} salesRank={salesRank} ave={ave} slaveEdit={slaveEdit} price={price} masterVendors={masterVendors[index]} saveSlaveEdit={saveSlaveEdit} />)}
+                                (books, index) => <OfferCard bg="bg-gray-200" key={index} books={books} scoreState={scoreState} index={index} profitFBA={profitFBA} shipping={shipping} salesRank={salesRank} ave={ave} slaveEdit={slaveEdit} price={price} masterVendors={masterVendors[index]} saveSlaveEdit={saveSlaveEdit} isbn={data[index][0].book.isbn13.split(",")[0]} />)}
 
                     </View>
-                </ScrollView>
+                </ScrollView>}
+
             </ScrollView>
         </>
     )
