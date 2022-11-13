@@ -57,7 +57,7 @@ function InfoBookCard({ bookData }) {
 
 
       </View>
-      <View className="bg-white rounded-lg px-4 py-4 nt-4 flex flex-row items-center justify-center flex-wrap mb-1">
+      {/* <View className="bg-white rounded-lg px-4 py-4 nt-4 flex flex-row items-center justify-center flex-wrap mb-1">
         <TouchableOpacity className="bg-[#4e8098] px-2 py-2 rounded-lg ">
           <Text className="text-white " style={{ fontFamily: FONTS.JosefinSansBold }}>
             View on Amazon
@@ -73,7 +73,7 @@ function InfoBookCard({ bookData }) {
             Amazon Sellers: 27 from: $4.69
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 }

@@ -1,10 +1,13 @@
 import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native'
 import { FONTS, SIZES, assets } from "../../constants";
+import { useNavigation } from "@react-navigation/native";
 
-const OfferCard = ({ bg, books, scoreState, index, shipping, profitFBA, salesRank, ave, slaveEdit, price, masterVendors, saveSlaveEdit }) => {
+const OfferCard = ({ bg, books, scoreState, index, shipping, profitFBA, salesRank, ave, slaveEdit, price, masterVendors, saveSlaveEdit, isbn }) => {
 
     console.log('----------------------------------------');
     console.log("masterVendors", masterVendors);
+
+    const navigation = useNavigation();
 
     return (
         <View className={`flex flex-row px-4 py-2 bg-white ${bg}`}>
@@ -135,7 +138,12 @@ const OfferCard = ({ bg, books, scoreState, index, shipping, profitFBA, salesRan
                         {masterVendors[2].price}
                     </Text>
                 </View>
-                <TouchableOpacity className="w-[160px]" onPress={() => { }}>
+                <TouchableOpacity className="w-[160px]" onPress={() => {
+                    navigation.navigate("ISBN RESULT", {
+                        isbn: isbn,
+                        type: "sell",
+                    })
+                }}>
                     <View className="bg-[#6fbfbf]  rounded-lg py-2 ">
                         <Text
                             className="text-center"

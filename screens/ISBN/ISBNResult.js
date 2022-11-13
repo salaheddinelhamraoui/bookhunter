@@ -39,21 +39,21 @@ function ISBNResult({ route }) {
             <>
               {type === "buy"
                 ? sortVendorsBuy(data.Vendors).map((vendor, i) => (
-                    <SellerCard
-                      bookData={data.bookData}
-                      type={type}
-                      vendor={vendor}
-                      key={vendor.vendorName + "" + i}
-                    />
-                  ))
+                  <SellerCard
+                    bookData={data.bookData}
+                    type={type}
+                    vendor={vendor}
+                    key={vendor.vendorName + "" + i}
+                  />
+                ))
                 : sortVendorsSell(data.Vendors).map((vendor, i) => (
-                    <SellerCard
-                      bookData={data.bookData}
-                      type={type}
-                      vendor={vendor}
-                      key={vendor.vendorName + "" + i}
-                    />
-                  ))}
+                  <SellerCard
+                    bookData={data.bookData}
+                    type={type}
+                    vendor={vendor}
+                    key={vendor.vendorName + "" + i}
+                  />
+                ))}
             </>
           </ScrollView>
         ) : (
@@ -80,14 +80,14 @@ function ISBNResult({ route }) {
         >
           <TouchableOpacity
             onPress={() => navigation.navigate("ISBN SCANNER")}
-            className="mx-auto bg-greyBlue py-3 px-2 rounded-lg w-[200px]"
+            className="mx-auto bg-greyBlue py-3 px-2 rounded-lg w-[150px]"
           >
             <Text
               style={{
                 fontFamily: FONTS.JosefinSansBold,
                 shadowColor: "#565958",
               }}
-              className="text-base text-center text-white"
+              className="text-[14px] text-center text-white"
             >
               Back To Home Page
             </Text>
@@ -98,14 +98,14 @@ function ISBNResult({ route }) {
                 type,
               })
             }
-            className="mx-auto bg-greyBlue py-3 px-2 rounded-lg w-[200px]"
+            className="mx-auto bg-greyBlue py-3 px-2 rounded-lg w-[150px]"
           >
             <Text
               style={{
                 fontFamily: FONTS.JosefinSansBold,
                 shadowColor: "#565958",
               }}
-              className="text-base text-center text-white"
+              className="text-[15px] text-center text-white"
             >
               Scan Another Book
             </Text>
