@@ -30,7 +30,8 @@ import Vendors from "../vendors/Vendors";
 import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 import Profile from "../profile/Profile";
 import EditMember from "../teams/EditMember";
-import BulkOffer from "../bulkHunt/BulkHunt";
+import bulkHunt from "../bulkHunt/BulkHunt";
+import BulkOffer from "../bulkOffer/BulkOffer";
 
 const Drawer = createDrawerNavigator();
 
@@ -234,6 +235,19 @@ function Home({ navigation, route }) {
             <Drawer.Screen
               name="BULK OFFER"
               component={BulkOffer}
+              options={{
+                drawerIcon: () => (
+                  <Ionicons name="people-outline" size={24} color="black" />
+                ),
+                drawerLabelStyle: {
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.medium,
+                },
+              }}
+            />
+            <Drawer.Screen
+              name="BULK HUNT"
+              component={bulkHunt}
               options={{
                 drawerIcon: () => (
                   <Ionicons name="people-outline" size={24} color="black" />
