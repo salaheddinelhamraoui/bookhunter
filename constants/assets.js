@@ -30,8 +30,23 @@ import Valorebooks from "../assets/images/Valorebooks.png";
 import VitalSource from "../assets/images/VitalSource.png";
 import WinyaBooks from "../assets/images/WinyaBooks.png";
 import ziffit from "../assets/images/ziffit.png";
+import alternative from "../assets/icons/alternative.png";
+import link from "../assets/icons/link.png";
+import summer from "../assets/icons/summer.png";
+import tap from "../assets/icons/tap.png";
+import target from "../assets/icons/target.png";
+import team from "../assets/icons/team.png";
+import user from "../assets/icons/user.png";
+
 
 export default {
+  alternative,
+  link,
+  summer,
+  tap,
+  target,
+  team,
+  user,
   hunter,
   menu,
   account,

@@ -475,7 +475,6 @@ const BulkOffer = () => {
                             borderRadius: 10,
                             fontFamily: FONTS.JosefinSansRegular,
                         }}
-
                     />
                     <TouchableOpacity className="" onPress={handleSearchButton}>
                         <View className=" bg-[#6fbfbf]  rounded-lg px-4 py-3">

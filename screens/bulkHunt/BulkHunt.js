@@ -510,16 +510,32 @@ const BulkHunt = () => {
           <Searchbar
             placeholder="978...,278.."
             onSubmitEditing={handleSearchButton}
-            className=" my-4"
+            className="my-4"
             value={inputList}
             placeholderTextColor={"#999"}
             onChangeText={handleSearch}
+            style={{
+              backgroundColor: '#fff',
+              borderRadius: 10,
+              fontFamily: FONTS.JosefinSansRegular,
+            }}
           />
-          <TouchableOpacity onPress={handleSearchButton}>
-            <Text>Search</Text>
+          <TouchableOpacity className="" onPress={handleSearchButton}>
+            <View className=" bg-[#6fbfbf]  rounded-lg px-4 py-3">
+              <Text
+                className="text-center"
+                style={{
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.font,
+                  color: "white",
+                }}
+              >
+                Search
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
-        <ScrollView horizontal={true} className="mr-4">
+        {data.length > 0 ? <ScrollView horizontal={true} className="mr-4">
           <View className="mx-4 my-4 bg-white  pt-4 rounded-lg ">
             <View className="flex flex-row mb-4 px-4">
               <Text
@@ -583,7 +599,7 @@ const BulkHunt = () => {
               ))
               : null}
           </View>
-        </ScrollView>
+        </ScrollView> : null}
       </ScrollView>
     </>
   );

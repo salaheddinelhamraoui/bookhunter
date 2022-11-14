@@ -192,10 +192,10 @@ function Home({ navigation, route }) {
               component={Profile}
               options={{
                 drawerIcon: () => (
-                  <Ionicons
-                    name="ios-settings-outline"
-                    size={24}
-                    color="black"
+                  <Image
+                    source={assets.user}
+                    resizeMode="contain"
+                    className="w-[25px] h-[25px]"
                   />
                 ),
 
@@ -210,7 +210,11 @@ function Home({ navigation, route }) {
               component={Triggers}
               options={{
                 drawerIcon: () => (
-                  <MaterialIcons name="touch-app" size={24} color="black" />
+                  <Image
+                    source={assets.tap}
+                    resizeMode="contain"
+                    className="w-[25px] h-[25px]"
+                  />
                 ),
 
                 drawerLabelStyle: {
@@ -224,7 +228,11 @@ function Home({ navigation, route }) {
               component={Teams}
               options={{
                 drawerIcon: () => (
-                  <Ionicons name="people-outline" size={24} color="black" />
+                  <Image
+                    source={assets.team}
+                    resizeMode="contain"
+                    className="w-[25px] h-[25px]"
+                  />
                 ),
                 drawerLabelStyle: {
                   fontFamily: FONTS.JosefinSansBold,
@@ -237,7 +245,11 @@ function Home({ navigation, route }) {
               component={BulkOffer}
               options={{
                 drawerIcon: () => (
-                  <Ionicons name="people-outline" size={24} color="black" />
+                  <Image
+                    source={assets.summer}
+                    resizeMode="contain"
+                    className="w-[25px] h-[25px]"
+                  />
                 ),
                 drawerLabelStyle: {
                   fontFamily: FONTS.JosefinSansBold,
@@ -250,7 +262,11 @@ function Home({ navigation, route }) {
               component={bulkHunt}
               options={{
                 drawerIcon: () => (
-                  <Ionicons name="people-outline" size={24} color="black" />
+                  <Image
+                    source={assets.target}
+                    resizeMode="contain"
+                    className="w-[25px] h-[25px]"
+                  />
                 ),
                 drawerLabelStyle: {
                   fontFamily: FONTS.JosefinSansBold,
@@ -264,7 +280,11 @@ function Home({ navigation, route }) {
           name="VENDORS"
           component={Vendors}
           options={{
-            drawerIcon: () => <Entypo name="shop" size={24} color="black" />,
+            drawerIcon: () => <Image
+              source={assets.alternative}
+              resizeMode="contain"
+              className="w-[25px] h-[25px]"
+            />,
             drawerLabelStyle: {
               fontFamily: FONTS.JosefinSansBold,
               fontSize: SIZES.medium,
