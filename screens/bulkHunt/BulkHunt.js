@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import { Searchbar } from "react-native-paper";
 import Toast from "react-native-root-toast";
 import { useSelector } from "react-redux";
@@ -17,6 +23,15 @@ import {
 } from "../../utils/Triggers.service";
 import OfferCard from "./OfferCard";
 import Loading from "../../components/Loading";
+import "intl";
+import "intl/locale-data/jsonp/en";
+
+if (Platform.OS === "android") {
+  // See https://github.com/expo/expo/issues/6536 for this issue.
+  if (typeof Intl.__disableRegExpRestore === "function") {
+    Intl.__disableRegExpRestore();
+  }
+}
 
 const BulkHunt = () => {
   const user = useSelector((state) => state.userSlice.data);
