@@ -27,11 +27,12 @@ import Toast from "react-native-root-toast";
 import Teams from "../teams/Teams";
 import AddMember from "../teams/AddMember";
 import Vendors from "../vendors/Vendors";
-import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import Profile from "../profile/Profile";
 import EditMember from "../teams/EditMember";
 import bulkHunt from "../bulkHunt/BulkHunt";
 import BulkOffer from "../bulkOffer/BulkOffer";
+import Hunt from "../hunt/Hunt";
 
 const Drawer = createDrawerNavigator();
 
@@ -94,53 +95,52 @@ function Home({ navigation, route }) {
         }}
         drawerContent={(props) => {
           return (
-            // <DrawerContentScrollView
-            //   {...props}
-            //   style={{ backgroundColor: "red" }}
-            // >
-            <View className=" py-2 flex-1 justify-between">
-              <View>
-                <DrawerItemList {...props} />
+            <DrawerContentScrollView
+              {...props}
+              showsVerticalScrollIndicator={false}
+            >
+              <View className=" py-2 flex-1 justify-between">
+                <View>
+                  <DrawerItemList {...props} />
+                </View>
+                {!user?.accessToken ? (
+                  <View>
+                    <DrawerItem
+                      label="Sign In"
+                      onPress={() => navigation.navigate("FIRST LAUNCH")}
+                      style={{
+                        bottom: 0,
+                      }}
+                      labelStyle={{
+                        fontFamily: FONTS.JosefinSansBold,
+                        fontSize: SIZES.medium,
+                      }}
+                      icon={() => (
+                        <MaterialIcons name="logout" size={24} color="black" />
+                      )}
+                    />
+                  </View>
+                ) : null}
+                {user?.accessToken ? (
+                  <View>
+                    <DrawerItem
+                      label="Sign Out"
+                      onPress={signOut}
+                      style={{
+                        bottom: 0,
+                      }}
+                      labelStyle={{
+                        fontFamily: FONTS.JosefinSansBold,
+                        fontSize: SIZES.medium,
+                      }}
+                      icon={() => (
+                        <MaterialIcons name="logout" size={24} color="black" />
+                      )}
+                    />
+                  </View>
+                ) : null}
               </View>
-              {!user?.accessToken ? (
-                <View>
-                  <DrawerItem
-                    label="Sign In"
-                    onPress={() => navigation.navigate("FIRST LAUNCH")}
-                    style={{
-                      bottom: 0,
-                    }}
-                    labelStyle={{
-                      fontFamily: FONTS.JosefinSansBold,
-                      fontSize: SIZES.medium,
-                    }}
-                    icon={() => (
-                      <MaterialIcons name="logout" size={24} color="black" />
-                    )}
-                  />
-                </View>
-              ) : null}
-              {user?.accessToken ? (
-                <View>
-                  <DrawerItem
-                    label="Sign Out"
-                    onPress={signOut}
-                    style={{
-                      bottom: 0,
-                    }}
-                    labelStyle={{
-                      fontFamily: FONTS.JosefinSansBold,
-                      fontSize: SIZES.medium,
-                    }}
-                    icon={() => (
-                      <MaterialIcons name="logout" size={24} color="black" />
-                    )}
-                  />
-                </View>
-              ) : null}
-            </View>
-
-            // {/* </DrawerContentScrollView> */}
+            </DrawerContentScrollView>
           );
         }}
       >
@@ -274,17 +274,36 @@ function Home({ navigation, route }) {
                 },
               }}
             />
+            <Drawer.Screen
+              name="HUNT"
+              component={Hunt}
+              options={{
+                drawerIcon: () => (
+                  <Image
+                    source={assets.target}
+                    resizeMode="contain"
+                    className="w-[25px] h-[25px]"
+                  />
+                ),
+                drawerLabelStyle: {
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.medium,
+                },
+              }}
+            />
           </>
         )}
         <Drawer.Screen
           name="VENDORS"
           component={Vendors}
           options={{
-            drawerIcon: () => <Image
-              source={assets.alternative}
-              resizeMode="contain"
-              className="w-[25px] h-[25px]"
-            />,
+            drawerIcon: () => (
+              <Image
+                source={assets.alternative}
+                resizeMode="contain"
+                className="w-[25px] h-[25px]"
+              />
+            ),
             drawerLabelStyle: {
               fontFamily: FONTS.JosefinSansBold,
               fontSize: SIZES.medium,
