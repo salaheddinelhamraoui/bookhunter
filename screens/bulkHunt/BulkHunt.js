@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import { Searchbar } from "react-native-paper";
 import Toast from "react-native-root-toast";
 import { useSelector } from "react-redux";
@@ -17,6 +23,15 @@ import {
 } from "../../utils/Triggers.service";
 import OfferCard from "./OfferCard";
 import Loading from "../../components/Loading";
+import "intl";
+import "intl/locale-data/jsonp/en";
+
+if (Platform.OS === "android") {
+  // See https://github.com/expo/expo/issues/6536 for this issue.
+  if (typeof Intl.__disableRegExpRestore === "function") {
+    Intl.__disableRegExpRestore();
+  }
+}
 
 const BulkHunt = () => {
   const user = useSelector((state) => state.userSlice.data);
@@ -117,7 +132,7 @@ const BulkHunt = () => {
                 fba[index] -
                 triggerSet.buyCost -
                 triggerSet.FBACostPerLBS * weight[index]) *
-              100
+                100
             ) / 100 || 0
           );
         } else {
@@ -126,7 +141,7 @@ const BulkHunt = () => {
           let totalFees = item * REFERRAL_FEE + CLOSSING_FEE;
           tempArray.push(
             Math.round((item - totalFees - triggerSet.buyCost - MFCPP) * 100) /
-            100 || 0
+              100 || 0
           );
         }
       });
@@ -573,14 +588,14 @@ const BulkHunt = () => {
             </View>
             {data?.length
               ? data?.map((dataList, i) => (
-                <OfferCard
-                  key={i}
-                  index={i}
-                  data={dataList}
-                  salesRank={salesRank[i]}
-                  huntScore={huntScore[i]}
-                />
-              ))
+                  <OfferCard
+                    key={i}
+                    index={i}
+                    data={dataList}
+                    salesRank={salesRank[i]}
+                    huntScore={huntScore[i]}
+                  />
+                ))
               : null}
           </View>
         </ScrollView>
