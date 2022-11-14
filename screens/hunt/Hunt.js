@@ -1,8 +1,18 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { useSelector } from "react-redux";
-import { searchLimit } from "../../utils/Bulk.service";
-import { getTriggersSet } from "../../utils/Triggers.service";
+import InfoBookCard from "../../components/InfoBookCard";
+import {
+  addRecentlySearched,
+  bookSearch,
+  searchLimit,
+} from "../../utils/Bulk.service";
+import {
+  getTriggers,
+  getTriggersSet,
+  triggersResult,
+} from "../../utils/Triggers.service";
+import HuntTableHead from "./HuntTableHead";
 
 function Hunt() {
   const [userId, setUserId] = useState("");
@@ -135,11 +145,11 @@ function Hunt() {
             if (trigger.active == "true") {
               setFulfillement(trigger.fulfillement);
               setSalesRankType(trigger.salesRankType);
-              triggerService.getTriggers(trigger._id).then((res) => {
+              getTriggers(trigger._id).then((res) => {
                 if (res.data.length) {
                   setItems(res.data);
                   setTriggerSet(trigger);
-                  setTriggerData(triggerService.getTriggers(trigger._id));
+                  setTriggerData(getTriggers(trigger._id));
                 }
               });
             }
@@ -156,7 +166,6 @@ function Hunt() {
     // const user_Id = userService.getUserId();
     addRestricted(ISBN, user_Id);
     setVoted(true);
-    let end = performance.now();
     //console.log("Time to add restricted book: " + (end - start) + "ms");
   }
 
@@ -244,7 +253,7 @@ function Hunt() {
           ISBN = ISBN13;
         }
         bookSearch(ISBN, "sell").then((result) => {
-          recentlySearchedService.addRecentlySearched(
+          addRecentlySearched(
             ISBN,
             result.data.bookData.book.image,
             result.data.Vendors
@@ -252,7 +261,7 @@ function Hunt() {
           setVendors(result.data.Vendors);
         });
         //get all data from keepa
-        TriggersSearchResult(ISBN)
+        triggersResult(ISBN)
           .then((result) => {
             setSalesRank(
               Intl.NumberFormat("en-US", {
@@ -635,43 +644,38 @@ function Hunt() {
     setVendorsProfit(+e.target.dataset.price.replace("$", ""));
   }
 
-  useEffect(() => {
-    //set the background of the selected value
-    let start = performance.now();
-    if (tempID) {
-      document.getElementById(tempID)?.classList.toggle("bg-darkTeal");
-      document.getElementById(tempID)?.classList.toggle("text-white");
-    }
-    previousID &&
-      document.getElementById(previousID)?.classList.add("bg-darkTeal");
-    previousID &&
-      document.getElementById(previousID)?.classList.toggle("text-white");
-    setTempID(previousID);
-  }, [previousID]);
+  // useEffect(() => {
+  //   //set the background of the selected value
+  //   previousID &&
+  //     document.getElementById(previousID)?.classList.add("bg-darkTeal");
+  //   previousID &&
+  //     document.getElementById(previousID)?.classList.toggle("text-white");
+  //   setTempID(previousID);
+  // }, [previousID]);
 
   useEffect(() => {
     //set the background of the selected value
-    let start = performance.now();
-    if (tempVendorsID) {
-      document.getElementById(tempVendorsID).classList.toggle("bg-darkTeal");
-      document.getElementById(tempVendorsID).classList.toggle("text-white");
-    }
-    previousVendorsID &&
-      setSelectedVendorsValue(
-        document
-          .getElementById(previousVendorsID)
-          .dataset.price.replace("$", "")
-      );
-    previousVendorsID &&
-      setVendorsProfit(
-        document
-          .getElementById(previousVendorsID)
-          .dataset.price.replace("$", "")
-      );
-    previousVendorsID &&
-      document.getElementById(previousVendorsID).classList.add("bg-darkTeal");
-    previousVendorsID &&
-      document.getElementById(previousVendorsID).classList.add("text-white");
+    // let start = performance.now();
+    // if (tempVendorsID) {
+    //   document.getElementById(tempVendorsID).classList.toggle("bg-darkTeal");
+    //   document.getElementById(tempVendorsID).classList.toggle("text-white");
+    // }
+    // previousVendorsID &&
+    // setSelectedVendorsValue(
+    //   document
+    //     .getElementById(previousVendorsID)
+    //     .dataset.price.replace("$", "")
+    // );
+    // previousVendorsID &&
+    // setVendorsProfit(
+    //   document
+    //     .getElementById(previousVendorsID)
+    //     .dataset.price.replace("$", "")
+    // );
+    // previousVendorsID &&
+    //   document.getElementById(previousVendorsID).classList.add("bg-darkTeal");
+    // previousVendorsID &&
+    //   document.getElementById(previousVendorsID).classList.add("text-white");
     setTempVendorsID(previousVendorsID);
   }, [previousVendorsID]);
 
@@ -784,9 +788,10 @@ function Hunt() {
   }
 
   return (
-    <View>
-      <Text>Hunt</Text>
-    </View>
+    <ScrollView className="mx-4 shadow-md">
+      <InfoBookCard />
+      <HuntTableHead />
+    </ScrollView>
   );
 }
 
