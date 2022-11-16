@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 
 function HuntTableHead() {
   return (
-    <View className="bg-greyBlue rounded-md">
+    <View className="bg-greyBlue">
       <View className="flex-row justify-between p-3 ">
         <View>
           <Text className="text-white">Sales Rank</Text>
@@ -19,7 +19,7 @@ function HuntTableHead() {
         </View>
       </View>
       <View className="justify-center flex bg-darkTeal">
-        <Text className="w-12 h-1 "></Text>
+        <Text className="w-12 h-[1px] "></Text>
       </View>
       <View className="flex-row justify-around p-3">
         <View>
