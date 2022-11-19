@@ -1,39 +1,59 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 
-function VendorsTable() {
+function VendorsTable({
+  sortedVendors,
+  handleVendorsClick,
+  setPreviousVendorsID,
+  vendorName,
+  venderValue,
+}) {
+  // useEffect(() => {
+  //   setPreviousVendorsID();
+  // }, []);
+
+  console.log(sortedVendors);
+
   return (
     <View>
       <View className="py-4 bg-lightTeal flex items-center">
-        <Text>Profit (FBA)</Text>
-        <Text>$82.85</Text>
+        <Text>PROFIT VENDORS</Text>
+        <Text>${venderValue}</Text>
       </View>
       <View className="flex-row pt-2 bg-white ">
         <View className="flex-grow items-center">
-          <Text>0</Text>
+          <Text>{sortedVendors.length}</Text>
           <Text>Vendors</Text>
           <View className=" w-full flex-row py-4">
             <View className="flex-grow items-center">
-              <Pressable className="my-2 p-2 bg-darkTeal rounded-md flex-row w-5/6 justify-between items-center">
-                <Image
-                  source={{ uri: "https://bookhunter.com/BookToCash.png" }}
-                />
-                <Text>eCampus</Text>
-                <Text>7.00</Text>
-                <Pressable className="bg-greyBlue px-2 py-1 rounded-md">
-                  <Text className="text-white">Sell</Text>
-                </Pressable>
-              </Pressable>
-              <Pressable className="my-2 p-2  rounded-md flex-row w-5/6 justify-between items-center">
-                <Image
-                  source={{ uri: "https://bookhunter.com/BookToCash.png" }}
-                />
-                <Text>eCampus</Text>
-                <Text>7.00</Text>
-                <Pressable className="bg-greyBlue px-2 py-1 rounded-md">
-                  <Text className="text-white">Sell</Text>
-                </Pressable>
-              </Pressable>
+              {sortedVendors.length
+                ? sortedVendors.map(
+                    (vendor, index) =>
+                      +vendor.price.replace(/[^\d.-]/g, "") != 0 && (
+                        <Pressable
+                          onPress={() =>
+                            handleVendorsClick(vendor.price, vendor.vendorName)
+                          }
+                          className={`my-2 p-2 rounded-md flex-row w-5/6 justify-between items-center ${
+                            vendor?.vendorName === vendorName
+                              ? "bg-darkTeal"
+                              : null
+                          }`}
+                        >
+                          <Image
+                            source={{
+                              uri: "https://bookhunter.com" + vendor.vendorLogo,
+                            }}
+                          />
+                          <Text>{vendor.vendorName}</Text>
+                          <Text>{vendor.price}</Text>
+                          <Pressable className="bg-greyBlue px-2 py-1 rounded-md">
+                            <Text className="text-white">Sell</Text>
+                          </Pressable>
+                        </Pressable>
+                      )
+                  )
+                : null}
             </View>
           </View>
         </View>

@@ -4,8 +4,8 @@ import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
 import { FONTS, SIZES } from "../constants";
 
 function InfoBookCard({ bookData }) {
-  // const { book } = bookData;
-  const book = null;
+  const { book } = bookData;
+  // const book = null;
   return (
     <View>
       <View className="flex my-2 rounded-lg bg-white px-4 py-4">
@@ -13,7 +13,7 @@ function InfoBookCard({ bookData }) {
           style={{ fontFamily: FONTS.JosefinSansBold, fontSize: SIZES.medium }}
           className="text-xl text-center mb-2"
         >
-          {book?.title || "title"}
+          {book?.title || ""}
         </Text>
         <View className="flex flex-row ">
           <Image

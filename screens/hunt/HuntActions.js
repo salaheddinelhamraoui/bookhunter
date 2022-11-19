@@ -1,21 +1,23 @@
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 
-function HuntActions() {
+function HuntActions({ huntActions }) {
+  const { minUsedFbaPrice, buyBox, amazonPrice, graph, amazonUrl } =
+    huntActions;
   return (
     <View className="my-4 bg-white shadow-md p-4 mx-4  rounded-md">
       <View className="flex flex-row justify-between my-2">
-        <Pressable className="bg-gray-200 p-2 rounded-md shadow-md">
-          <Text className="text-center">$42.77</Text>
+        <Pressable className="bg-gray-200 p-2 mr-2 rounded-md shadow-md flex-grow">
+          <Text className="text-center">${minUsedFbaPrice}</Text>
           <Text className="text-center">Used Buy Box</Text>
         </Pressable>
-        <Pressable className="bg-gray-200 p-2 rounded-md shadow-md">
-          <Text className="text-center">$42.77</Text>
-          <Text className="text-center">Used Buy Box</Text>
+        <Pressable className="bg-gray-200 mr-2 p-2 rounded-md shadow-md flex-grow">
+          <Text className="text-center">${buyBox}</Text>
+          <Text className="text-center">New Buy Box</Text>
         </Pressable>
-        <Pressable className="bg-gray-200 p-2 rounded-md shadow-md">
-          <Text className="text-center">$42.77</Text>
-          <Text className="text-center">Used Buy Box</Text>
+        <Pressable className="bg-gray-200 p-2 rounded-md shadow-md flex-grow">
+          <Text className="text-center">${amazonPrice}</Text>
+          <Text className="text-center">Amazon</Text>
         </Pressable>
       </View>
       <View className="flex flex-row justify-between my-2 ">
