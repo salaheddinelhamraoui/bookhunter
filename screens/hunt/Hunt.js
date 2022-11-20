@@ -1,5 +1,11 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
-import { ScrollView, Text, View } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useSelector } from "react-redux";
 import InfoBookCard from "../../components/InfoBookCard";
 import {
@@ -17,8 +23,12 @@ import HuntTableHead from "./HuntTableHead";
 import ProfitFBATable from "./ProfitFBATable";
 import VendorsTable from "./VendorsTable";
 import Loading from "../../components/Loading";
+import { FONTS, SIZES } from "../../constants";
+import { Searchbar } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
-function Hunt() {
+function Hunt({ route }) {
   const [userId, setUserId] = useState("");
   const [triggers, setTriggers] = useState([]);
   const [input, setInput] = useState([]);
@@ -87,23 +97,14 @@ function Hunt() {
 
   const [openPopup, setOpenPopup] = useState(false);
 
-  // let ParamIsbn = useParams();
+  let ParamIsbn;
+  ParamIsbn = route?.params?.isbn;
+  let type = route?.params?.type;
 
-  let ParamIsbn = { isbn: "9780393918281" };
+  // let ParamIsbn = { isbn: "9780393918281" };
 
   const options = { year: "numeric", month: "long", day: "numeric" };
   let vendorsObject = {};
-
-  // const notify = () =>
-  //   toast.success("Added successfully!", {
-  //     position: "top-right",
-  //     autoClose: 5000,
-  //     hideProgressBar: false,
-  //     closeOnClick: true,
-  //     pauseOnHover: true,
-  //     draggable: true,
-  //     progress: undefined,
-  //   });
 
   const limitMessage = (message) =>
     toast.warn(message, {
@@ -212,12 +213,22 @@ function Hunt() {
   // }
 
   useEffect(() => {
-    console.log("USE EFFECT");
-    if (ParamIsbn.isbn) {
-      setInputList([ParamIsbn.isbn]);
-      submit(ParamIsbn.isbn);
+    console.log(ParamIsbn);
+    if (ParamIsbn) {
+      setInputList([ParamIsbn]);
+      submit(ParamIsbn);
     }
-  }, []);
+  }, [ParamIsbn]);
+
+  const handelSearch = (isbn) => {
+    setInputList([isbn]);
+  };
+
+  const handelSearchButton = () => {
+    console.log("search");
+    setIsLoading(true);
+    submit(inputList[0]);
+  };
 
   const [isLoading, setIsLoading] = useState(false);
   async function submit(ISBN = inputList[0]) {
@@ -323,7 +334,6 @@ function Hunt() {
             // } else {
             //   fail.play();
             // }
-            setActive(false);
           })
           .then(() => {
             setInputListCache(inputList);
@@ -332,7 +342,6 @@ function Hunt() {
         limitMessage(result.data.message);
       }
     });
-    setActive(false);
   }
 
   function filterTrackerDate(tracker) {
@@ -636,7 +645,6 @@ function Hunt() {
 
   function handleVendorsCLick(e, id) {
     //handle the selection of values and their background and calculation
-    console.log("ID", id);
     setPreviousVendorsID(id);
     setSelectedVendorsValue(+e.replace("$", ""));
     setVendorsProfit(+e.replace("$", ""));
@@ -820,33 +828,98 @@ function Hunt() {
     +selectedVendorsValue - +EditedBuyCost ||
     (Math.abs(maxVendor) == Infinity ? 0 : maxVendor);
 
+  const cancelLoading = () => {
+    setActive(false);
+    setIsLoading(false);
+  };
+
+  const navigation = useNavigation();
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <>
-            <InfoBookCard bookData={bookData} />
-            <HuntActions huntActions={huntActions} />
-            <View className="mx-4 rounded-md overflow-hidden mb-4">
-              <HuntTableHead huntTableHead={huntTableHead} />
-              <ProfitFBATable
-                finalProfit={finalProfit}
-                triggers={triggers}
-                handleClick={handleCLick}
-                yindex={yindex}
-                selectedItemId={previousID}
-              />
-              <VendorsTable
-                venderValue={venderValue}
-                sortedVendors={sortedVendors}
-                handleVendorsClick={handleVendorsCLick}
-                setPreviousVendorsID={setPreviousVendorsID}
-                vendorName={previousVendorsID}
+        <View className="mx-4 my-4 shadow-md bg-white px-4 py-4 rounded-lg">
+          <Text
+            className="text-center"
+            style={{
+              fontFamily: FONTS.JosefinSansBold,
+              fontSize: SIZES.extraMedium,
+            }}
+          >
+            Bulk Hunt
+          </Text>
+          <View className="flex-row items-center">
+            <View className="flex-grow mr-4">
+              <Searchbar
+                placeholder="978..."
+                onSubmitEditing={handelSearch}
+                className="my-4 flex-grow"
+                value={inputList[0]}
+                placeholderTextColor={"#999"}
+                onChangeText={handelSearch}
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: 10,
+                  fontFamily: FONTS.JosefinSansRegular,
+                }}
               />
             </View>
-          </>
+
+            <Pressable
+              onPress={() => navigation.navigate("HUNT SCANNER")}
+              className="bg-greyBlue py-3 px-4 rounded-md"
+            >
+              <Text>
+                <MaterialCommunityIcons
+                  name="barcode-scan"
+                  size={20}
+                  color="white"
+                />
+              </Text>
+            </Pressable>
+          </View>
+
+          <TouchableOpacity onPress={handelSearchButton}>
+            <View className=" bg-[#6fbfbf]  rounded-lg px-4 py-3">
+              <Text
+                className="text-center"
+                style={{
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.font,
+                  color: "white",
+                }}
+              >
+                Search
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        {isLoading ? (
+          <Loading cancelLoading={cancelLoading} />
+        ) : (
+          isActive && (
+            <>
+              <InfoBookCard bookData={bookData} />
+              <HuntActions huntActions={huntActions} />
+              <View className="mx-4 rounded-md overflow-hidden mb-4">
+                <HuntTableHead huntTableHead={huntTableHead} />
+                <ProfitFBATable
+                  finalProfit={finalProfit}
+                  triggers={triggers}
+                  handleClick={handleCLick}
+                  yindex={yindex}
+                  selectedItemId={previousID}
+                />
+                <VendorsTable
+                  venderValue={venderValue}
+                  sortedVendors={sortedVendors}
+                  handleVendorsClick={handleVendorsCLick}
+                  setPreviousVendorsID={setPreviousVendorsID}
+                  vendorName={previousVendorsID}
+                />
+              </View>
+            </>
+          )
         )}
       </>
     </ScrollView>

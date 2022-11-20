@@ -26,6 +26,7 @@ function ProfitFBATable({
                   {/* selectedItemId */}
                   {item?.usedprice ? (
                     <Pressable
+                      key={index + yindex}
                       className={`my-2 p-2 ${
                         `${index}${yindex}` === selectedItemId
                           ? "bg-darkTeal"
@@ -58,6 +59,7 @@ function ProfitFBATable({
               {triggers.map((item, index) =>
                 item?.usedfba ? (
                   <Pressable
+                    key={index + yindex + 1}
                     className={`my-2 p-2 ${
                       `${index}${yindex + 1}` === selectedItemId
                         ? "bg-darkTeal"
@@ -99,6 +101,7 @@ function ProfitFBATable({
                 <>
                   {item?.newprice ? (
                     <Pressable
+                      key={index + yindex + 2}
                       className={`my-2 p-2 ${
                         `${index}${yindex + 2}` === selectedItemId
                           ? "bg-darkTeal"
@@ -128,6 +131,7 @@ function ProfitFBATable({
                 <>
                   {item?.newfba ? (
                     <Pressable
+                      key={index + yindex + 3}
                       className={`my-2 p-2 ${
                         `${index}${yindex + 3}` === selectedItemId
                           ? "bg-darkTeal"

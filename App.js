@@ -10,7 +10,6 @@ import StackNavigation from "./screens/Welcome/StackNavigation";
 import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -23,7 +22,6 @@ const Stack = createStackNavigator();
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
-
 
   const checkIfIsAlreadyLoggedIn = async () => {
     try {
@@ -60,7 +58,7 @@ export default function App() {
       <NavigationContainer independent={true}>
         <Stack.Navigator
           screenOptions={{ headerShown: false }}
-          initialRouteName={isLoggedIn ? "HOME" : "FIRST LAUNCH"}
+          initialRouteName={"HOME"}
         >
           <Stack.Screen name="FIRST LAUNCH" component={StackNavigation} />
 

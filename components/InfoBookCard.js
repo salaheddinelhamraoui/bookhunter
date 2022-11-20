@@ -1,11 +1,9 @@
 import React from "react";
-import { Pressable, Text, View, Image, TouchableOpacity } from "react-native";
-import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
+import { Text, View, Image } from "react-native";
 import { FONTS, SIZES } from "../constants";
 
 function InfoBookCard({ bookData }) {
   const { book } = bookData;
-  // const book = null;
   return (
     <View>
       <View className="flex my-2 rounded-lg bg-white px-4 py-4">

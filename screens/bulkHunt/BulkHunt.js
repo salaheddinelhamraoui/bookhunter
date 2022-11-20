@@ -5,16 +5,13 @@ import {
   ScrollView,
   TouchableOpacity,
   Platform,
+  Pressable,
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import Toast from "react-native-root-toast";
 import { useSelector } from "react-redux";
-import { FONTS, SIZES, assets } from "../../constants";
-import {
-  getRestrictedById,
-  searchLimit,
-  bulkHunt,
-} from "../../utils/Bulk.service";
+import { FONTS, SIZES } from "../../constants";
+import { searchLimit, bulkHunt } from "../../utils/Bulk.service";
 import { convISBN13toISBN10 } from "../../utils/services";
 import {
   getTriggers,
@@ -25,6 +22,8 @@ import OfferCard from "./OfferCard";
 import Loading from "../../components/Loading";
 import "intl";
 import "intl/locale-data/jsonp/en";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 
 if (Platform.OS === "android") {
   // See https://github.com/expo/expo/issues/6536 for this issue.
@@ -33,9 +32,9 @@ if (Platform.OS === "android") {
   }
 }
 
-const BulkHunt = () => {
+const BulkHunt = ({ route }) => {
   const user = useSelector((state) => state.userSlice.data);
-
+  let isbn = route?.params?.isbn;
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
   // {
@@ -55,7 +54,7 @@ const BulkHunt = () => {
   const [weight, setWeight] = useState([]);
   const [fba, setFba] = useState([]);
   const [inputList, setInputList] = useState([]);
-  const [autoSearch, setAutoSearch] = useState(false);
+  const [autoSearch, setAutoSearch] = useState(0);
   const [fulfillement, setFulfillement] = useState("FBA");
   const [items, setItems] = useState([]);
   const [triggerSet, setTriggerSet] = useState([]);
@@ -70,25 +69,39 @@ const BulkHunt = () => {
   const [selectedMF, setSelectedMF] = useState(null);
   const [amazonPrice, setAmazonPrice] = useState(null);
   const [searchInput, setSearchInput] = useState([]);
+  const isFocused = useIsFocused();
 
   // const isbn = "9781524911959,9780470533314,9781111825867";
   // const isbn = null;
   // useEffect(() => {
-  //   if (isbn) {
-  //     setInputList(isbn.split(","));
-  //     setAutoSearch(true);
-  //   }
-  // }, [isbn, inputList]);
+  //   setData([]);
+  //   setInputList(isbn.split(","));
+  //   setAutoSearch((prev) => prev++);
+  // }, [isbn, inputList.length]);
 
   // useEffect(() => {
+  //   console.log(autoSearch);
   //   if (autoSearch) {
   //     submit();
   //   }
   // }, [autoSearch]);
 
+  // console.log(inputList);
+
   // useCallback((data) => {
   //   setInputList(data);
   // }, []);
+
+  useEffect(() => {
+    if (!isbn) return;
+    setInputList([isbn]);
+    setData([]);
+  }, [isbn, isFocused]);
+
+  // useEffect(() => {
+  //   if (!inputList.length) return;
+  //   submit();
+  // }, [inputList]);
 
   useEffect(() => {
     if (!inputList.length) return;
@@ -119,6 +132,7 @@ const BulkHunt = () => {
 
   useEffect(() => {
     if (!inputList.length) return;
+    console.log(selectedValue.length);
     if (selectedValue.length) {
       let tempArray = [];
       selectedValue.map((item, index) => {
@@ -132,7 +146,7 @@ const BulkHunt = () => {
                 fba[index] -
                 triggerSet.buyCost -
                 triggerSet.FBACostPerLBS * weight[index]) *
-              100
+                100
             ) / 100 || 0
           );
         } else {
@@ -141,13 +155,13 @@ const BulkHunt = () => {
           let totalFees = item * REFERRAL_FEE + CLOSSING_FEE;
           tempArray.push(
             Math.round((item - totalFees - triggerSet.buyCost - MFCPP) * 100) /
-            100 || 0
+              100 || 0
           );
         }
       });
       setFinalProfit(tempArray);
     }
-  }, [selectedValue]);
+  }, [selectedValue, inputList]);
 
   useEffect(() => {
     if (!inputList.length) return;
@@ -165,7 +179,7 @@ const BulkHunt = () => {
               score[index] <= item.maxTracker
             ) {
               //set the value of the target profit
-              // setTargetProfit(item.targetProfit);
+              setTargetProfit(item.targetProfit);
               //set the amazon percentage
               setAmazonPercentage(item.offAmazon);
               //set BBCompare
@@ -484,7 +498,7 @@ const BulkHunt = () => {
               setWeight((oldArray) => [...oldArray, result.data.weight]);
               setFba((oldArray) => [...oldArray, result.data.fba]);
             });
-            setInputList([]);
+            // setInputList([]);
           }
           setLoading(false);
           setShowClearAll(true);
@@ -505,14 +519,20 @@ const BulkHunt = () => {
     setData([]);
     setSalesRank([]);
     setAve([]);
+    setFinalProfit();
     submit();
   }
-
+  const cancelLoading = () => {
+    setIsLoading(false);
+  };
+  const navigation = useNavigation();
+  console.log("FINAL PROFIT", finalProfit);
   return (
     <>
-      {isLoading ? <Loading /> : null}
+      {/* <Loading cancelLoading={cancelLoading} /> */}
+      {isLoading ? <Loading cancelLoading={cancelLoading} /> : null}
       <ScrollView>
-        <View className="mx-4 mt-4 bg-white px-4 py-4 rounded-lg">
+        <View className="mx-4 my-4 shadow-md bg-white px-4 py-4 rounded-lg">
           <Text
             className="text-center"
             style={{
@@ -522,20 +542,38 @@ const BulkHunt = () => {
           >
             Bulk Hunt
           </Text>
-          <Searchbar
-            placeholder="978...,278.."
-            onSubmitEditing={handleSearchButton}
-            className="my-4"
-            value={inputList}
-            placeholderTextColor={"#999"}
-            onChangeText={handleSearch}
-            style={{
-              backgroundColor: '#fff',
-              borderRadius: 10,
-              fontFamily: FONTS.JosefinSansRegular,
-            }}
-          />
-          <TouchableOpacity className="" onPress={handleSearchButton}>
+          <View className="flex-row items-center">
+            <View className="flex-grow mr-4">
+              <Searchbar
+                placeholder="978..."
+                onSubmitEditing={handleSearchButton}
+                className="my-4 flex-grow"
+                value={inputList.toString()}
+                placeholderTextColor={"#999"}
+                onChangeText={handleSearch}
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: 10,
+                  fontFamily: FONTS.JosefinSansRegular,
+                }}
+              />
+            </View>
+
+            <Pressable
+              onPress={() => navigation.navigate("BULK HUNT SCANNER")}
+              className="bg-greyBlue py-3 px-4 rounded-md"
+            >
+              <Text>
+                <MaterialCommunityIcons
+                  name="barcode-scan"
+                  size={20}
+                  color="white"
+                />
+              </Text>
+            </Pressable>
+          </View>
+
+          <TouchableOpacity onPress={handleSearchButton}>
             <View className=" bg-[#6fbfbf]  rounded-lg px-4 py-3">
               <Text
                 className="text-center"
@@ -550,71 +588,74 @@ const BulkHunt = () => {
             </View>
           </TouchableOpacity>
         </View>
-        {data.length > 0 ? <ScrollView horizontal={true} className="mr-4">
-          <View className="mx-4 my-4 bg-white  pt-4 rounded-lg ">
-            <View className="flex flex-row mb-4 px-4">
-              <Text
-                style={{
-                  fontFamily: FONTS.JosefinSansBold,
-                }}
-                className="text-center w-24"
-              >
-                Name
-              </Text>
-              <Text
-                style={{
-                  fontFamily: FONTS.JosefinSansBold,
-                }}
-                className="text-center w-24"
-              >
-                Tracker
-              </Text>
-              <Text
-                style={{
-                  fontFamily: FONTS.JosefinSansBold,
-                }}
-                className="text-center w-24"
-              >
-                Sales Rank
-              </Text>
-              <Text
-                style={{
-                  fontFamily: FONTS.JosefinSansBold,
-                }}
-                className="text-center w-24"
-              >
-                Cost $0.00
-              </Text>
-              <Text
-                style={{
-                  fontFamily: FONTS.JosefinSansBold,
-                }}
-                className="text-center w-24"
-              >
-                Profit (FBA)
-              </Text>
-              <Text
-                style={{
-                  fontFamily: FONTS.JosefinSansBold,
-                }}
-                className="text-center ml-4"
-              >
-                Profit Vendors
-              </Text>
+        {data.length > 0 ? (
+          <ScrollView horizontal={true} className="mr-4">
+            <View className="mx-4 my-4 bg-white  pt-4 rounded-lg ">
+              <View className="flex flex-row mb-4 px-4">
+                <Text
+                  style={{
+                    fontFamily: FONTS.JosefinSansBold,
+                  }}
+                  className="text-center w-24"
+                >
+                  Name
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: FONTS.JosefinSansBold,
+                  }}
+                  className="text-center w-24"
+                >
+                  Hunt Score
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: FONTS.JosefinSansBold,
+                  }}
+                  className="text-center w-24"
+                >
+                  Sales Rank
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: FONTS.JosefinSansBold,
+                  }}
+                  className="text-center w-24"
+                >
+                  Cost $0.00
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: FONTS.JosefinSansBold,
+                  }}
+                  className="text-center w-24"
+                >
+                  Profit (FBA)
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: FONTS.JosefinSansBold,
+                  }}
+                  className="text-center ml-4"
+                >
+                  Profit Vendors
+                </Text>
+              </View>
+              {data?.length
+                ? data?.map((dataList, i) => (
+                    <OfferCard
+                      key={i}
+                      index={i}
+                      data={dataList}
+                      finalProfit={finalProfit}
+                      salesRank={salesRank[i]}
+                      huntScore={huntScore[i]}
+                    />
+                  ))
+                : null}
             </View>
-            {data?.length
-              ? data?.map((dataList, i) => (
-                <OfferCard
-                  key={i}
-                  index={i}
-                  data={dataList}
-                  salesRank={salesRank[i]}
-                  huntScore={huntScore[i]}
-                />
-              ))
-              : null}
-          </View>
-        </ScrollView> : null}
+          </ScrollView>
+        ) : null}
       </ScrollView>
     </>
   );

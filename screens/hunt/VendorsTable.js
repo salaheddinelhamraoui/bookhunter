@@ -12,8 +12,6 @@ function VendorsTable({
   //   setPreviousVendorsID();
   // }, []);
 
-  console.log(sortedVendors);
-
   return (
     <View>
       <View className="py-4 bg-lightTeal flex items-center">
@@ -31,6 +29,7 @@ function VendorsTable({
                     (vendor, index) =>
                       +vendor.price.replace(/[^\d.-]/g, "") != 0 && (
                         <Pressable
+                          key={index}
                           onPress={() =>
                             handleVendorsClick(vendor.price, vendor.vendorName)
                           }

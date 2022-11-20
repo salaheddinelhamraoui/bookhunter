@@ -33,6 +33,8 @@ import EditMember from "../teams/EditMember";
 import bulkHunt from "../bulkHunt/BulkHunt";
 import BulkOffer from "../bulkOffer/BulkOffer";
 import Hunt from "../hunt/Hunt";
+import HuntScanner from "../hunt/HuntScanner";
+import BulkHuntScanner from "../bulkHunt/BulkHuntScanner";
 
 const Drawer = createDrawerNavigator();
 
@@ -169,6 +171,7 @@ function Home({ navigation, route }) {
           options={{
             drawerItemStyle: { display: "none" },
           }}
+          type
         />
         <Drawer.Screen
           name="EditTrigger"
@@ -180,6 +183,21 @@ function Home({ navigation, route }) {
         <Drawer.Screen
           name="AddMember"
           component={AddMember}
+          options={{
+            drawerItemStyle: { display: "none" },
+          }}
+        />
+        <Drawer.Screen
+          name="HUNT SCANNER"
+          component={HuntScanner}
+          options={{
+            drawerItemStyle: { display: "none" },
+          }}
+        />
+
+        <Drawer.Screen
+          name="BULK HUNT SCANNER"
+          component={BulkHuntScanner}
           options={{
             drawerItemStyle: { display: "none" },
           }}

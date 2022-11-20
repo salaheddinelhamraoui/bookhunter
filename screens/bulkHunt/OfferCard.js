@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState } from "react";
 import { View, Text, TextInput, Image, Pressable } from "react-native";
 import Toast from "react-native-root-toast";
 import { useDispatch } from "react-redux";
@@ -7,9 +8,12 @@ import { addToCard } from "../../features/cardSlice";
 
 const type = "sell";
 
-const OfferCard = ({ index, data, salesRank, huntScore }) => {
+const OfferCard = ({ index, data, salesRank, huntScore, finalProfit }) => {
   const { bookData, MasterVendors, Vendors, profitFBA } = data;
   const dispatch = useDispatch();
+  const [cost, setCost] = useState(0);
+
+  console.log(finalProfit);
 
   // AsyncStorage.clear();
 
@@ -35,9 +39,7 @@ const OfferCard = ({ index, data, salesRank, huntScore }) => {
   }
 
   function addToStore(quantity, vendor) {
-    console.log(vendor);
     const vendorPrice = Number(vendor?.price.replace("$", ""));
-    console.log(vendorPrice);
     try {
       if (vendorPrice > 0) {
         const newData = {
@@ -122,12 +124,14 @@ const OfferCard = ({ index, data, salesRank, huntScore }) => {
         {salesRank}
       </Text>
       <TextInput
+        keyboardType="numeric"
+        onChange={(e) => setCost(e)}
         style={{
           fontSize: SIZES.medium,
         }}
         className="text-center w-24"
       >
-        $0.00
+        0
       </TextInput>
       <Text
         style={{
@@ -135,7 +139,7 @@ const OfferCard = ({ index, data, salesRank, huntScore }) => {
         }}
         className="text-center w-24 self-center"
       >
-        ${profitFBA}
+        ${finalProfit}
       </Text>
       <View className="ml-4 flex flex-row items-center">
         {Vendors?.length
@@ -174,21 +178,6 @@ const OfferCard = ({ index, data, salesRank, huntScore }) => {
                 // ) : null
               )
           : null}
-
-        {/* <Pressable className="w-[80px]" onPress={() => {}}>
-          <View className="bg-[#6fbfbf]  rounded-lg py-2 ">
-            <Text
-              className="text-center"
-              style={{
-                fontFamily: FONTS.JosefinSansBold,
-                fontSize: SIZES.medium,
-                color: "white",
-              }}
-            >
-              Sell
-            </Text>
-          </View>
-        </Pressable> */}
       </View>
     </View>
   );
