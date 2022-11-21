@@ -512,7 +512,7 @@ const BulkOffer = () => {
                                 {Math.round(totalPrice * 100) / 100}
                             </Text>
                         </View>
-                        <View className="w-[45%]">
+                        <View className=" w-[45%]">
                             <Text
                                 className="mb-1"
                                 style={{

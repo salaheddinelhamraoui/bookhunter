@@ -2,7 +2,7 @@
   "expo": {
     "name": "bookhunter",
     "slug": "bookhunter",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -22,11 +22,12 @@
       "bundleIdentifier": "com.bookhunter.app"
     },
     "android": {
+      "package": "com.bookhunter.app",
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.bookhunter.app"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
