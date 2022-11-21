@@ -11,7 +11,6 @@ export const searchLimit = (userId, feature, cost, plan) => {
 };
 
 export const bookSearch = (isbn, type) => {
-  console.log("Search Book");
   return axios.post(`${API}bookSearch/`, { isbn, type });
 };
 

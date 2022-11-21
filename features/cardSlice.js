@@ -17,6 +17,7 @@ export const cardSlice = createSlice({
 
     addToCard: (state, action) => {
       const { vendor, bookData, type } = action.payload;
+
       state.items = addVendor(state.items, vendor, bookData, type);
       state.qty = ++state.qty;
       setCartInDatabase(state);

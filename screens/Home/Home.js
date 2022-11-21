@@ -5,8 +5,8 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
-import React, { useEffect } from "react";
-import { Image, View } from "react-native";
+import React, { useCallback, useEffect } from "react";
+import { Alert, Linking, Image, Pressable, Text, View } from "react-native";
 import NavBar from "../../components/NavBar";
 import { assets, FONTS, SIZES } from "../../constants";
 import Cart from "../cart/Cart";
@@ -35,12 +35,23 @@ import BulkOffer from "../bulkOffer/BulkOffer";
 import Hunt from "../hunt/Hunt";
 import HuntScanner from "../hunt/HuntScanner";
 import BulkHuntScanner from "../bulkHunt/BulkHuntScanner";
+import { Feather } from "@expo/vector-icons";
 
 const Drawer = createDrawerNavigator();
 
 function Home({ navigation, route }) {
   const { user } = route.params;
   const dispatch = useDispatch();
+
+  const url = "https://bookhunter.com/book-flipper";
+  const handlePress = useCallback(async () => {
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Can't open this URL: ${url}`);
+    }
+  }, []);
 
   async function signOut() {
     try {
@@ -107,6 +118,21 @@ function Home({ navigation, route }) {
                 </View>
                 {!user?.accessToken ? (
                   <View>
+                    <Pressable
+                      onPress={handlePress}
+                      className="ml-4 flex-row items-center "
+                    >
+                      <Feather name="book-open" size={24} color="black" />
+                      <Text
+                        className="text-black ml-[35px] my-3 opacity-60"
+                        style={{
+                          fontFamily: FONTS.JosefinSansBold,
+                          fontSize: SIZES.medium,
+                        }}
+                      >
+                        BOOK FLIPPER
+                      </Text>
+                    </Pressable>
                     <DrawerItem
                       label="Sign In"
                       onPress={() => navigation.navigate("FIRST LAUNCH")}
@@ -164,6 +190,7 @@ function Home({ navigation, route }) {
             },
           }}
         />
+
         {/* EditMember */}
         <Drawer.Screen
           name="EditMember"
@@ -280,11 +307,7 @@ function Home({ navigation, route }) {
               component={bulkHunt}
               options={{
                 drawerIcon: () => (
-                  <Image
-                    source={assets.target}
-                    resizeMode="contain"
-                    className="w-[25px] h-[25px]"
-                  />
+                  <MaterialIcons name="my-location" size={24} color="#666" />
                 ),
                 drawerLabelStyle: {
                   fontFamily: FONTS.JosefinSansBold,

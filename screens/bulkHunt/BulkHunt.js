@@ -37,13 +37,6 @@ const BulkHunt = ({ route }) => {
   let isbn = route?.params?.isbn;
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
-  // {
-  //   masterVendors: [],
-  //   bookData: [],
-  //   vendors: [],
-  //   profitFBA: [],
-  // }
-
   const [salesRank, setSalesRank] = useState([]);
   const [ave, setAve] = useState([]);
   const [bookStatus, setBookStatus] = useState([]);
@@ -92,6 +85,38 @@ const BulkHunt = ({ route }) => {
   //   setInputList(data);
   // }, []);
 
+  const profit = () => {
+    if (!inputList.length) return;
+    if (selectedValue.length) {
+      let tempArray = [];
+      selectedValue.map((item, index) => {
+        let temp = item * REFERRAL_FEE + CLOSSING_FEE;
+        // calculate the fina profit calculation to be able to detect if its a reject or an accept
+        if (fulfillement == "FBA") {
+          tempArray.push(
+            Math.round(
+              (item -
+                temp -
+                fba[index] -
+                triggerSet.buyCost -
+                triggerSet.FBACostPerLBS * weight[index]) *
+                100
+            ) / 100 || 0
+          );
+        } else {
+          let MFCPP =
+            +triggerSet.MFFixed + +Math.ceil(weight) * +triggerSet.MFCostPerLBS;
+          let totalFees = item * REFERRAL_FEE + CLOSSING_FEE;
+          tempArray.push(
+            Math.round((item - totalFees - triggerSet.buyCost - MFCPP) * 100) /
+              100 || 0
+          );
+        }
+      });
+      setFinalProfit(tempArray);
+    }
+  };
+
   useEffect(() => {
     if (!isbn) return;
     setInputList([isbn]);
@@ -131,36 +156,7 @@ const BulkHunt = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    if (!inputList.length) return;
-    console.log(selectedValue.length);
-    if (selectedValue.length) {
-      let tempArray = [];
-      selectedValue.map((item, index) => {
-        let temp = item * REFERRAL_FEE + CLOSSING_FEE;
-        // calculate the fina profit calculation to be able to detect if its a reject or an accept
-        if (fulfillement == "FBA") {
-          tempArray.push(
-            Math.round(
-              (item -
-                temp -
-                fba[index] -
-                triggerSet.buyCost -
-                triggerSet.FBACostPerLBS * weight[index]) *
-                100
-            ) / 100 || 0
-          );
-        } else {
-          let MFCPP =
-            +triggerSet.MFFixed + +Math.ceil(weight) * +triggerSet.MFCostPerLBS;
-          let totalFees = item * REFERRAL_FEE + CLOSSING_FEE;
-          tempArray.push(
-            Math.round((item - totalFees - triggerSet.buyCost - MFCPP) * 100) /
-              100 || 0
-          );
-        }
-      });
-      setFinalProfit(tempArray);
-    }
+    profit();
   }, [selectedValue, inputList]);
 
   useEffect(() => {
@@ -522,11 +518,17 @@ const BulkHunt = ({ route }) => {
     setFinalProfit();
     submit();
   }
+  function cancelAll() {
+    setData([]);
+    setSalesRank([]);
+    setAve([]);
+    setFinalProfit();
+  }
   const cancelLoading = () => {
     setIsLoading(false);
   };
   const navigation = useNavigation();
-  console.log("FINAL PROFIT", finalProfit);
+
   return (
     <>
       {/* <Loading cancelLoading={cancelLoading} /> */}
@@ -588,73 +590,84 @@ const BulkHunt = ({ route }) => {
             </View>
           </TouchableOpacity>
         </View>
+
         {data.length > 0 ? (
-          <ScrollView horizontal={true} className="mr-4">
-            <View className="mx-4 my-4 bg-white  pt-4 rounded-lg ">
-              <View className="flex flex-row mb-4 px-4">
-                <Text
-                  style={{
-                    fontFamily: FONTS.JosefinSansBold,
-                  }}
-                  className="text-center w-24"
-                >
-                  Name
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: FONTS.JosefinSansBold,
-                  }}
-                  className="text-center w-24"
-                >
-                  Hunt Score
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: FONTS.JosefinSansBold,
-                  }}
-                  className="text-center w-24"
-                >
-                  Sales Rank
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: FONTS.JosefinSansBold,
-                  }}
-                  className="text-center w-24"
-                >
-                  Cost $0.00
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: FONTS.JosefinSansBold,
-                  }}
-                  className="text-center w-24"
-                >
-                  Profit (FBA)
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: FONTS.JosefinSansBold,
-                  }}
-                  className="text-center ml-4"
-                >
-                  Profit Vendors
-                </Text>
-              </View>
-              {data?.length
-                ? data?.map((dataList, i) => (
-                    <OfferCard
-                      key={i}
-                      index={i}
-                      data={dataList}
-                      finalProfit={finalProfit}
-                      salesRank={salesRank[i]}
-                      huntScore={huntScore[i]}
-                    />
-                  ))
-                : null}
+          <>
+            <View className="items-center">
+              <Pressable
+                className="bg-red-500 py-2 px-4 rounded-md"
+                onPress={cancelAll}
+              >
+                <Text>Clear All</Text>
+              </Pressable>
             </View>
-          </ScrollView>
+            <ScrollView horizontal={true} className="mr-4">
+              <View className="mx-4 my-4 bg-white  pt-4 rounded-lg ">
+                <View className="flex flex-row mb-4 px-4">
+                  <Text
+                    style={{
+                      fontFamily: FONTS.JosefinSansBold,
+                    }}
+                    className="text-center w-24"
+                  >
+                    Name
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: FONTS.JosefinSansBold,
+                    }}
+                    className="text-center w-24"
+                  >
+                    Hunt Score
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: FONTS.JosefinSansBold,
+                    }}
+                    className="text-center w-24"
+                  >
+                    Sales Rank
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: FONTS.JosefinSansBold,
+                    }}
+                    className="text-center w-24"
+                  >
+                    Cost $0.00
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: FONTS.JosefinSansBold,
+                    }}
+                    className="text-center w-24"
+                  >
+                    Profit (FBA)
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: FONTS.JosefinSansBold,
+                    }}
+                    className="text-center ml-4"
+                  >
+                    Profit Vendors
+                  </Text>
+                </View>
+                {data?.length
+                  ? data?.map((dataList, i) => (
+                      <OfferCard
+                        key={i}
+                        index={i}
+                        data={dataList}
+                        finalProfit={finalProfit}
+                        salesRank={salesRank[i]}
+                        huntScore={huntScore[i]}
+                      />
+                    ))
+                  : null}
+              </View>
+            </ScrollView>
+          </>
         ) : null}
       </ScrollView>
     </>

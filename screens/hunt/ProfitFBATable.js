@@ -22,11 +22,10 @@ function ProfitFBATable({
             <View className="flex-grow items-center">
               <Text>All</Text>
               {triggers.map((item, index) => (
-                <>
+                <View key={index + yindex}>
                   {/* selectedItemId */}
                   {item?.usedprice ? (
                     <Pressable
-                      key={index + yindex}
                       className={`my-2 p-2 ${
                         `${index}${yindex}` === selectedItemId
                           ? "bg-darkTeal"
@@ -51,7 +50,7 @@ function ProfitFBATable({
                       </Text>
                     </Pressable>
                   ) : null}
-                </>
+                </View>
               ))}
             </View>
             <View className="flex-grow items-center">
@@ -98,10 +97,9 @@ function ProfitFBATable({
             <View className="flex-grow items-center">
               <Text>All</Text>
               {triggers.map((item, index) => (
-                <>
+                <View key={index + yindex + 2}>
                   {item?.newprice ? (
                     <Pressable
-                      key={index + yindex + 2}
                       className={`my-2 p-2 ${
                         `${index}${yindex + 2}` === selectedItemId
                           ? "bg-darkTeal"
@@ -122,16 +120,15 @@ function ProfitFBATable({
                       </Text>
                     </Pressable>
                   ) : null}
-                </>
+                </View>
               ))}
             </View>
             <View className="flex-grow items-center">
               <Text>FBA</Text>
               {triggers.map((item, index) => (
-                <>
+                <View key={index + yindex + 3}>
                   {item?.newfba ? (
                     <Pressable
-                      key={index + yindex + 3}
                       className={`my-2 p-2 ${
                         `${index}${yindex + 3}` === selectedItemId
                           ? "bg-darkTeal"
@@ -154,7 +151,7 @@ function ProfitFBATable({
                       </Text>
                     </Pressable>
                   ) : null}
-                </>
+                </View>
               ))}
             </View>
           </View>

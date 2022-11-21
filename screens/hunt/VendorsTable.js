@@ -1,16 +1,66 @@
 import React, { useEffect } from "react";
 import { Image, Pressable, Text, View } from "react-native";
+import Toast from "react-native-root-toast";
+import { useDispatch } from "react-redux";
+import { addToCard } from "../../features/cardSlice";
 
 function VendorsTable({
   sortedVendors,
   handleVendorsClick,
   setPreviousVendorsID,
+  bookData,
   vendorName,
   venderValue,
 }) {
   // useEffect(() => {
   //   setPreviousVendorsID();
   // }, []);
+
+  const dispatch = useDispatch();
+
+  function addToStore(vendor) {
+    const vendorPrice = Number(vendor?.price.replace("$", ""));
+    try {
+      if (vendorPrice > 0) {
+        const newData = {
+          type: "sell",
+          bookData,
+          vendor,
+        };
+        dispatch(addToCard(newData));
+        Toast.show("added to cart");
+      } else {
+        Toast.show("There is no offer available", {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.CENTER,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+          containerStyle: {
+            backgroundColor: "#FF8787",
+            height: 60,
+            justifyContent: "center",
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      Toast.show("There is no offer available", {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.CENTER,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+        containerStyle: {
+          backgroundColor: "#FF8787",
+          height: 60,
+          justifyContent: "center",
+        },
+      });
+    }
+  }
 
   return (
     <View>
@@ -46,7 +96,10 @@ function VendorsTable({
                           />
                           <Text>{vendor.vendorName}</Text>
                           <Text>{vendor.price}</Text>
-                          <Pressable className="bg-greyBlue px-2 py-1 rounded-md">
+                          <Pressable
+                            onPress={() => addToStore(vendor)}
+                            className="bg-greyBlue px-2 py-1 rounded-md"
+                          >
                             <Text className="text-white">Sell</Text>
                           </Pressable>
                         </Pressable>

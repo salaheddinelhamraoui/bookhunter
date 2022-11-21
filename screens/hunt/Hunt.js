@@ -213,7 +213,6 @@ function Hunt({ route }) {
   // }
 
   useEffect(() => {
-    console.log(ParamIsbn);
     if (ParamIsbn) {
       setInputList([ParamIsbn]);
       submit(ParamIsbn);
@@ -225,7 +224,6 @@ function Hunt({ route }) {
   };
 
   const handelSearchButton = () => {
-    console.log("search");
     setIsLoading(true);
     submit(inputList[0]);
   };
@@ -911,6 +909,7 @@ function Hunt({ route }) {
                   selectedItemId={previousID}
                 />
                 <VendorsTable
+                  bookData={bookData}
                   venderValue={venderValue}
                   sortedVendors={sortedVendors}
                   handleVendorsClick={handleVendorsCLick}

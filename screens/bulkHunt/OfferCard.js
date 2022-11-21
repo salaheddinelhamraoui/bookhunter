@@ -13,8 +13,6 @@ const OfferCard = ({ index, data, salesRank, huntScore, finalProfit }) => {
   const dispatch = useDispatch();
   const [cost, setCost] = useState(0);
 
-  console.log(finalProfit);
-
   // AsyncStorage.clear();
 
   function VendorQuantity(vendor) {
