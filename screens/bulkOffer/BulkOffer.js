@@ -432,19 +432,19 @@ const BulkOffer = () => {
     }
 
     function handleSearchButton() {
-        setTotalPrice(0);
-        setMasterVendors([]);
-        setData([]);
-        setOffer(0);
-        setProfitFBA([]);
-        setPercentage(0);
-        // setInputList([]);
-        // setInput([]);
-        setPrice([]);
-        setVendors([]);
-        setBookStatus([]);
-        setVoted([]);
-        submit();
+        // setTotalPrice(0);
+        // setMasterVendors([]);
+        // setData([]);
+        // setOffer(0);
+        // setProfitFBA([]);
+        // setPercentage(0);
+        // // setInputList([]);
+        // // setInput([]);
+        // setPrice([]);
+        // setVendors([]);
+        // setBookStatus([]);
+        // setVoted([]);
+        // submit();
     }
 
     return (
