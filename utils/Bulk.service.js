@@ -25,3 +25,6 @@ export const bulkHunt = (isbns) => {
 export const addRecentlySearched = (isbn, cover, vendors) => {
   return axios.put(`${API}addRecentlySearched/`, { isbn, cover, vendors });
 };
+export const TriggersSearchResult = (isbn, type) => {
+  return axios.post(`${API}triggersResult/`, { isbn });
+};

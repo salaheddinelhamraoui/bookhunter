@@ -30,12 +30,13 @@ import Vendors from "../vendors/Vendors";
 import { MaterialIcons } from "@expo/vector-icons";
 import Profile from "../profile/Profile";
 import EditMember from "../teams/EditMember";
-import bulkHunt from "../bulkHunt/BulkHunt";
+// import bulkHunt from "../bulkHunt/BulkHunt";
 import BulkOffer from "../bulkOffer/BulkOffer";
 import Hunt from "../hunt/Hunt";
 import HuntScanner from "../hunt/HuntScanner";
-import BulkHuntScanner from "../bulkHunt/BulkHuntScanner";
+import BulkHuntScanner from "../bulkHuntDemo/BulkHuntScanner";
 import { Feather } from "@expo/vector-icons";
+import bulkHunt from "../bulkHuntDemo/BulkHunt";
 
 const Drawer = createDrawerNavigator();
 
