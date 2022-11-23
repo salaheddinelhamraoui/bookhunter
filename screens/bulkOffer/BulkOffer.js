@@ -464,7 +464,7 @@ const BulkOffer = () => {
                 </View>
                 <View className="mx-4 mt-4 bg-white px-4 py-4 rounded-lg">
                     <Searchbar
-                        placeholder="978...,278.."
+                        placeholder="978...,279.."
                         onSubmitEditing={handleSearchButton}
                         className=" my-4"
                         value={inputList}
@@ -752,22 +752,22 @@ const BulkOffer = () => {
                         </View>
                         {data.length > 0 &&
                             data.map(
-                                (books, index) => <OfferCard 
-                                bg="bg-gray-200" 
-                                key={index} 
-                                books={books} 
-                                scoreState={scoreState} 
-                                index={index} 
-                                profitFBA={profitFBA} 
-                                shipping={shipping} 
-                                salesRank={salesRank} 
-                                ave={ave} 
-                                slaveEdit={slaveEdit} 
-                                price={price} 
-                                masterVendors={masterVendors[index]} 
-                                saveSlaveEdit={saveSlaveEdit} 
-                                isbn={data[index][0].book.isbn13.split(",")[0]} 
-                                selectionType={selectionType} />)}
+                                (books, index) => <OfferCard
+                                    bg="bg-gray-200"
+                                    key={index}
+                                    books={books}
+                                    scoreState={scoreState}
+                                    index={index}
+                                    profitFBA={profitFBA}
+                                    shipping={shipping}
+                                    salesRank={salesRank}
+                                    ave={ave}
+                                    slaveEdit={slaveEdit}
+                                    price={price}
+                                    masterVendors={masterVendors[index]}
+                                    saveSlaveEdit={saveSlaveEdit}
+                                    isbn={data[index][0].book.isbn13.split(",")[0]}
+                                    selectionType={selectionType} />)}
                     </View>
                 </ScrollView>}
 
