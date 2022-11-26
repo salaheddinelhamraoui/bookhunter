@@ -434,7 +434,6 @@ const BulkOffer = () => {
     function handleSearchButton() {
         // setTotalPrice(0);
         // setMasterVendors([]);
-        // setData([]);
         // setOffer(0);
         // setProfitFBA([]);
         // setPercentage(0);
@@ -444,7 +443,31 @@ const BulkOffer = () => {
         // setVendors([]);
         // setBookStatus([]);
         // setVoted([]);
-        // submit();
+        submit();
+    }
+
+    const deleteBook = (isbn) => {
+        let filteredBooks = data.filter(
+            (book, index) => data[index][0].book.isbn13.split(",")[0] !== isbn
+        )
+
+        setData(filteredBooks);
+        // calculatePrice();
+    }
+
+    const clearData = () => {
+        setTotalPrice(0);
+        setMasterVendors([]);
+        setOffer(0);
+        setProfitFBA([]);
+        setPercentage(0);
+        // setInputList([]);
+        // setInput([]);
+        setData([]);
+        setPrice([]);
+        setVendors([]);
+        setBookStatus([]);
+        setVoted([]);
     }
 
     return (
@@ -504,9 +527,10 @@ const BulkOffer = () => {
                                 Total Price
                             </Text>
                             <Text
-                                className="mb-1 border-[0.2px] rounded-lg px-2 py-3"
+                                className="mb-1 border-[0.2px] rounded-lg px-2 py-3 bg-gray-200"
                                 style={{
                                     fontFamily: FONTS.textBold,
+
                                 }}
                             >
                                 {Math.round(totalPrice * 100) / 100}
@@ -522,7 +546,7 @@ const BulkOffer = () => {
                                 Gross Profit
                             </Text>
                             <Text
-                                className="mb-1 border-[0.2px] rounded-lg px-2 py-3"
+                                className="mb-1 border-[0.2px] rounded-lg px-2 py-3 bg-gray-200"
                                 style={{
                                     fontFamily: FONTS.textBold,
                                 }}
@@ -582,7 +606,7 @@ const BulkOffer = () => {
 
                             </Text>
                             <Text
-                                className="mb-1 border-[0.2px] rounded-lg px-2 py-3"
+                                className="mb-1 border-[0.2px] rounded-lg px-2 py-3 bg-gray-200"
                                 style={{
                                     fontFamily: FONTS.textBold,
                                 }}
@@ -636,7 +660,7 @@ const BulkOffer = () => {
                         </View>
 
                     </View>
-                    <View className="flex flex-row justify-between mt-2">
+                    <View className="flex flex-row justify-between mt-2 flex-wrap">
                         <View className="w-[48%]">
                             <TouchableOpacity className="" onPress={sellAllToAmazon}>
                                 <View className="mt-4 bg-[#6fbfbf]  rounded-lg px-4 py-3">
@@ -665,6 +689,22 @@ const BulkOffer = () => {
                                         }}
                                     >
                                         Sell All to Vendors
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <View className="w-[48%]">
+                            <TouchableOpacity className="" onPress={clearData}>
+                                <View className="mt-4 bg-red-400  rounded-lg px-4 py-3">
+                                    <Text
+                                        className="text-center"
+                                        style={{
+                                            fontFamily: FONTS.JosefinSansBold,
+                                            fontSize: SIZES.font,
+                                            color: "white",
+                                        }}
+                                    >
+                                        Clear
                                     </Text>
                                 </View>
                             </TouchableOpacity>
@@ -767,7 +807,9 @@ const BulkOffer = () => {
                                     masterVendors={masterVendors[index]}
                                     saveSlaveEdit={saveSlaveEdit}
                                     isbn={data[index][0].book.isbn13.split(",")[0]}
-                                    selectionType={selectionType} />)}
+                                    selectionType={selectionType}
+                                    deleteBook={deleteBook}
+                                />)}
                     </View>
                 </ScrollView>}
 

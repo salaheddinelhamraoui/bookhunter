@@ -5,14 +5,17 @@ import { ActivityIndicator } from "react-native-paper";
 function Loading({ cancelLoading }) {
   return (
     <>
-      <View className="flex-1 h-screen absolute  w-full z-[999] bg-slate-600 opacity-10"></View>
+      <View className="h-screen absolute  w-full flex flex-col items-center justify-center z-[999] bg-slate-600 opacity-50"></View>
       <Pressable
-        className="bg-red-500 w-40 mx-auto py-4 rounded-md items-center z-[1200] flex-1 absolute top-[60%] right-1/3"
+        className=" mx-auto py-4 rounded-md items-center z-[1200] flex-1 absolute w-full bottom-20"
         onPress={cancelLoading}
       >
-        <Text>Cancel</Text>
+        <Text className="text-white text-center ">Cancel</Text>
       </Pressable>
-      <ActivityIndicator className=" flex-1 absolute top-1/2 right-1/2 z-50" />
+      <ActivityIndicator
+        className="text-white flex-1 absolute top-1/2 right-1/2 z-[1200]"
+        color="#fff"
+      />
     </>
   );
 }
