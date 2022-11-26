@@ -39,12 +39,7 @@
     },
     "plugins": [
       [
-        "expo-build-properties",
-        {
-          "android": {
-            "multiDexEnabled": true
-          }
-        }
+        "expo-build-properties"
       ]
     ]
   }
