@@ -87,13 +87,22 @@ const OfferCard = ({
     }
   }
 
+  const renderSalesRank = (salesRank) => {
+    console.log(salesRank);
+    const aveLength = salesRank.split(",").length;
+    const value = salesRank.split(",")[0];
+    if (aveLength === 1) return value;
+    if (aveLength === 2) return `${value}K`;
+    if (aveLength === 3) return `${value}M`;
+  };
+
   return (
     <View
       className={`flex flex-row px-4 py-2 bg-white ${
         index % 2 === 0 ? "bg-gray-200" : "bg-gray-100"
       }`}
     >
-      <Pressable
+      {/* <Pressable
         className=" justify-center w-24 items-center"
         // onPress={() => deleteOfferCard(data?.cardId)}
       >
@@ -105,7 +114,7 @@ const OfferCard = ({
             X
           </Text>
         </View>
-      </Pressable>
+      </Pressable> */}
       <View>
         <Text
           style={{
@@ -139,7 +148,7 @@ const OfferCard = ({
         }}
         className="text-center w-24 self-center"
       >
-        {salesRank}
+        {renderSalesRank(salesRank)}
       </Text>
       <TextInput
         keyboardType="numeric"

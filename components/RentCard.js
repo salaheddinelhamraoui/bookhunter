@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Image, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import Toast from "react-native-root-toast";
+import { useDispatch } from "react-redux";
 import { FONTS } from "../constants";
+import { addToCard } from "../features/cardSlice";
 import CardModal from "./CardModal";
 
 function RentCard({ vendor, type, bookData }) {
   const [modalVisible, setModalVisible] = useState(false);
+  const dispatch = useDispatch();
 
   const API = "https://bookhunter.com";
 
@@ -45,20 +49,37 @@ function RentCard({ vendor, type, bookData }) {
               {item.vendorName}
             </Text>
           </View>
+
           {parseFloat(item.price.replace("$", "")) !== 0 && (
             <View className="ml-auto">
               <Text
                 style={{ fontFamily: FONTS.JosefinSansBold }}
                 className="text-base"
               >
-                {item.price}
+                {`$${Number(item.price.replace("$", "")).toFixed(2)}`}
               </Text>
             </View>
           )}
         </View>
         {parseFloat(item.price.replace("$", "")) !== 0 && (
           <TouchableOpacity
-            onPress={() => setModalVisible(true)}
+            onPress={() => {
+              dispatch(addToCard(DATA));
+              Toast.show("Book added to cart!", {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+                delay: 0,
+                containerStyle: {
+                  zIndex: 9999,
+                  backgroundColor: "#68B984",
+                  height: 60,
+                  justifyContent: "center",
+                },
+              });
+            }}
             className={`flex-1 justify-center px-5 rounded-md ${
               parseFloat(item.price.replace("$", "")) === 0
                 ? "bg-gray-400"

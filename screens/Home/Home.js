@@ -37,6 +37,7 @@ import HuntScanner from "../hunt/HuntScanner";
 import BulkHuntScanner from "../bulkHuntDemo/BulkHuntScanner";
 import { Feather } from "@expo/vector-icons";
 import bulkHunt from "../bulkHuntDemo/BulkHunt";
+import BulkOfferScanner from "../bulkOffer/BulkOfferScanner";
 
 const Drawer = createDrawerNavigator();
 
@@ -93,7 +94,6 @@ function Home({ navigation, route }) {
   }
 
   useEffect(() => {
-    console.log(user);
     dispatch(login(user));
     initializeCart();
   }, [user]);
@@ -226,6 +226,14 @@ function Home({ navigation, route }) {
         <Drawer.Screen
           name="BULK HUNT SCANNER"
           component={BulkHuntScanner}
+          options={{
+            drawerItemStyle: { display: "none" },
+          }}
+        />
+
+        <Drawer.Screen
+          name="BULK OFFER SCANNER"
+          component={BulkOfferScanner}
           options={{
             drawerItemStyle: { display: "none" },
           }}

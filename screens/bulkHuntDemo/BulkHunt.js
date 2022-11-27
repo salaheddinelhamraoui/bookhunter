@@ -88,6 +88,8 @@ const BulkHunt = ({ route }) => {
   const [open, setOpen] = useState(false);
   const [dataRestricted, setDataRestricted] = useState();
 
+  const navigation = useNavigation();
+
   let vendorsObject = {};
 
   const notify = () =>
@@ -113,13 +115,15 @@ const BulkHunt = ({ route }) => {
     });
 
   const user_Id = state?.id;
-
+  const isFocused = useIsFocused();
   useEffect(() => {
     if (isbn) {
       setInputList(isbn.split(","));
       setAutoSearch(true);
+      if (!isbn) return;
+      submit();
     }
-  }, [isbn]);
+  }, [isbn, isFocused]);
 
   function getBookStatus(isbn, index) {
     let statusList = [...bookStatus];
@@ -167,11 +171,10 @@ const BulkHunt = ({ route }) => {
       submit();
     }
   }, [autoSearch]);
-  console.log(isLoading);
+
   async function submit() {
     searchLimit(user_Id, "bulkHuntLimit", inputList.length, "").then(
       async (result) => {
-        console.log("SUBMIT");
         if (result.data.status) {
           setLoading(true);
           setIsLoading(true);
@@ -639,10 +642,12 @@ const BulkHunt = ({ route }) => {
     setSelectedValue([]);
     setShowClearAll(false);
     setVoted([]);
+    isbn = null;
   };
 
   const cancelLoading = () => {
     setIsLoading(false);
+    isbn = null;
   };
 
   return (
@@ -719,14 +724,14 @@ const BulkHunt = ({ route }) => {
             <ScrollView horizontal={true} className="mr-4">
               <View className="mx-4 my-4 bg-white  pt-4 rounded-lg ">
                 <View className="flex flex-row mb-4 px-4">
-                  <Text
+                  {/* <Text
                     style={{
                       fontFamily: FONTS.JosefinSansBold,
                     }}
                     className="text-center w-24"
                   >
                     Action
-                  </Text>
+                  </Text> */}
                   <Text
                     style={{
                       fontFamily: FONTS.JosefinSansBold,
