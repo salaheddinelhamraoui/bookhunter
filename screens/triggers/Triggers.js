@@ -65,8 +65,6 @@ const Triggers = ({ navigation }) => {
       .finally(() => setIsLoading(false));
   };
 
-  console.log(triggersSet);
-
   return (
     <>
       {isLoading ? (

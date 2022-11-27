@@ -85,7 +85,7 @@ function Subscription({ sub }) {
           <TouchableOpacity
             className="w-full"
             onPress={() => {
-              Linking.openURL("https://bookhunter.com/profile");
+              Linking.openURL("https://bookhunter.com/login");
             }}
           >
             <View className="mt-4 bg-[#6fbfbf]  rounded-lg px-4 py-2">

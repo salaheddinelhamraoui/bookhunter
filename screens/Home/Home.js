@@ -103,6 +103,7 @@ function Home({ navigation, route }) {
       <NavBar />
       <Drawer.Navigator
         useLegacyImplementation={true}
+        backBehavior="history"
         initialRouteName="ISBN SCANNER"
         screenOptions={{
           headerShown: false,
