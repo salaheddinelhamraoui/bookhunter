@@ -2,7 +2,7 @@ import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native'
 import { FONTS, SIZES, assets } from "../../constants";
 import { useNavigation } from "@react-navigation/native";
 
-const OfferCard = ({ bg, books, scoreState, index, shipping, profitFBA, salesRank, ave, slaveEdit, price, masterVendors, saveSlaveEdit, isbn, selectionType }) => {
+const OfferCard = ({ bg, books, scoreState, index, shipping, profitFBA, salesRank, ave, slaveEdit, price, masterVendors, saveSlaveEdit, isbn, selectionType, deleteBook }) => {
 
     const navigation = useNavigation();
 
@@ -153,6 +153,15 @@ const OfferCard = ({ bg, books, scoreState, index, shipping, profitFBA, salesRan
                             See more vendors
                         </Text>
                     </View>
+                </TouchableOpacity>
+                <TouchableOpacity className="ml-4 flex mt-4 items-center" onPress={() => {
+                    deleteBook(isbn);
+                }}>
+                    <Image
+                        source={assets.delete2}
+                        resizeMode="contain"
+                        className="w-[20px] h-[20px]"
+                    />
                 </TouchableOpacity>
             </View>}
         </View >

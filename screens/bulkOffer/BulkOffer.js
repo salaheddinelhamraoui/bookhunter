@@ -415,6 +415,44 @@ const BulkOffer = ({ route }) => {
     const inputs = text.split(",");
     setInputList(inputs);
   }
+  function handleSearchButton() {
+    // setTotalPrice(0);
+    // setMasterVendors([]);
+    // setOffer(0);
+    // setProfitFBA([]);
+    // setPercentage(0);
+    // // setInputList([]);
+    // // setInput([]);
+    // setPrice([]);
+    // setVendors([]);
+    // setBookStatus([]);
+    // setVoted([]);
+    submit();
+  }
+
+  const deleteBook = (isbn) => {
+    let filteredBooks = data.filter(
+      (book, index) => data[index][0].book.isbn13.split(",")[0] !== isbn
+    );
+
+    setData(filteredBooks);
+    // calculatePrice();
+  };
+
+  const clearData = () => {
+    setTotalPrice(0);
+    setMasterVendors([]);
+    setOffer(0);
+    setProfitFBA([]);
+    setPercentage(0);
+    // setInputList([]);
+    // setInput([]);
+    setData([]);
+    setPrice([]);
+    setVendors([]);
+    setBookStatus([]);
+    setVoted([]);
+  };
 
   function handleSearchButton() {
     setTotalPrice(0);

@@ -148,7 +148,7 @@ const OfferCard = ({
         }}
         className="text-center w-24 self-center"
       >
-        {renderSalesRank(salesRank)}
+        {salesRank && renderSalesRank(salesRank)}
       </Text>
       <TextInput
         keyboardType="numeric"

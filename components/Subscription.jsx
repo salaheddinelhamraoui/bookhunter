@@ -1,6 +1,13 @@
 import React, { useCallback } from "react";
-import { Alert, Linking, Pressable, Text, View } from "react-native";
-import { FONTS } from "../constants";
+import {
+  Alert,
+  Linking,
+  Pressable,
+  Text,
+  View,
+  TouchableOpacity,
+} from "react-native";
+import { FONTS, SIZES } from "../constants";
 
 function Subscription({ sub }) {
   const url = "https://bookhunter.com/pricing";
@@ -75,6 +82,25 @@ function Subscription({ sub }) {
               {convertDate(sub?.strapi?.data[0]?.current_period_end)}
             </Text>
           </View>
+          <TouchableOpacity
+            className="w-full"
+            onPress={() => {
+              Linking.openURL("https://bookhunter.com/profile");
+            }}
+          >
+            <View className="mt-4 bg-[#6fbfbf]  rounded-lg px-4 py-2">
+              <Text
+                className="text-center"
+                style={{
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.medium,
+                  color: "white",
+                }}
+              >
+                Update
+              </Text>
+            </View>
+          </TouchableOpacity>
         </>
       ) : null}
     </View>

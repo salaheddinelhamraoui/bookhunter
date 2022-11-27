@@ -507,14 +507,14 @@ function Hunt({ route }) {
     const start = performance.now();
     if (selectedValue == selectedFBA) {
       setSelectedValueIndex(`${selectedValueIndex1 - 1}1`);
-      selectedValueIndex1 != null &&
-        setPreviousID(`${selectedValueIndex1 - 1}1`);
+      selectedValueIndex1 != null && "";
+      // setPreviousID(`${selectedValueIndex1 - 1}1`);
     } else if (selectedValue == selectedMF) {
       setSelectedValueIndex(`${selectedValueIndex2 - 1}0`);
       selectedValueIndex2 != null &&
         setPreviousID(`${selectedValueIndex2 - 1}0`);
     } else if (selectedValue == minUsedFbaPrice) {
-      setPreviousID("usedBuyBox");
+      // setPreviousID("usedBuyBox");
     } else if (selectedValue == amazonPrice - amazonPrice * 0.1) {
       setPreviousID("Amazon");
     }
@@ -898,7 +898,11 @@ function Hunt({ route }) {
           isActive && (
             <>
               <InfoBookCard bookData={bookData} />
-              <HuntActions huntActions={huntActions} />
+              <HuntActions
+                huntActions={huntActions}
+                handleClick={handleCLick}
+                selectedItemId={previousID}
+              />
               <View className="mx-4 rounded-md overflow-hidden mb-4">
                 <HuntTableHead huntTableHead={huntTableHead} />
                 <ProfitFBATable

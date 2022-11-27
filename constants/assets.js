@@ -37,9 +37,12 @@ import tap from "../assets/icons/tap.png";
 import target from "../assets/icons/target.png";
 import team from "../assets/icons/team.png";
 import user from "../assets/icons/user.png";
+import delete2 from "../assets/icons/delete.png";
+
 
 
 export default {
+  delete2,
   alternative,
   link,
   summer,

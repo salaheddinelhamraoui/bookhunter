@@ -12,7 +12,7 @@ import Subscription from "../../components/Subscription";
 import { getSubscriptionData } from "../../utils/Profile.service";
 
 const data = [
-  { label: "United State", value: "United State" },
+  { label: "United States", value: "United States" },
   { label: "Canada", value: "Canada" },
   { label: "Mexico", value: "Mexico" },
 ];

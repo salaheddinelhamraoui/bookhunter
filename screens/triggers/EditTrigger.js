@@ -111,6 +111,8 @@ const EditTrigger = ({ navigation, route }) => {
       .finally(() => getTriggersList());
   };
 
+
+
   return (
     <SafeAreaView>
       {isLoading ? <Loading /> : null}
@@ -269,7 +271,7 @@ const EditTrigger = ({ navigation, route }) => {
               />
             </View>
             {triggerSetData?.fulfillement &&
-            triggerSetData?.fulfillement.toUpperCase() === "MF" ? (
+              triggerSetData?.fulfillement.toUpperCase() === "MF" ? (
               <>
                 <View className="mt-4">
                   <Text
@@ -327,7 +329,7 @@ const EditTrigger = ({ navigation, route }) => {
             ) : null}
 
             {triggerSetData?.fulfillement &&
-            triggerSetData?.fulfillement.toUpperCase() === "FBA" ? (
+              triggerSetData?.fulfillement.toUpperCase() === "FBA" ? (
               <>
                 <View className="mt-4">
                   <Text
@@ -378,7 +380,10 @@ const EditTrigger = ({ navigation, route }) => {
           </View>
         </>
 
-        {/* //* END TRIGGER SET */}
+
+
+
+
         {triggersData.length > 0 &&
           triggersData.map((trigger, i) => (
             <TriggerCard
