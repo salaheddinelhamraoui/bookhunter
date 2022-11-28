@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-  Pressable,
-} from "react-native";
+import { View, Text, ScrollView, TextInput, TouchableOpacity } from "react-native";
 import { FONTS, SIZES, assets } from "../../constants";
 import OfferCard from "./OfferCard";
 import { useCallback, useState, useEffect, useContext } from "react";
@@ -15,11 +8,8 @@ import dataBackupService from "../../utils/data-backup.service";
 import bulkOffer from "../../utils/bulk-offer.service";
 import { Searchbar } from "react-native-paper";
 import Loading from "../../components/Loading";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 
-const BulkOffer = ({ route }) => {
-  let isbn = route?.params?.isbn;
+const BulkOffer = () => {
   const [data, setData] = useState([]);
   const [Vendors, setVendors] = useState([]);
   const [masterVendors, setMasterVendors] = useState([]);
@@ -66,11 +56,10 @@ const BulkOffer = ({ route }) => {
   const [scoreState, setScoreState] = useState([]);
   const [selectedListID, setSelectedListID] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectionType, setSelectionType] = useState("vendors");
+  const [selectionType, setSelectionType] = useState('vendors')
 
   const user = useSelector((state) => state.userSlice.data);
 
-  const navigation = useNavigation();
 
   useEffect(() => {
     values.length && setInput(values.toString().replaceAll(",", " "));
@@ -79,13 +68,12 @@ const BulkOffer = ({ route }) => {
 
   // let isbn = "9781524911959,9780470533314,9781111825867";
 
-  useEffect(() => {
-    if (isbn) {
-      submit();
-      setInputList(isbn.split(","));
-      setAutoSearch(true);
-    }
-  }, [isbn]);
+  // useEffect(() => {
+  //     if (isbn) {
+  //         setInputList(isbn.split(","));
+  //         setAutoSearch(true);
+  //     }
+  // }, [isbn]);
 
   // useEffect(() => {
   //     submit();
@@ -102,8 +90,9 @@ const BulkOffer = ({ route }) => {
             let ISBN = inputList[i];
             if (inputList[i].startsWith("290")) {
               console.log("isbn10 ", convISBN13toISBN10(inputList[i]));
-              inputList[i] = convISBN13toISBN10(inputList[i]);
+              inputList[i] = convISBN13toISBN10(inputList[i])
             }
+
 
             if (inputList[i].length == 10) {
               let isbnTemp = inputList[i].slice(0, -1);
@@ -134,13 +123,23 @@ const BulkOffer = ({ route }) => {
             }
 
             await bulkOffer(ISBN || inputList[i]).then((result) => {
-              setData((oldArray) => [...oldArray, result.data.bookData]);
+
+              setData((oldArray) => [
+                ...oldArray,
+                result.data.bookData,
+              ]);
               setMasterVendors((oldArray) => [
                 ...oldArray,
                 result.data.Vendors,
               ]);
-              setProfitFBA((oldArray) => [...oldArray, result.data.profitFBA]);
-              setShipping((oldArray) => [...oldArray, result.data.shipping]);
+              setProfitFBA((oldArray) => [
+                ...oldArray,
+                result.data.profitFBA,
+              ]);
+              setShipping((oldArray) => [
+                ...oldArray,
+                result.data.shipping,
+              ]);
               if (
                 result.data.salesRank > 999 &&
                 result.data.salesRank < 999999
@@ -152,7 +151,9 @@ const BulkOffer = ({ route }) => {
               } else if (result.data.salesRank > 999999) {
                 setSalesRank((oldArray) => [
                   ...oldArray,
-                  `${Math.round((result.data.salesRank / 1000000) * 10) / 10}M`,
+                  `${Math.round((result.data.salesRank / 1000000) * 10) /
+                  10
+                  }M`,
                 ]);
               } else {
                 setSalesRank((oldArray) => [
@@ -168,16 +169,21 @@ const BulkOffer = ({ route }) => {
               } else if (result.data.ave > 999999) {
                 setAve((oldArray) => [
                   ...oldArray,
-                  `${Math.round((result.data.ave / 1000000) * 10) / 10}M`,
+                  `${Math.round((result.data.ave / 1000000) * 10) / 10
+                  }M`,
                 ]);
               } else {
                 setAve((oldArray) => [...oldArray, result.data.ave]);
               }
-              setTracker((oldArray) => [...oldArray, result.data.tracker]);
+              setTracker((oldArray) => [
+                ...oldArray,
+                result.data.tracker,
+              ]);
               setPrice((oldArray) => [...oldArray, result.data.price]);
             });
 
             sellAllToVendors();
+
           }
           setLoading(false);
           setIsLoading(false);
@@ -188,6 +194,7 @@ const BulkOffer = ({ route }) => {
       }
     );
   }
+
 
   useEffect(() => {
     setFiltredDate([]);
@@ -219,7 +226,7 @@ const BulkOffer = ({ route }) => {
   function sellAllToVendors() {
     setListIndex([]);
     calculatePrice();
-    setSelectionType("vendors");
+    setSelectionType('vendors')
   }
 
   useEffect(() => {
@@ -238,6 +245,7 @@ const BulkOffer = ({ route }) => {
       setPercentage((offer * 100) / tempTotal);
     }
   }, [price, slaveEdit]);
+
 
   function saveSlaveEdit(value, index) {
     let temp = [...slaveEdit];
@@ -258,6 +266,7 @@ const BulkOffer = ({ route }) => {
       console.log("error", e);
     }
   }
+
 
   useEffect(() => {
     let score = [];
@@ -299,7 +308,7 @@ const BulkOffer = ({ route }) => {
       setId(2);
     }
 
-    setSelectionType("amazon");
+    setSelectionType('amazon')
   }
 
   useEffect(() => {
@@ -307,6 +316,7 @@ const BulkOffer = ({ route }) => {
     //     (totalPrice * document.getElementById("percentage").value || 0) / 100
     // );
   }, [totalPrice]);
+
 
   function getBookStatus(isbns) {
     let statusList = [...bookStatus];
@@ -334,9 +344,11 @@ const BulkOffer = ({ route }) => {
     setVoted(voteList);
   }
 
+
   useEffect(() => {
     calculatePrice();
   }, [selectedListID, listIndex]);
+
 
   useEffect(() => {
     let temp = [...masterVendors];
@@ -346,11 +358,13 @@ const BulkOffer = ({ route }) => {
           +a.price.replace("$", "") < +b.price.replace("$", "")
             ? 1
             : +b.price.replace("$", "") < +a.price.replace("$", "")
-            ? -1
-            : 0
+              ? -1
+              : 0
         )
       );
+
   }, [masterVendors]);
+
 
   useEffect(() => {
     let priceArray = [];
@@ -411,10 +425,12 @@ const BulkOffer = ({ route }) => {
     setId(1);
   }
 
+
   function handleSearch(text) {
     const inputs = text.split(",");
     setInputList(inputs);
   }
+
   function handleSearchButton() {
     // setTotalPrice(0);
     // setMasterVendors([]);
@@ -433,11 +449,11 @@ const BulkOffer = ({ route }) => {
   const deleteBook = (isbn) => {
     let filteredBooks = data.filter(
       (book, index) => data[index][0].book.isbn13.split(",")[0] !== isbn
-    );
+    )
 
     setData(filteredBooks);
     // calculatePrice();
-  };
+  }
 
   const clearData = () => {
     setTotalPrice(0);
@@ -452,34 +468,13 @@ const BulkOffer = ({ route }) => {
     setVendors([]);
     setBookStatus([]);
     setVoted([]);
-  };
-
-  function handleSearchButton() {
-    setTotalPrice(0);
-    setMasterVendors([]);
-    setData([]);
-    setOffer(0);
-    setProfitFBA([]);
-    setPercentage(0);
-    // setInputList([]);
-    // setInput([]);
-    setPrice([]);
-    setVendors([]);
-    setBookStatus([]);
-    setVoted([]);
-    submit();
   }
-
-  const cancelLoading = () => {
-    setIsLoading(false);
-    isbn = "";
-  };
 
   return (
     <>
-      {isLoading ? <Loading cancelLoading={cancelLoading} /> : null}
+      {isLoading ? <Loading /> : null}
       <ScrollView>
-        <View className="mx-4 my-4 shadow-md bg-white px-4 py-4 rounded-lg">
+        <View className="mx-4 mt-4 bg-white px-4 py-4 rounded-lg">
           <Text
             className="text-center"
             style={{
@@ -489,64 +484,8 @@ const BulkOffer = ({ route }) => {
           >
             Bulk Offer
           </Text>
-          <View className="flex-row items-center">
-            <View className="flex-grow mr-4">
-              <Searchbar
-                placeholder="978..."
-                onSubmitEditing={handleSearchButton}
-                className="my-4 flex-grow"
-                value={inputList.toString()}
-                placeholderTextColor={"#999"}
-                onChangeText={handleSearch}
-                style={{
-                  backgroundColor: "#fff",
-                  borderRadius: 10,
-                  fontFamily: FONTS.JosefinSansRegular,
-                }}
-              />
-            </View>
-
-            <Pressable
-              onPress={() => navigation.navigate("BULK OFFER SCANNER")}
-              className="bg-greyBlue py-3 px-4 rounded-md"
-            >
-              <Text>
-                <MaterialCommunityIcons
-                  name="barcode-scan"
-                  size={20}
-                  color="white"
-                />
-              </Text>
-            </Pressable>
-          </View>
-
-          <TouchableOpacity onPress={handleSearchButton}>
-            <View className=" bg-[#6fbfbf]  rounded-lg px-4 py-3">
-              <Text
-                className="text-center"
-                style={{
-                  fontFamily: FONTS.JosefinSansBold,
-                  fontSize: SIZES.font,
-                  color: "white",
-                }}
-              >
-                Search
-              </Text>
-            </View>
-          </TouchableOpacity>
         </View>
-        {/* <View className="mx-4 mt-4 bg-white px-4 py-4 rounded-lg">
-          <Text
-            className="text-center"
-            style={{
-              fontFamily: FONTS.JosefinSansBold,
-              fontSize: SIZES.extraMedium,
-            }}
-          >
-            Bulk Offer
-          </Text>
-        </View> */}
-        {/* <View className="mx-4 mt-4 bg-white px-4 py-4 rounded-lg">
+        <View className="mx-4 mt-4 bg-white px-4 py-4 rounded-lg">
           <Searchbar
             placeholder="978...,279.."
             onSubmitEditing={handleSearchButton}
@@ -555,7 +494,7 @@ const BulkOffer = ({ route }) => {
             placeholderTextColor={"#999"}
             onChangeText={handleSearch}
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               borderRadius: 10,
               fontFamily: FONTS.JosefinSansRegular,
             }}
@@ -574,287 +513,309 @@ const BulkOffer = ({ route }) => {
               </Text>
             </View>
           </TouchableOpacity>
-        </View> */}
-        {data.length > 0 && (
-          <View className="mx-4 my-4 bg-white  pt-4 rounded-lg px-4 py-4 flex flex-col">
-            <View className="flex flex-row justify-between">
-              <View className="w-[45%]">
-                <Text
-                  className="mb-1"
-                  style={{
-                    fontFamily: FONTS.textBold,
-                  }}
-                >
-                  Total Price
-                </Text>
-                <Text
-                  className="mb-1 border-[0.2px] rounded-lg px-2 py-3"
-                  style={{
-                    fontFamily: FONTS.textBold,
-                  }}
-                >
-                  {Math.round(totalPrice * 100) / 100}
-                </Text>
-              </View>
-              <View className=" w-[45%]">
-                <Text
-                  className="mb-1"
-                  style={{
-                    fontFamily: FONTS.textBold,
-                  }}
-                >
-                  Gross Profit
-                </Text>
-                <Text
-                  className="mb-1 border-[0.2px] rounded-lg px-2 py-3"
-                  style={{
-                    fontFamily: FONTS.textBold,
-                  }}
-                >
-                  {id === 2
+
+        </View>
+        {data.length > 0 && <View className="mx-4 my-4 bg-white  pt-4 rounded-lg px-4 py-4 flex flex-col">
+          <View className="flex flex-row justify-between">
+            <View className="w-[45%]">
+              <Text
+                className="mb-1"
+                style={{
+                  fontFamily: FONTS.textBold,
+                }}
+              >
+                Total Price
+              </Text>
+              <Text
+                className="mb-1 border-[0.2px] rounded-lg px-2 py-3 bg-gray-200"
+                style={{
+                  fontFamily: FONTS.textBold,
+
+                }}
+              >
+                {Math.round(totalPrice * 100) / 100}
+              </Text>
+            </View>
+            <View className=" w-[45%]">
+              <Text
+                className="mb-1"
+                style={{
+                  fontFamily: FONTS.textBold,
+                }}
+              >
+                Gross Profit
+              </Text>
+              <Text
+                className="mb-1 border-[0.2px] rounded-lg px-2 py-3 bg-gray-200"
+                style={{
+                  fontFamily: FONTS.textBold,
+                }}
+              >
+                {
+                  id === 2
                     ? Math.round(
-                        profitFBA.reduce((partialSum, a) => partialSum + a, 0) *
-                          100
-                      ) / 100
-                    : Math.round(totalPrice * 100) / 100}
-                </Text>
-              </View>
-            </View>
-            <View className="flex flex-row justify-between mt-2">
-              <View className="w-[45%]">
-                <Text
-                  className="mb-1 "
-                  style={{
-                    fontFamily: FONTS.textBold,
-                  }}
-                >
-                  %
-                </Text>
-                <TextInput
-                  onChangeText={(value) => {
-                    handlePercentage(value);
-                  }}
-                  outlineColor={"#6fbfbf"}
-                  activeOutlineColor={"#393e59"}
-                  mode="outlined"
-                  label="%"
-                  placeholder="%"
-                  className="border-[0.2px] rounded-lg px-2 py-2"
-                  defaultValue={
-                    isNaN(percentage)
-                      ? 0
-                      : percentage
-                          .toString()
-                          .split(".")
-                          .map((el, i) =>
-                            i ? el.split("").slice(0, 2).join("") : el
-                          )
-                          .join(".")
-                  }
-                />
-              </View>
-              <View className="w-[45%]">
-                <Text
-                  className="mb-1"
-                  style={{
-                    fontFamily: FONTS.textBold,
-                  }}
-                >
-                  Net Profit
-                </Text>
-                <Text
-                  className="mb-1 border-[0.2px] rounded-lg px-2 py-3"
-                  style={{
-                    fontFamily: FONTS.textBold,
-                  }}
-                >
-                  {id == 2
-                    ? offer !== 0
-                      ? Math.round(
-                          (profitFBA.reduce(
-                            (partialSum, a) => partialSum + a,
-                            0
-                          ) -
-                            offer) *
-                            100
-                        ) / 100
-                      : 0
-                    : offer !== 0
-                    ? Math.round((totalPrice - offer) * 100) / 100
-                    : 0}
-                </Text>
-              </View>
-            </View>
-            <View className="flex flex-row justify-between mt-2">
-              <View className="w-[45%]">
-                <Text
-                  className="mb-1 "
-                  style={{
-                    fontFamily: FONTS.textBold,
-                  }}
-                >
-                  Offer
-                </Text>
-                <TextInput
-                  onChangeText={(value) => {
-                    handleOffer(value);
-                  }}
-                  outlineColor={"#6fbfbf"}
-                  activeOutlineColor={"#393e59"}
-                  mode="outlined"
-                  label="OFFER"
-                  placeholder="Offer"
-                  className="border-[0.2px] rounded-lg px-2 py-2"
-                  defaultValue={offer
-                    .toString()
-                    .split(".")
-                    .map((el, i) =>
-                      i ? el.split("").slice(0, 2).join("") : el
-                    )
-                    .join(".")}
-                />
-              </View>
-            </View>
-            <View className="flex flex-row justify-between mt-2">
-              <View className="w-[48%]">
-                <TouchableOpacity className="" onPress={sellAllToAmazon}>
-                  <View className="mt-4 bg-[#6fbfbf]  rounded-lg px-4 py-3">
-                    <Text
-                      className="text-center"
-                      style={{
-                        fontFamily: FONTS.JosefinSansBold,
-                        fontSize: SIZES.font,
-                        color: "white",
-                      }}
-                    >
-                      Sell All to Amazon
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <View className="w-[48%]">
-                <TouchableOpacity className="" onPress={sellAllToVendors}>
-                  <View className="mt-4 bg-[#6fbfbf]  rounded-lg px-4 py-3">
-                    <Text
-                      className="text-center"
-                      style={{
-                        fontFamily: FONTS.JosefinSansBold,
-                        fontSize: SIZES.font,
-                        color: "white",
-                      }}
-                    >
-                      Sell All to Vendors
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
+                      profitFBA.reduce(
+                        (partialSum, a) => partialSum + a,
+                        0
+                      ) * 100
+                    ) / 100
+                    : Math.round(totalPrice * 100) / 100
+                }
+              </Text>
             </View>
           </View>
-        )}
-
-        {data.length > 0 && (
-          <ScrollView horizontal={true} className="mr-4">
-            <View className="mx-4 my-4 bg-white  pt-4 rounded-lg ">
-              <View className="flex flex-row mb-4 px-4">
-                <Text
-                  style={{
-                    fontFamily: FONTS.JosefinSansBold,
-                    fontSize: SIZES.font,
-                  }}
-                  className="text-center w-32"
-                >
-                  Title
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: FONTS.JosefinSansBold,
-                    fontSize: SIZES.small,
-                  }}
-                  className="text-center w-32"
-                >
-                  HUNTSCORE
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: FONTS.JosefinSansBold,
-                    fontSize: SIZES.small,
-                  }}
-                  className="text-center w-32"
-                >
-                  AMAZON PROFIT
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: FONTS.JosefinSansBold,
-                    fontSize: SIZES.small,
-                  }}
-                  className="text-center w-32"
-                >
-                  SALES RANK
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: FONTS.JosefinSansBold,
-                    fontSize: SIZES.small,
-                  }}
-                  className="text-center w-32"
-                >
-                  AVE SALES RANK
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: FONTS.JosefinSansBold,
-                    fontSize: SIZES.small,
-                  }}
-                  className="text-center w-16"
-                >
-                  QTY.
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: FONTS.JosefinSansBold,
-                    fontSize: SIZES.small,
-                  }}
-                  className="text-center w-32"
-                >
-                  AMAZON PRICE
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: FONTS.JosefinSansBold,
-                    fontSize: 14,
-                  }}
-                  className="text-center w-96"
-                >
-                  Vendors
-                </Text>
-              </View>
-              {data.length > 0 &&
-                data.map((books, index) => (
-                  <OfferCard
-                    bg="bg-gray-200"
-                    key={index}
-                    books={books}
-                    scoreState={scoreState}
-                    index={index}
-                    profitFBA={profitFBA}
-                    shipping={shipping}
-                    salesRank={salesRank}
-                    ave={ave}
-                    slaveEdit={slaveEdit}
-                    price={price}
-                    masterVendors={masterVendors[index]}
-                    saveSlaveEdit={saveSlaveEdit}
-                    isbn={data[index][0].book.isbn13.split(",")[0]}
-                    selectionType={selectionType}
-                  />
-                ))}
+          <View className="flex flex-row justify-between mt-2">
+            <View className="w-[45%]">
+              <Text
+                className="mb-1 "
+                style={{
+                  fontFamily: FONTS.textBold,
+                }}
+              >
+                %
+              </Text>
+              <TextInput
+                onChangeText={(value) => { handlePercentage(value); }}
+                outlineColor={"#6fbfbf"}
+                activeOutlineColor={"#393e59"}
+                mode="outlined"
+                label="%"
+                placeholder="%"
+                className="border-[0.2px] rounded-lg px-2 py-2"
+                defaultValue={
+                  isNaN(percentage)
+                    ? 0
+                    : percentage
+                      .toString()
+                      .split(".")
+                      .map((el, i) =>
+                        i ? el.split("").slice(0, 2).join("") : el
+                      )
+                      .join(".")
+                }
+              />
             </View>
-          </ScrollView>
-        )}
+            <View className="w-[45%]">
+              <Text
+                className="mb-1"
+                style={{
+                  fontFamily: FONTS.textBold,
+                }}
+              >
+                Net Profit
+
+              </Text>
+              <Text
+                className="mb-1 border-[0.2px] rounded-lg px-2 py-3 bg-gray-200"
+                style={{
+                  fontFamily: FONTS.textBold,
+                }}
+              >
+                {
+                  id == 2
+                    ? offer !== 0
+                      ? Math.round(
+                        (profitFBA.reduce(
+                          (partialSum, a) => partialSum + a,
+                          0
+                        ) -
+                          offer) *
+                        100
+                      ) / 100
+                      : 0
+                    : offer !== 0
+                      ? Math.round((totalPrice - offer) * 100) / 100
+                      : 0
+                }
+              </Text>
+            </View>
+          </View>
+          <View className="flex flex-row justify-between mt-2">
+            <View className="w-[45%]">
+              <Text
+                className="mb-1 "
+                style={{
+                  fontFamily: FONTS.textBold,
+                }}
+              >
+                Offer
+              </Text>
+              <TextInput
+                onChangeText={(value) => { handleOffer(value); }}
+                outlineColor={"#6fbfbf"}
+                activeOutlineColor={"#393e59"}
+                mode="outlined"
+                label="OFFER"
+                placeholder="Offer"
+                className="border-[0.2px] rounded-lg px-2 py-2"
+                defaultValue={offer
+                  .toString()
+                  .split(".")
+                  .map((el, i) =>
+                    i ? el.split("").slice(0, 2).join("") : el
+                  )
+                  .join(".")}
+              />
+
+            </View>
+
+          </View>
+          <View className="flex flex-row justify-between mt-2 flex-wrap">
+            <View className="w-[48%]">
+              <TouchableOpacity className="" onPress={sellAllToAmazon}>
+                <View className="mt-4 bg-[#6fbfbf]  rounded-lg px-4 py-3">
+                  <Text
+                    className="text-center"
+                    style={{
+                      fontFamily: FONTS.JosefinSansBold,
+                      fontSize: SIZES.font,
+                      color: "white",
+                    }}
+                  >
+                    Sell All to Amazon
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View className="w-[48%]">
+              <TouchableOpacity className="" onPress={sellAllToVendors}>
+                <View className="mt-4 bg-[#6fbfbf]  rounded-lg px-4 py-3">
+                  <Text
+                    className="text-center"
+                    style={{
+                      fontFamily: FONTS.JosefinSansBold,
+                      fontSize: SIZES.font,
+                      color: "white",
+                    }}
+                  >
+                    Sell All to Vendors
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View className="w-[48%]">
+              <TouchableOpacity className="" onPress={clearData}>
+                <View className="mt-4 bg-red-400  rounded-lg px-4 py-3">
+                  <Text
+                    className="text-center"
+                    style={{
+                      fontFamily: FONTS.JosefinSansBold,
+                      fontSize: SIZES.font,
+                      color: "white",
+                    }}
+                  >
+                    Clear
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
+          </View>
+        </View>}
+
+        {data.length > 0 && <ScrollView horizontal={true} className="mr-4">
+
+          <View className="mx-4 my-4 bg-white  pt-4 rounded-lg ">
+            <View className="flex flex-row mb-4 px-4">
+              <Text
+                style={{
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.font
+                }}
+                className="text-center w-32"
+              >
+                Title
+              </Text>
+              <Text
+                style={{
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.small
+                }}
+                className="text-center w-32"
+              >
+                HUNTSCORE
+              </Text>
+              <Text
+                style={{
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.small
+                }}
+                className="text-center w-32"
+              >
+                AMAZON PROFIT
+              </Text>
+              <Text
+                style={{
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.small
+                }}
+                className="text-center w-32"
+              >
+                SALES RANK
+              </Text>
+              <Text
+                style={{
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.small
+                }}
+                className="text-center w-32"
+              >
+                AVE SALES RANK
+              </Text>
+              <Text
+                style={{
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.small
+                }}
+                className="text-center w-16"
+              >
+                QTY.
+              </Text>
+              <Text
+                style={{
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.small
+                }}
+                className="text-center w-32"
+              >
+                AMAZON PRICE
+              </Text>
+              <Text
+                style={{
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: 14
+                }}
+                className="text-center w-96"
+              >
+                Vendors
+              </Text>
+            </View>
+            {data.length > 0 &&
+              data.map(
+                (books, index) => <OfferCard
+                  bg="bg-gray-200"
+                  key={index}
+                  books={books}
+                  scoreState={scoreState}
+                  index={index}
+                  profitFBA={profitFBA}
+                  shipping={shipping}
+                  salesRank={salesRank}
+                  ave={ave}
+                  slaveEdit={slaveEdit}
+                  price={price}
+                  masterVendors={masterVendors[index]}
+                  saveSlaveEdit={saveSlaveEdit}
+                  isbn={data[index][0].book.isbn13.split(",")[0]}
+                  selectionType={selectionType}
+                  deleteBook={deleteBook}
+                />)}
+          </View>
+        </ScrollView>}
+
       </ScrollView>
     </>
-  );
-};
+  )
+}
 
-export default BulkOffer;
+export default BulkOffer

@@ -2,7 +2,7 @@
   "expo": {
     "name": "bookhunter",
     "slug": "bookhunter",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,14 +14,16 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.bookhunter.app"
     },
     "android": {
       "package": "com.bookhunter.app",
-      "versionCode": 2,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -37,7 +39,12 @@
     },
     "plugins": [
       [
-        "expo-build-properties"
+        "expo-build-properties",
+        {
+          "android": {
+            "multiDexEnabled": true
+          }
+        }
       ]
     ]
   }
