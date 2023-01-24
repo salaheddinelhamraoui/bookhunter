@@ -8,14 +8,14 @@ function TriggerSetCard({
   userId,
   inactiveTriggerSet,
 }) {
-  const { fulfillement, buyCost, FBACostPerLBS, active } = triggerSet;
+  const { fulfillement, buyCost, FBACostPerLBS, active, description } = triggerSet;
   const updateTrigger = () => {
     inactiveTriggerSet(triggerSet._id);
   };
   return (
     <View className="bg-white rounded-2xl w-[48%] mb-6">
       <View className="px-4 py-4 mb-4">
-        <TouchableOpacity
+        {description !== 'BookHunter Default Triggers' && <TouchableOpacity
           className="absolute top-[-15] right-[-8] rounded-full w-[35px] h-[35px] bg-gray-200"
           onPress={() =>
             navigation.navigate("EditTrigger", { triggerSet, userId })
@@ -28,18 +28,22 @@ function TriggerSetCard({
               className="w-[15px] h-[15px]"
             />
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity>}
 
-        <Text
-          className="border-b-[0.2px] border-gray-500 pb-2 mb-2 text-center w-full "
-          style={{
-            fontFamily: FONTS.JosefinSansBold,
-            fontSize: SIZES.medium,
-            lineHeight: 20,
-          }}
-        >
-          BookHunter Default
-        </Text>
+        <View className="h-[60px] flex items-center justify-center">
+          <Text
+            className="border-b-[0.2px] border-gray-500 pb-2 mb-2 text-center w-full"
+            style={{
+              fontFamily: FONTS.JosefinSansBold,
+              fontSize: SIZES.medium,
+              lineHeight: 20,
+
+            }}
+          >
+            {description}
+          </Text>
+        </View>
+
         <View className="w-full flex flex-row ">
           <View className="w-[70%] mb-1">
             <Text
@@ -113,9 +117,8 @@ function TriggerSetCard({
 
       <TouchableOpacity
         onPress={() => updateTrigger()}
-        className={`rounded-b-2xl ${
-          active === "true" ? "bg-green-500" : "bg-gray-400"
-        }`}
+        className={`rounded-b-2xl ${active === "true" ? "bg-green-500" : "bg-gray-400"
+          }`}
       >
         <Text
           className="py-2 text-center text-white"

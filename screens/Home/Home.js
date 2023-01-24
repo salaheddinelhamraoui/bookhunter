@@ -5,8 +5,8 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
-import React, { useEffect } from "react";
-import { Image, View } from "react-native";
+import React, { useCallback, useEffect } from "react";
+import { Alert, Linking, Image, Pressable, Text, View } from "react-native";
 import NavBar from "../../components/NavBar";
 import { assets, FONTS, SIZES } from "../../constants";
 import Cart from "../cart/Cart";
@@ -27,17 +27,33 @@ import Toast from "react-native-root-toast";
 import Teams from "../teams/Teams";
 import AddMember from "../teams/AddMember";
 import Vendors from "../vendors/Vendors";
-import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import Profile from "../profile/Profile";
 import EditMember from "../teams/EditMember";
-import bulkHunt from "../bulkHunt/BulkHunt";
+// import bulkHunt from "../bulkHunt/BulkHunt";
 import BulkOffer from "../bulkOffer/BulkOffer";
+import Hunt from "../hunt/Hunt";
+import HuntScanner from "../hunt/HuntScanner";
+import BulkHuntScanner from "../bulkHuntDemo/BulkHuntScanner";
+import { Feather } from "@expo/vector-icons";
+import bulkHunt from "../bulkHuntDemo/BulkHunt";
+import BulkOfferScanner from "../bulkOffer/BulkOfferScanner";
 
 const Drawer = createDrawerNavigator();
 
 function Home({ navigation, route }) {
   const { user } = route.params;
   const dispatch = useDispatch();
+
+  const url = "https://bookhunter.com/book-flipper";
+  const handlePress = useCallback(async () => {
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Can't open this URL: ${url}`);
+    }
+  }, []);
 
   async function signOut() {
     try {
@@ -78,7 +94,6 @@ function Home({ navigation, route }) {
   }
 
   useEffect(() => {
-    console.log(user);
     dispatch(login(user));
     initializeCart();
   }, [user]);
@@ -88,59 +103,74 @@ function Home({ navigation, route }) {
       <NavBar />
       <Drawer.Navigator
         useLegacyImplementation={true}
+        backBehavior="history"
         initialRouteName="ISBN SCANNER"
         screenOptions={{
           headerShown: false,
         }}
         drawerContent={(props) => {
           return (
-            // <DrawerContentScrollView
-            //   {...props}
-            //   style={{ backgroundColor: "red" }}
-            // >
-            <View className=" py-2 flex-1 justify-between">
-              <View>
-                <DrawerItemList {...props} />
+            <DrawerContentScrollView
+              {...props}
+              showsVerticalScrollIndicator={false}
+            >
+              <View className=" py-2 flex-1 justify-between">
+                <View>
+                  <DrawerItemList {...props} />
+                </View>
+                {!user?.accessToken ? (
+                  <View>
+                    <Pressable
+                      onPress={handlePress}
+                      className="ml-4 flex-row items-center "
+                    >
+                      <Feather name="book-open" size={24} color="black" />
+                      <Text
+                        className="text-black ml-[35px] my-3 opacity-60"
+                        style={{
+                          fontFamily: FONTS.JosefinSansBold,
+                          fontSize: SIZES.medium,
+                        }}
+                      >
+                        BOOK FLIPPER
+                      </Text>
+                    </Pressable>
+                    <DrawerItem
+                      label="Sign In"
+                      onPress={() => navigation.navigate("FIRST LAUNCH")}
+                      style={{
+                        bottom: 0,
+                      }}
+                      labelStyle={{
+                        fontFamily: FONTS.JosefinSansBold,
+                        fontSize: SIZES.medium,
+                      }}
+                      icon={() => (
+                        <MaterialIcons name="logout" size={24} color="black" />
+                      )}
+                    />
+                  </View>
+                ) : null}
+                {user?.accessToken ? (
+                  <View>
+                    <DrawerItem
+                      label="Sign Out"
+                      onPress={signOut}
+                      style={{
+                        bottom: 0,
+                      }}
+                      labelStyle={{
+                        fontFamily: FONTS.JosefinSansBold,
+                        fontSize: SIZES.medium,
+                      }}
+                      icon={() => (
+                        <MaterialIcons name="logout" size={24} color="black" />
+                      )}
+                    />
+                  </View>
+                ) : null}
               </View>
-              {!user?.accessToken ? (
-                <View>
-                  <DrawerItem
-                    label="Sign In"
-                    onPress={() => navigation.navigate("FIRST LAUNCH")}
-                    style={{
-                      bottom: 0,
-                    }}
-                    labelStyle={{
-                      fontFamily: FONTS.JosefinSansBold,
-                      fontSize: SIZES.medium,
-                    }}
-                    icon={() => (
-                      <MaterialIcons name="logout" size={24} color="black" />
-                    )}
-                  />
-                </View>
-              ) : null}
-              {user?.accessToken ? (
-                <View>
-                  <DrawerItem
-                    label="Sign Out"
-                    onPress={signOut}
-                    style={{
-                      bottom: 0,
-                    }}
-                    labelStyle={{
-                      fontFamily: FONTS.JosefinSansBold,
-                      fontSize: SIZES.medium,
-                    }}
-                    icon={() => (
-                      <MaterialIcons name="logout" size={24} color="black" />
-                    )}
-                  />
-                </View>
-              ) : null}
-            </View>
-
-            // {/* </DrawerContentScrollView> */}
+            </DrawerContentScrollView>
           );
         }}
       >
@@ -162,6 +192,7 @@ function Home({ navigation, route }) {
             },
           }}
         />
+
         {/* EditMember */}
         <Drawer.Screen
           name="EditMember"
@@ -169,6 +200,7 @@ function Home({ navigation, route }) {
           options={{
             drawerItemStyle: { display: "none" },
           }}
+          type
         />
         <Drawer.Screen
           name="EditTrigger"
@@ -184,6 +216,29 @@ function Home({ navigation, route }) {
             drawerItemStyle: { display: "none" },
           }}
         />
+        <Drawer.Screen
+          name="HUNT SCANNER"
+          component={HuntScanner}
+          options={{
+            drawerItemStyle: { display: "none" },
+          }}
+        />
+
+        <Drawer.Screen
+          name="BULK HUNT SCANNER"
+          component={BulkHuntScanner}
+          options={{
+            drawerItemStyle: { display: "none" },
+          }}
+        />
+
+        <Drawer.Screen
+          name="BULK OFFER SCANNER"
+          component={BulkOfferScanner}
+          options={{
+            drawerItemStyle: { display: "none" },
+          }}
+        />
 
         {user?.accessToken && (
           <>
@@ -192,10 +247,10 @@ function Home({ navigation, route }) {
               component={Profile}
               options={{
                 drawerIcon: () => (
-                  <Ionicons
-                    name="ios-settings-outline"
-                    size={24}
-                    color="black"
+                  <Image
+                    source={assets.user}
+                    resizeMode="contain"
+                    className="w-[25px] h-[25px]"
                   />
                 ),
 
@@ -210,7 +265,11 @@ function Home({ navigation, route }) {
               component={Triggers}
               options={{
                 drawerIcon: () => (
-                  <MaterialIcons name="touch-app" size={24} color="black" />
+                  <Image
+                    source={assets.tap}
+                    resizeMode="contain"
+                    className="w-[25px] h-[25px]"
+                  />
                 ),
 
                 drawerLabelStyle: {
@@ -224,7 +283,11 @@ function Home({ navigation, route }) {
               component={Teams}
               options={{
                 drawerIcon: () => (
-                  <Ionicons name="people-outline" size={24} color="black" />
+                  <Image
+                    source={assets.team}
+                    resizeMode="contain"
+                    className="w-[25px] h-[25px]"
+                  />
                 ),
                 drawerLabelStyle: {
                   fontFamily: FONTS.JosefinSansBold,
@@ -237,7 +300,11 @@ function Home({ navigation, route }) {
               component={BulkOffer}
               options={{
                 drawerIcon: () => (
-                  <Ionicons name="people-outline" size={24} color="black" />
+                  <Image
+                    source={assets.summer}
+                    resizeMode="contain"
+                    className="w-[25px] h-[25px]"
+                  />
                 ),
                 drawerLabelStyle: {
                   fontFamily: FONTS.JosefinSansBold,
@@ -250,7 +317,24 @@ function Home({ navigation, route }) {
               component={bulkHunt}
               options={{
                 drawerIcon: () => (
-                  <Ionicons name="people-outline" size={24} color="black" />
+                  <MaterialIcons name="my-location" size={24} color="#666" />
+                ),
+                drawerLabelStyle: {
+                  fontFamily: FONTS.JosefinSansBold,
+                  fontSize: SIZES.medium,
+                },
+              }}
+            />
+            <Drawer.Screen
+              name="HUNT"
+              component={Hunt}
+              options={{
+                drawerIcon: () => (
+                  <Image
+                    source={assets.target}
+                    resizeMode="contain"
+                    className="w-[25px] h-[25px]"
+                  />
                 ),
                 drawerLabelStyle: {
                   fontFamily: FONTS.JosefinSansBold,
@@ -264,7 +348,13 @@ function Home({ navigation, route }) {
           name="VENDORS"
           component={Vendors}
           options={{
-            drawerIcon: () => <Entypo name="shop" size={24} color="black" />,
+            drawerIcon: () => (
+              <Image
+                source={assets.alternative}
+                resizeMode="contain"
+                className="w-[25px] h-[25px]"
+              />
+            ),
             drawerLabelStyle: {
               fontFamily: FONTS.JosefinSansBold,
               fontSize: SIZES.medium,

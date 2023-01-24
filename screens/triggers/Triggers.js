@@ -103,14 +103,14 @@ const Triggers = ({ navigation }) => {
               <View className="flex flex-row flex-wrap mx-4 my-2 mt-4 items-center justify-between">
                 {triggersSet.length > 0
                   ? triggersSet.map((triggerSet, i) => (
-                      <TriggerSetCard
-                        inactiveTriggerSet={inactiveTriggerSet}
-                        key={"trrigerId:" + i}
-                        navigation={navigation}
-                        triggerSet={triggerSet}
-                        userId={user.id}
-                      />
-                    ))
+                    <TriggerSetCard
+                      inactiveTriggerSet={inactiveTriggerSet}
+                      key={"trrigerId:" + i}
+                      navigation={navigation}
+                      triggerSet={triggerSet}
+                      userId={user.id}
+                    />
+                  ))
                   : null}
               </View>
             </>

@@ -11,16 +11,16 @@ const type = "sell";
 const OfferCard = ({
   index,
   data,
+  ave,
   salesRank,
   huntScore,
   finalProfit,
+  vendors,
   deleteOfferCard,
 }) => {
-  const { bookData, MasterVendors, Vendors, profitFBA } = data;
+  const { book } = data[0];
   const dispatch = useDispatch();
   const [cost, setCost] = useState(0);
-
-  // AsyncStorage.clear();
 
   function VendorQuantity(vendor) {
     switch (vendor?.vendorName) {
@@ -49,7 +49,7 @@ const OfferCard = ({
       if (vendorPrice > 0) {
         const newData = {
           type,
-          bookData: bookData[0],
+          bookData: data[0],
           vendor,
         };
         dispatch(addToCard(newData));
@@ -87,15 +87,24 @@ const OfferCard = ({
     }
   }
 
+  const renderSalesRank = (salesRank) => {
+    console.log(salesRank);
+    const aveLength = salesRank.split(",").length;
+    const value = salesRank.split(",")[0];
+    if (aveLength === 1) return value;
+    if (aveLength === 2) return `${value}K`;
+    if (aveLength === 3) return `${value}M`;
+  };
+
   return (
     <View
       className={`flex flex-row px-4 py-2 bg-white ${
         index % 2 === 0 ? "bg-gray-200" : "bg-gray-100"
       }`}
     >
-      <Pressable
+      {/* <Pressable
         className=" justify-center w-24 items-center"
-        onPress={() => deleteOfferCard(data?.cardId)}
+        // onPress={() => deleteOfferCard(data?.cardId)}
       >
         <View className="bg-red-600 w-6 h-6 justify-center items-center pt-[6px] rounded-full overflow-hidden shadow-lg">
           <Text
@@ -105,7 +114,7 @@ const OfferCard = ({
             X
           </Text>
         </View>
-      </Pressable>
+      </Pressable> */}
       <View>
         <Text
           style={{
@@ -113,7 +122,7 @@ const OfferCard = ({
           }}
           className="w-24 text-center"
         >
-          {bookData[0]?.book?.title}
+          {book?.title}
         </Text>
         <Text
           className=" text-center pt-1"
@@ -121,7 +130,7 @@ const OfferCard = ({
             fontSize: SIZES.base,
           }}
         >
-          {bookData[0]?.book?.isbn13}
+          {book?.isbn13}
         </Text>
       </View>
 
@@ -139,11 +148,11 @@ const OfferCard = ({
         }}
         className="text-center w-24 self-center"
       >
-        {salesRank}
+        {salesRank && renderSalesRank(salesRank)}
       </Text>
       <TextInput
         keyboardType="numeric"
-        onChange={(e) => setCost(e)}
+        onChange={(e) => setCost(Number(e))}
         style={{
           fontSize: SIZES.medium,
         }}
@@ -159,11 +168,20 @@ const OfferCard = ({
       >
         ${finalProfit}
       </Text>
+      <Text
+        style={{
+          fontSize: SIZES.medium,
+        }}
+        className="text-center w-24 self-center"
+      >
+        {ave}
+      </Text>
       <View className="ml-4 flex flex-row items-center">
-        {Vendors?.length
-          ? Vendors.sort(
-              (a, b) => a?.price?.replace("$", "") < b?.price.replace("$", "")
-            )
+        {vendors?.length
+          ? vendors
+              .sort(
+                (a, b) => a?.price?.replace("$", "") < b?.price.replace("$", "")
+              )
               .filter((_, index) => index <= 2)
               .map(
                 (vendor, index) => (

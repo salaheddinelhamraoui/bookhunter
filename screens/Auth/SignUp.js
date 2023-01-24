@@ -98,8 +98,8 @@ function SignUp({ navigation }) {
         break;
       case "PWD":
         if (
-          !containNumber.test(str) ||
-          !containSpecialCaractere.test(str) ||
+          // !containNumber.test(str) ||
+          // !containSpecialCaractere.test(str) ||
           str.length < 8
         ) {
           setIsValidPwd(false);
@@ -114,8 +114,8 @@ function SignUp({ navigation }) {
         break;
       case "CPWD":
         if (
-          !containNumber.test(str) ||
-          !containSpecialCaractere.test(str) ||
+          // !containNumber.test(str) ||
+          // !containSpecialCaractere.test(str) ||
           password !== str ||
           str.length < 8
         ) {
@@ -211,6 +211,7 @@ function SignUp({ navigation }) {
             </Text>
             <View className="gap-1">
               <TextInput
+                autoCapitalize="none"
                 onChangeText={(text) => handleInputChange("USERNAME", text)}
                 outlineColor={username && !isValidUsername ? "red" : "#6fbfbf"}
                 activeOutlineColor={
@@ -231,6 +232,7 @@ function SignUp({ navigation }) {
               )}
 
               <TextInput
+                autoCapitalize="none"
                 onChangeText={(text) => handleInputChange("FIRSTNAME", text)}
                 outlineColor={
                   firstName && !isValidFirstName ? "red" : "#6fbfbf"
@@ -252,6 +254,7 @@ function SignUp({ navigation }) {
                 </Text>
               )}
               <TextInput
+                autoCapitalize="none"
                 onChangeText={(text) => handleInputChange("LASTNAME", text)}
                 outlineColor={lastName && !isValidLastName ? "red" : "#6fbfbf"}
                 activeOutlineColor={
@@ -271,6 +274,7 @@ function SignUp({ navigation }) {
                 </Text>
               )}
               <TextInput
+                autoCapitalize="none"
                 onChangeText={(text) => handleInputChange("EMAIL", text)}
                 outlineColor={email && !isValidEmail ? "red" : "#6fbfbf"}
                 activeOutlineColor={email && !isValidEmail ? "red" : "#393e59"}
@@ -281,6 +285,7 @@ function SignUp({ navigation }) {
                 placeholder="example@gmail.com"
               />
               <TextInput
+                autoCapitalize="none"
                 onChangeText={(text) => handleInputChange("PWD", text)}
                 outlineColor={password && !isValidPwd ? "red" : "#6fbfbf"}
                 activeOutlineColor={password && !isValidPwd ? "red" : "#393e59"}
@@ -299,6 +304,7 @@ function SignUp({ navigation }) {
                 </Text>
               )}
               <TextInput
+                autoCapitalize="none"
                 onChangeText={(text) => handleInputChange("CPWD", text)}
                 outlineColor={
                   confirmPassword && !isValidCPwd ? "red" : "#6fbfbf"

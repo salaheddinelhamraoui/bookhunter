@@ -48,7 +48,7 @@ function SignIn({ navigation }) {
     const containNumber = new RegExp(/[0-9]/);
     switch (type) {
       case "USERNAME":
-        if (str.length <= 6) {
+        if (str.length <= 2) {
           setIsValidUsername(false);
           setUsername(str);
           setErrMsg("Invalid Username");
@@ -59,7 +59,7 @@ function SignIn({ navigation }) {
         }
         break;
       case "PWD":
-        if (str.length < 8) {
+        if (str.length <= 6) {
           setIsValidPwd(false);
           setPassword(str);
           setErrMsg("Invalid Password");
@@ -158,6 +158,7 @@ function SignIn({ navigation }) {
         </View>
         <View className="gap-3">
           <TextInput
+            autoCapitalize="none"
             onChangeText={(text) => handleInputChange("USERNAME", text)}
             outlineColor="#6fbfbf"
             activeOutlineColor="#393e59"
@@ -174,6 +175,7 @@ function SignIn({ navigation }) {
             </Text>
           )}
           <TextInput
+            autoCapitalize="none"
             onChangeText={(text) => handleInputChange("PWD", text)}
             outlineColor="#6fbfbf"
             placeholder="Password"
