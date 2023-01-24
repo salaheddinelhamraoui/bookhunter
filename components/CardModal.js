@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
         translateX: -windowWidth / 2.2,
       },
     ],
+    alignItems: "center",
     marginTop: 22,
   },
   modalView: {
